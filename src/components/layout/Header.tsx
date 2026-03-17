@@ -11,10 +11,10 @@ export function Header() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-secondary text-white flex items-center justify-center shadow-sm">
-              <span className="text-sm font-extrabold">C</span>
+            <div className="h-11 w-11 rounded-full bg-white flex items-center justify-center shadow-sm overflow-hidden border border-border/40">
+              <img src="/favicon.ico" alt="Convertaro Logo" className="h-full w-full object-contain p-1" />
             </div>
-            <span className="text-base font-semibold text-text-primary">Convertaro</span>
+            <span className="text-lg font-bold text-text-primary tracking-tight">Convertaro</span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-7">
