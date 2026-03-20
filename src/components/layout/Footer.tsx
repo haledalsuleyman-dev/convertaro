@@ -1,31 +1,40 @@
 import Link from "next/link";
-import { Calculator } from "lucide-react";
 import { categories } from "@/data/categories";
+import { Zap } from "lucide-react";
 
 export function Footer() {
+  const converterCats = categories.slice(0, 5);
+  const infoCats = categories.slice(5);
+
   return (
-    <footer className="border-t border-border/60 bg-white/70 backdrop-blur">
+    <footer className="mt-16 border-t border-slate-800 bg-slate-900 text-slate-400">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-10">
+
+          {/* Brand */}
           <div className="col-span-2 lg:col-span-2">
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-secondary text-white flex items-center justify-center shadow-sm">
-                <Calculator className="h-4 w-4" />
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-[#7C3AED] flex items-center justify-center shadow-sm">
+                <span className="text-white font-bold text-sm">C</span>
               </div>
-              <div className="text-base font-semibold text-text-primary">Convertaro</div>
+              <div className="text-base font-bold text-white">Convertaro</div>
             </div>
-            <p className="mt-4 text-sm text-text-secondary max-w-md">
+            <p className="mt-4 text-sm text-slate-400 max-w-xs leading-relaxed">
               The world&apos;s most accurate and high-performance unit conversion platform. Built for professionals and anyone who values speed and precision.
             </p>
-            <p className="mt-6 text-xs text-text-secondary">© {new Date().getFullYear()} Convertaro. All rights reserved.</p>
+            <div className="mt-6 flex items-center gap-2 text-xs text-slate-500">
+              <Zap className="h-3 w-3 text-primary" />
+              <span>Built for speed · Secure · Free forever</span>
+            </div>
           </div>
 
+          {/* Converters */}
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-text-secondary">Converters</div>
-            <ul className="mt-4 space-y-3">
-              {categories.slice(0, 4).map((cat) => (
+            <div className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">Converters</div>
+            <ul className="space-y-3">
+              {converterCats.map((cat) => (
                 <li key={cat.id}>
-                  <Link href={`/${cat.slug}`} className="text-sm text-text-secondary hover:text-text-primary">
+                  <Link href={`/${cat.slug}`} className="text-sm text-slate-400 hover:text-white transition-colors">
                     {cat.name}
                   </Link>
                 </li>
@@ -33,12 +42,13 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* More Categories */}
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-text-secondary">Categories</div>
-            <ul className="mt-4 space-y-3">
-              {categories.slice(0, 4).map((cat) => (
+            <div className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">More Tools</div>
+            <ul className="space-y-3">
+              {infoCats.map((cat) => (
                 <li key={cat.id}>
-                  <Link href={`/${cat.slug}`} className="text-sm text-text-secondary hover:text-text-primary">
+                  <Link href={`/${cat.slug}`} className="text-sm text-slate-400 hover:text-white transition-colors">
                     {cat.name}
                   </Link>
                 </li>
@@ -46,62 +56,33 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Company */}
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-text-secondary">Resources</div>
-            <ul className="mt-4 space-y-3">
-              <li>
-                <Link href="/length" className="text-sm text-text-secondary hover:text-text-primary">
-                  Length
-                </Link>
-              </li>
-              <li>
-                <Link href="/weight" className="text-sm text-text-secondary hover:text-text-primary">
-                  Weight
-                </Link>
-              </li>
-              <li>
-                <Link href="/temperature" className="text-sm text-text-secondary hover:text-text-primary">
-                  Temperature
-                </Link>
-              </li>
-              <li>
-                <Link href="/volume" className="text-sm text-text-secondary hover:text-text-primary">
-                  Volume
-                </Link>
-              </li>
+            <div className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">Company</div>
+            <ul className="space-y-3">
+              {[
+                { href: "/about", label: "About" },
+                { href: "/privacy", label: "Privacy" },
+                { href: "/terms", label: "Terms" },
+                { href: "/contact", label: "Contact" },
+              ].map(({ href, label }) => (
+                <li key={href}>
+                  <Link href={href} className="text-sm text-slate-400 hover:text-white transition-colors">
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-text-secondary">Company</div>
-            <ul className="mt-4 space-y-3">
-              <li>
-                <Link href="/about" className="text-sm text-text-secondary hover:text-text-primary">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-sm text-text-secondary hover:text-text-primary">
-                  Privacy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-sm text-text-secondary hover:text-text-primary">
-                  Terms
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-sm text-text-secondary hover:text-text-primary">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="text-xs text-text-secondary">Built for Speed — Secure — No Ads Premium Option</div>
-          <div className="text-xs text-text-secondary">convertaro.com</div>
+        {/* Bottom bar */}
+        <div className="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-slate-500">
+            © {new Date().getFullYear()} Convertaro. All rights reserved.
+          </p>
+          <p className="text-xs text-slate-500">convertaro.com</p>
         </div>
       </div>
     </footer>

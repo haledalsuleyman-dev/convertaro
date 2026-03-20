@@ -36,6 +36,12 @@ const config: Config = {
           secondary: "#475569",
         },
         border: "#E5E7EB",
+        slate: {
+          400: "#94A3B8",
+          500: "#64748B",
+          800: "#1E293B",
+          900: "#0F172A",
+        },
       },
     },
   },
