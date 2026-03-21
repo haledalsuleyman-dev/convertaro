@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { PageShell } from "@/components/ui/PageShell";
+import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Contact | Convertaro",
   description: "Contact Convertaro support for questions, feedback, or partnership inquiries.",
+  robots: INDEXABLE_ROBOTS,
   alternates: {
-    canonical: "https://convertaro.com/contact",
+    canonical: canonicalFromPath("/contact"),
   },
 };
 

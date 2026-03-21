@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell } from "@/components/ui/PageShell";
+import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "About Convertaro",
   description: "Learn what Convertaro is, what it does, and who it is for.",
+  robots: INDEXABLE_ROBOTS,
   alternates: {
-    canonical: "https://convertaro.com/about",
+    canonical: canonicalFromPath("/about"),
   },
 };
 

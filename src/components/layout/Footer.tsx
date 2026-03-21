@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { categories } from "@/data/categories";
+import { calculators } from "@/data/calculators";
 import { Zap, Twitter, Github, Mail, Shield, Clock, Globe } from "lucide-react";
 
 const POPULAR_CONVERTERS = [
@@ -14,6 +15,7 @@ const POPULAR_CONVERTERS = [
 export function Footer() {
   const converterCats = categories.slice(0, 5);
   const moreCats = categories.slice(5);
+  const featuredCalculators = calculators.slice(0, 4);
 
   return (
     <footer className="mt-16 border-t border-slate-800 bg-slate-900 text-slate-400">
@@ -30,7 +32,7 @@ export function Footer() {
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-10">
 
           {/* Brand */}
           <div className="col-span-2 sm:col-span-3 lg:col-span-2">
@@ -100,6 +102,11 @@ export function Footer() {
           <div>
             <div className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">More Tools</div>
             <ul className="space-y-2.5">
+              <li>
+                <Link href="/calculators" className="text-sm text-slate-300 hover:text-white transition-colors font-semibold">
+                  Calculators Hub
+                </Link>
+              </li>
               {moreCats.map((cat) => (
                 <li key={cat.id}>
                   <Link href={`/${cat.slug}`} className="text-sm text-slate-400 hover:text-white transition-colors">
@@ -110,8 +117,21 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Company */}
           <div>
+            <div className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">Calculators</div>
+            <ul className="space-y-2.5">
+              {featuredCalculators.map((calculator) => (
+                <li key={calculator.slug}>
+                  <Link href={`/${calculator.slug}`} className="text-sm text-slate-400 hover:text-white transition-colors">
+                    {calculator.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div className="lg:col-span-1">
             <div className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-4">Company</div>
             <ul className="space-y-2.5">
               {[

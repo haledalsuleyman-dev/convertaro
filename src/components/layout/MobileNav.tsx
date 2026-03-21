@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronRight, Ruler, Weight, Thermometer, Droplets, Square, Gauge, Clock, Database, Zap, Wind } from "lucide-react";
 import { categories } from "@/data/categories";
+import { calculators } from "@/data/calculators";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Ruler, Weight, Thermometer, Droplets, Square, Gauge, Clock, Database, Zap, Wind,
@@ -68,6 +69,31 @@ export function MobileNav() {
                 </Link>
               );
             })}
+          </div>
+
+          <p className="text-xs font-semibold uppercase tracking-widest text-text-secondary mt-6 mb-3 px-2">
+            Calculators
+          </p>
+          <div className="grid grid-cols-1 gap-2">
+            <Link
+              href="/calculators"
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-primary bg-primary/6 border border-primary/15"
+            >
+              <span>All Calculators Hub</span>
+              <ChevronRight className="h-4 w-4 opacity-70" />
+            </Link>
+            {calculators.map((calculator) => (
+              <Link
+                key={calculator.slug}
+                href={`/${calculator.slug}`}
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:bg-primary/8 hover:text-primary transition-colors border border-transparent hover:border-primary/15"
+              >
+                <span>{calculator.title}</span>
+                <ChevronRight className="h-4 w-4 opacity-50" />
+              </Link>
+            ))}
           </div>
 
           <div className="mt-5 pt-5 border-t border-border flex flex-wrap gap-2">

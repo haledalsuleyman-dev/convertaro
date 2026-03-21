@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { categories } from "@/data/categories";
+import { calculators } from "@/data/calculators";
 import convertersData from "@/data/converters.json";
 import { Converter } from "@/types/converter";
 import { SearchTool } from "@/components/ui/SearchTool";
 import { AdUnit } from "@/components/ui/AdUnit";
+import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -34,13 +36,14 @@ export const metadata: Metadata = {
   title: "Free Online Unit Converter – 500+ Tools | Convertaro",
   description:
     "Convert any unit instantly with Convertaro. 500+ free converters for length (cm to inches), weight (kg to lbs), temperature (°C to °F), volume, speed, data & more. Fast, accurate, no signup.",
+  robots: INDEXABLE_ROBOTS,
   keywords: [
     "free unit converter", "online unit converter", "cm to inches",
     "kg to lbs", "celsius to fahrenheit", "miles to km",
     "unit conversion", "measurement converter", "metric converter",
     "imperial converter",
   ],
-  alternates: { canonical: "https://convertaro.com" },
+  alternates: { canonical: canonicalFromPath("/") },
   openGraph: {
     title: "Free Online Unit Converter – 500+ Tools | Convertaro",
     description: "Convert any unit instantly. 500+ free converters for length, weight, temperature, volume, speed & more.",
@@ -96,6 +99,8 @@ const FEATURES = [
   { icon: Globe,        color: "bg-violet-100   text-violet-600", title: "Used Worldwide",        desc: "Engineers, students, and professionals in 150+ countries rely on Convertaro daily."       },
   { icon: TrendingUp,   color: "bg-rose-100     text-rose-500",  title: "Always Growing",         desc: "New converters and categories added continuously. Suggest a tool via our contact page."   },
 ];
+
+const FEATURED_CALCULATORS = calculators;
 
 /* ── Component ── */
 export default function Home() {
@@ -218,6 +223,36 @@ export default function Home() {
                 </Link>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-14 sm:py-16 bg-background border-b border-border/60">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-primary mb-1.5">New</p>
+              <h2 className="text-2xl font-black text-text-primary">High-demand Calculators</h2>
+            </div>
+            <div className="text-right">
+              <p className="hidden sm:block text-sm text-text-secondary">Beyond unit conversion: finance, health, and everyday math.</p>
+              <Link href="/calculators" className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+                Explore calculators hub <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {FEATURED_CALCULATORS.map((calculator) => (
+              <Link
+                key={calculator.slug}
+                href={`/${calculator.slug}`}
+                className="rounded-2xl border border-border bg-white px-4 py-4 shadow-sm hover:shadow-card hover:-translate-y-0.5 hover:border-primary/30 transition-all"
+              >
+                <p className="text-sm font-bold text-text-primary">{calculator.title}</p>
+                <p className="mt-1.5 text-xs text-text-secondary line-clamp-2">{calculator.description}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

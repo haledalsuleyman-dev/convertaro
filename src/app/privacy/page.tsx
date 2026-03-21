@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell } from "@/components/ui/PageShell";
+import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Convertaro",
   description: "Read Convertaro’s privacy policy covering analytics, cookies, ads, and user data.",
+  robots: INDEXABLE_ROBOTS,
   alternates: {
-    canonical: "https://convertaro.com/privacy",
+    canonical: canonicalFromPath("/privacy"),
   },
 };
 

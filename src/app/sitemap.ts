@@ -1,5 +1,7 @@
 import { MetadataRoute } from "next";
 import { categories } from "@/data/categories";
+import { calculators } from "@/data/calculators";
+import { calculatorCategories } from "@/data/calculator-categories";
 import convertersData from "@/data/converters.json";
 import { Converter } from "@/types/converter";
 
@@ -46,6 +48,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: page.changeFrequency,
       priority: page.priority,
+    });
+  });
+
+  calculators.forEach((calculator) => {
+    routes.push({
+      url: `${BASE_URL}/${calculator.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.82,
+    });
+  });
+
+  routes.push({
+    url: `${BASE_URL}/calculators`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.86,
+  });
+
+  calculatorCategories.forEach((category) => {
+    routes.push({
+      url: `${BASE_URL}/calculators/${category.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.74,
     });
   });
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { categories } from "@/data/categories";
+import { calculators } from "@/data/calculators";
 import { SearchTool } from "@/components/ui/SearchTool";
 import { MobileNav } from "./MobileNav";
 import { ChevronDown } from "lucide-react";
@@ -11,6 +12,7 @@ export function Header() {
   const moreNav = categories.filter((c) =>
     !["length", "weight", "temperature", "volume", "area", "speed"].includes(c.slug)
   );
+  const featuredCalculators = calculators.slice(0, 5);
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -59,6 +61,33 @@ export function Header() {
                       className="flex items-center px-3 py-2 text-sm font-medium text-text-secondary hover:text-primary hover:bg-primary/6 rounded-lg transition-colors"
                     >
                       {cat.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="relative group/calc">
+                <button className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-slate-50 rounded-lg transition-all duration-150">
+                  Calculators
+                  <ChevronDown className="h-3.5 w-3.5 transition-transform duration-200 group-hover/calc:rotate-180" />
+                </button>
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl border border-border shadow-xl shadow-slate-900/8 opacity-0 invisible group-hover/calc:opacity-100 group-hover/calc:visible translate-y-1 group-hover/calc:translate-y-0 transition-all duration-200 z-50 p-1.5">
+                  <Link
+                    href="/calculators"
+                    className="flex items-center px-3 py-2 text-sm font-semibold text-primary hover:bg-primary/8 rounded-lg transition-colors"
+                  >
+                    All Calculators Hub
+                  </Link>
+                  <Link href="/calculators/finance" className="flex items-center px-3 py-2 text-xs font-medium text-text-secondary hover:text-primary hover:bg-primary/6 rounded-lg transition-colors">Finance</Link>
+                  <Link href="/calculators/health" className="flex items-center px-3 py-2 text-xs font-medium text-text-secondary hover:text-primary hover:bg-primary/6 rounded-lg transition-colors">Health</Link>
+                  <Link href="/calculators/math" className="flex items-center px-3 py-2 text-xs font-medium text-text-secondary hover:text-primary hover:bg-primary/6 rounded-lg transition-colors">Math</Link>
+                  {featuredCalculators.map((calculator) => (
+                    <Link
+                      key={calculator.slug}
+                      href={`/${calculator.slug}`}
+                      className="flex items-center px-3 py-2 text-sm font-medium text-text-secondary hover:text-primary hover:bg-primary/6 rounded-lg transition-colors"
+                    >
+                      {calculator.title}
                     </Link>
                   ))}
                 </div>

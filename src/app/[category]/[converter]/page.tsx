@@ -6,9 +6,16 @@ import { categories } from "@/data/categories";
 import { ConverterTool } from "@/components/converter/ConverterTool";
 import { ConversionTable } from "@/components/converter/ConversionTable";
 import { FAQSection } from "@/components/converter/FAQSection";
+import { ConverterContentSections } from "@/components/converter/ConverterContentSections";
 import { AdUnit } from "@/components/ui/AdUnit";
 import Link from "next/link";
 import { ChevronRight, Home, Calculator, Lightbulb, Table, Zap } from "lucide-react";
+import { converterCanonical, INDEXABLE_ROBOTS } from "@/lib/seo";
+import {
+  buildConverterFaq,
+  getContextualRelatedConverters,
+  getReverseConverter,
+} from "@/lib/converter-content";
 
 const converters = convertersData as Converter[];
 
@@ -31,7 +38,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const converter = converters.find(c => c.category === category && c.metadata.slug === slug);
   const cat = categories.find(c => c.slug === category);
 
-  if (!converter) return {};
+  if (!converter) {
+    return {};
+  }
 
   const title = `${converter.title} – Free Online Calculator`;
   const description = `${converter.description} Use our free ${converter.fromUnit} to ${converter.toUnit} converter. Instant results, accurate formula, and conversion table. Formula: ${converter.formula}`;
@@ -39,6 +48,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
+    robots: INDEXABLE_ROBOTS,
     keywords: [
       ...converter.metadata.keywords,
       `${converter.fromUnit} to ${converter.toUnit}`,
@@ -51,14 +61,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "free online converter",
     ].filter(Boolean),
     alternates: {
-      canonical: `https://convertaro.com/${category}/${slug}`,
+      canonical: converterCanonical(category, slug),
     },
     openGraph: {
       title: `${converter.title} – Free Online Tool`,
       description: `${converter.description} Instant results with formula and conversion table.`,
       siteName: "Convertaro",
       type: "website",
-      url: `https://convertaro.com/${category}/${slug}`,
+      url: converterCanonical(category, slug),
     },
     twitter: {
       card: "summary_large_image",
@@ -77,11 +87,15 @@ export default async function ConverterPage({ params }: PageProps) {
     notFound();
   }
 
+  const reverseConverter = getReverseConverter(converter, converters);
+  const contextualLinks = getContextualRelatedConverters(converter, converters);
+  const pageFaq = buildConverterFaq(converter, category, reverseConverter);
+
   // FAQ Schema
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": converter.faq.map(item => ({
+    "mainEntity": pageFaq.map(item => ({
       "@type": "Question",
       "name": item.question,
       "acceptedAnswer": {
@@ -276,8 +290,15 @@ export default async function ConverterPage({ params }: PageProps) {
               <h2 className="text-lg font-black text-text-primary mb-8 tracking-tight">
                 Frequently Asked Questions
               </h2>
-              <FAQSection faq={converter.faq} />
+              <FAQSection faq={pageFaq} />
             </section>
+
+            <ConverterContentSections
+              converter={converter}
+              category={category}
+              reverseConverter={reverseConverter}
+              contextualLinks={contextualLinks}
+            />
 
             {/* ── Related Converters ── */}
             {converter.relatedConverters.length > 0 && (

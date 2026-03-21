@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { SITE_URL } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -12,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://convertaro.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Convertaro – Free Online Unit Converter | 500+ Tools",
     template: "%s | Convertaro",
@@ -41,17 +42,6 @@ export const metadata: Metadata = {
     "imperial to metric",
     "online measurement tool",
   ],
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
   twitter: {
     card: "summary_large_image",
     title: "Convertaro – Free Online Unit Converter | 500+ Tools",

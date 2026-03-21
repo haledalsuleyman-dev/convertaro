@@ -6,6 +6,7 @@ import { Converter } from "@/types/converter";
 import { AdUnit } from "@/components/ui/AdUnit";
 import Link from "next/link";
 import { ChevronRight, Home, Calculator, CheckCircle2, ArrowUpRight } from "lucide-react";
+import { categoryCanonical, INDEXABLE_ROBOTS } from "@/lib/seo";
 
 const converters = convertersData as Converter[];
 
@@ -25,13 +26,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { category: slug } = await params;
   const category = categories.find(c => c.slug === slug);
 
-  if (!category) return {};
+  if (!category) {
+    return {};
+  }
 
   const count = converters.filter(c => c.category === slug).length;
 
   return {
     title: `${category.name} Converters – ${count} Free Online Tools`,
     description: `${category.description} Browse all ${count} free ${category.name.toLowerCase()} converters. Instant results, accurate formulas, and reference tables for every ${category.name.toLowerCase()} unit conversion.`,
+    robots: INDEXABLE_ROBOTS,
     keywords: [
       `${category.name.toLowerCase()} converter`,
       `free ${category.name.toLowerCase()} converter`,
@@ -43,14 +47,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "free online converter",
     ],
     alternates: {
-      canonical: `https://convertaro.com/${slug}`,
+      canonical: categoryCanonical(slug),
     },
     openGraph: {
       siteName: "Convertaro",
       title: `${category.name} Converters – ${count} Free Online Tools | Convertaro`,
       description: `${category.description} ${count} free, accurate ${category.name.toLowerCase()} conversion tools.`,
       type: "website",
-      url: `https://convertaro.com/${slug}`,
+      url: categoryCanonical(slug),
     },
     twitter: {
       card: "summary_large_image",
