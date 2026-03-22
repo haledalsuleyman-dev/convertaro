@@ -185,20 +185,20 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
       <section className="relative overflow-hidden px-4 pt-16 pb-20 md:pt-24 md:pb-24">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_8%_10%,rgba(226,232,240,0.45),transparent_26%),radial-gradient(circle_at_88%_6%,rgba(203,213,225,0.32),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8fafc_34%,#f3f4f6_100%)]" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_8%_10%,rgba(229,231,235,0.6),transparent_26%),radial-gradient(circle_at_88%_6%,rgba(226,232,240,0.42),transparent_28%),linear-gradient(180deg,#ffffff_0%,#f8f8f8_34%,#f1f1f1_100%)]" />
         <div className="absolute inset-0 -z-10 opacity-[0.18] bg-[linear-gradient(to_right,rgba(148,163,184,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.06)_1px,transparent_1px)] bg-[size:40px_40px]" />
         <div className="absolute -right-20 top-10 -z-10 h-72 w-72 rounded-full bg-slate-200/70 blur-3xl" />
         <div className="absolute -left-24 bottom-4 -z-10 h-72 w-72 rounded-full bg-slate-100/90 blur-3xl" />
 
         <div className="container-pro relative z-10 text-center text-slate-900">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/70 px-4 py-1.5 text-sm font-semibold text-slate-700 shadow-[0_18px_35px_-26px_rgba(15,23,42,0.12)] backdrop-blur-xl">
-            <Star className="h-4 w-4 text-slate-700" />
+            <Star className="h-4 w-4 text-slate-900" />
             Trusted by students, teams, and professionals
           </div>
 
           <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight md:text-6xl md:leading-[1.1]">
             Convert with confidence.
-            <span className="block bg-gradient-to-r from-slate-950 via-slate-700 to-slate-500 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-slate-950 via-slate-800 to-slate-600 bg-clip-text text-transparent">
               Fast, precise, and effortless.
             </span>
           </h1>
@@ -252,7 +252,7 @@ export default function Home() {
                   href={`/${category.slug}`}
                   className="card-pro rounded-[20px] p-6 group flex flex-col items-center text-center hover:border-slate-300"
                 >
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 text-slate-700 transition-all duration-300 group-hover:from-slate-900 group-hover:to-slate-700 group-hover:text-white">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 text-slate-800 transition-all duration-300 group-hover:from-slate-950 group-hover:to-slate-800 group-hover:text-white">
                     <Icon className="h-6 w-6" />
                   </div>
                   <h3 className="mb-1 font-display font-semibold text-slate-900">{category.name}</h3>
@@ -271,7 +271,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-10">
             <h2 className="font-display text-2xl font-semibold text-slate-900">Most Used Tools</h2>
             <div className="flex items-center gap-4">
-              <Link href="/popular-conversion-tools" className="text-sm font-semibold text-slate-700 hover:text-slate-900 flex items-center gap-1">
+              <Link href="/popular-conversion-tools" className="text-sm font-semibold text-slate-700 hover:text-slate-950 flex items-center gap-1">
                 Popular conversions <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href="/calculators" className="text-sm font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1">
@@ -313,7 +313,7 @@ export default function Home() {
                       <CircleDot className="h-3.5 w-3.5 text-slate-700" />
                       {details.example}
                     </span>
-                    <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-700">
+                    <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-800">
                       Formula and examples included
                     </span>
                   </div>
@@ -338,7 +338,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {FEATURES.map((feature) => (
               <div key={feature.title} className="rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50/70 p-6 text-left hover:-translate-y-0.5 hover:border-cyan-200 hover:shadow-lg transition-all">
-                <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-900">
                   <feature.icon className="h-6 w-6" />
                 </div>
                 <h3 className="font-display text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>

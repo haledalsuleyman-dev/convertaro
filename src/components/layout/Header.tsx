@@ -95,7 +95,7 @@ export function Header() {
             <div className="hidden md:block">
               <SearchTool variant="navbar" placeholder="Search..." />
             </div>
-            <Link href={canonicalizeConverterHref("/length/cm-to-inches")} className="btn-pro hidden sm:inline-flex">
+            <Link href={canonicalizeConverterHref("/length/cm-to-inches")} className="hidden sm:inline-flex items-center justify-center rounded-xl bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-slate-800">
               Start Converting
             </Link>
             <div className="lg:hidden">

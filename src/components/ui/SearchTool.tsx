@@ -145,7 +145,7 @@ export function SearchTool({ variant = "hero", placeholder }: SearchToolProps) {
           aria-autocomplete="list"
           className={
             isHero
-              ? "block w-full h-16 pl-12 pr-28 rounded-full bg-white/90 backdrop-blur border border-white/80 shadow-[0_18px_45px_rgba(15,23,42,0.14)] text-base text-text-primary placeholder:text-text-secondary/60 outline-none focus:ring-4 focus:ring-cyan-500/20"
+              ? "block w-full h-16 pl-12 pr-28 rounded-full bg-white/92 backdrop-blur border border-slate-200 shadow-[0_18px_45px_rgba(15,23,42,0.12)] text-base text-text-primary placeholder:text-text-secondary/60 outline-none focus:ring-4 focus:ring-slate-900/10"
               : "block w-full h-10 pl-9 pr-9 rounded-full bg-background/80 backdrop-blur border border-border shadow-sm text-sm text-text-primary placeholder:text-text-secondary/60 outline-none focus:ring-2 focus:ring-cyan-500/20"
           }
         />
@@ -167,7 +167,7 @@ export function SearchTool({ variant = "hero", placeholder }: SearchToolProps) {
         {isHero && (
           <button
             type="submit"
-            className="absolute inset-y-0 right-1.5 my-1.5 px-6 rounded-full bg-gradient-to-r from-slate-900 via-primary to-cyan-700 text-white text-sm font-semibold shadow-md shadow-slate-900/25 hover:from-slate-950 hover:to-cyan-800 transition-colors"
+            className="absolute inset-y-0 right-1.5 my-1.5 px-6 rounded-full bg-slate-950 text-white text-sm font-semibold shadow-md shadow-slate-900/20 hover:bg-slate-800 transition-colors"
           >
             Search
           </button>
