@@ -157,45 +157,45 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
       <section className="relative overflow-hidden px-4 pt-16 pb-20 md:pt-24 md:pb-24">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_14%_0%,rgba(34,211,238,0.34),transparent_36%),radial-gradient(circle_at_84%_-6%,rgba(251,191,36,0.16),transparent_32%),linear-gradient(180deg,#062033_0%,#0b2c40_42%,#0a1f31_100%)]" />
-        <div className="absolute inset-0 -z-10 opacity-[0.1] bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:36px_36px]" />
-        <div className="absolute -right-20 top-12 -z-10 h-80 w-80 rounded-full bg-cyan-300/20 blur-3xl" />
-        <div className="absolute -left-24 bottom-0 -z-10 h-72 w-72 rounded-full bg-amber-300/10 blur-3xl" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_10%,rgba(125,211,252,0.28),transparent_34%),radial-gradient(circle_at_86%_0%,rgba(196,181,253,0.24),transparent_30%),linear-gradient(180deg,#f8fcff_0%,#eef7fb_46%,#f7fbfd_100%)]" />
+        <div className="absolute inset-0 -z-10 opacity-[0.35] bg-[linear-gradient(to_right,rgba(148,163,184,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.08)_1px,transparent_1px)] bg-[size:36px_36px]" />
+        <div className="absolute -right-20 top-12 -z-10 h-80 w-80 rounded-full bg-sky-200/30 blur-3xl" />
+        <div className="absolute -left-24 bottom-0 -z-10 h-72 w-72 rounded-full bg-violet-200/20 blur-3xl" />
 
-        <div className="container-pro relative z-10 text-center text-white">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-200/30 bg-white/10 px-4 py-1.5 text-sm font-semibold text-cyan-50 backdrop-blur">
-            <Star className="h-4 w-4 text-cyan-200" />
+        <div className="container-pro relative z-10 text-center text-slate-900">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-sky-200/70 bg-white/80 px-4 py-1.5 text-sm font-semibold text-sky-800 backdrop-blur">
+            <Star className="h-4 w-4 text-sky-600" />
             Enterprise-grade converter experience
           </div>
 
           <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight md:text-6xl md:leading-[1.1]">
             Convert with confidence.
-            <span className="block bg-gradient-to-r from-cyan-300 via-white to-amber-200 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-sky-700 via-cyan-600 to-violet-600 bg-clip-text text-transparent">
               Fast, precise, and effortless.
             </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-3xl text-base text-slate-300 md:text-lg leading-relaxed">
+          <p className="mx-auto mt-6 max-w-3xl text-base text-slate-600 md:text-lg leading-relaxed">
             A premium conversion platform trusted by students, engineers, and teams. Use 500+ tools for length, weight, temperature, speed, data, and more in one unified workspace.
           </p>
 
           <div className="mx-auto mt-10 max-w-2xl animate-fade-in">
             <SearchTool />
-            <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm text-slate-300">
-              <span className="text-slate-400">Popular searches:</span>
+            <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm text-slate-600">
+              <span className="text-slate-500">Popular searches:</span>
               {CANONICAL_QUICK_LINKS.slice(0, 4).map((link) => (
-                <Link key={link.href} href={link.href} className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-cyan-50 hover:bg-white/20 transition-colors">
+                <Link key={link.href} href={link.href} className="rounded-full border border-slate-200 bg-white/85 px-3 py-1 text-sky-700 hover:border-sky-200 hover:bg-sky-50 transition-colors">
                   {link.label}
                 </Link>
               ))}
             </div>
           </div>
 
-          <div className="mt-10 grid grid-cols-2 gap-3 rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur md:grid-cols-4 md:gap-4 md:p-5">
+          <div className="mt-10 grid grid-cols-2 gap-3 rounded-2xl border border-white/70 bg-white/70 p-3 shadow-[0_20px_45px_-30px_rgba(15,23,42,0.18)] backdrop-blur md:grid-cols-4 md:gap-4 md:p-5">
             {TRUST_METRICS.map((metric) => (
-              <div key={metric.label} className="rounded-xl border border-white/10 bg-white/10 p-3 text-left md:text-center">
-                <p className="text-xl font-display font-semibold text-white md:text-2xl tabular-nums">{metric.value}</p>
-                <p className="mt-0.5 text-xs text-slate-300 md:text-sm">{metric.label}</p>
+              <div key={metric.label} className="rounded-xl border border-slate-200/80 bg-white/80 p-3 text-left md:text-center">
+                <p className="text-xl font-display font-semibold text-slate-900 md:text-2xl tabular-nums">{metric.value}</p>
+                <p className="mt-0.5 text-xs text-slate-500 md:text-sm">{metric.label}</p>
               </div>
             ))}
           </div>
@@ -238,7 +238,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[radial-gradient(circle_at_96%_0%,rgba(34,211,238,0.12),transparent_25%),linear-gradient(180deg,#f2f9ff_0%,#edf5fd_100%)] py-16 md:py-20">
+      <section className="bg-[radial-gradient(circle_at_96%_0%,rgba(125,211,252,0.14),transparent_25%),linear-gradient(180deg,#f7fbfd_0%,#edf6fa_100%)] py-16 md:py-20">
         <div className="container-pro">
           <div className="flex items-center justify-between mb-10">
             <h2 className="font-display text-2xl font-semibold text-slate-900">Most Used Tools</h2>
@@ -298,41 +298,41 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-slate-900 py-16 md:py-20">
+      <section className="bg-[linear-gradient(180deg,#eef6fb_0%,#e7f1f8_100%)] py-16 md:py-20">
         <div className="container-pro">
-          <div className="relative overflow-hidden rounded-[32px] border border-slate-600/80 bg-[radial-gradient(circle_at_8%_0%,rgba(34,211,238,0.26),transparent_28%),radial-gradient(circle_at_100%_100%,rgba(251,191,36,0.14),transparent_24%),linear-gradient(130deg,#0d1f2f_0%,#10293c_42%,#12324a_100%)] p-8 text-center md:p-14">
-            <div className="absolute -top-24 -right-20 h-64 w-64 rounded-full bg-cyan-300/25 blur-3xl" />
-            <div className="absolute -bottom-28 -left-20 h-64 w-64 rounded-full bg-amber-300/15 blur-3xl" />
+          <div className="relative overflow-hidden rounded-[32px] border border-sky-100 bg-[radial-gradient(circle_at_8%_0%,rgba(125,211,252,0.22),transparent_28%),radial-gradient(circle_at_100%_100%,rgba(196,181,253,0.18),transparent_24%),linear-gradient(130deg,#ffffff_0%,#f4f9fc_42%,#eef6fb_100%)] p-8 text-center shadow-[0_28px_55px_-35px_rgba(15,23,42,0.18)] md:p-14">
+            <div className="absolute -top-24 -right-20 h-64 w-64 rounded-full bg-sky-200/25 blur-3xl" />
+            <div className="absolute -bottom-28 -left-20 h-64 w-64 rounded-full bg-violet-200/20 blur-3xl" />
 
-            <h2 className="relative z-10 font-display text-3xl md:text-5xl font-semibold text-white mb-6">
+            <h2 className="relative z-10 font-display text-3xl md:text-5xl font-semibold text-slate-900 mb-6">
               Ready to Convert Smarter?
             </h2>
 
-            <p className="relative z-10 mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-cyan-50/90">
+            <p className="relative z-10 mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-slate-600">
               Join millions of users who rely on Convertaro for fast, accurate unit conversions every single day. Always free, forever.
             </p>
 
             <div className="relative z-10 mb-9 flex flex-wrap justify-center gap-3">
-              <Link href={canonicalizeConverterHref("/length/cm-to-inches")} className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-950/20 hover:bg-slate-100 transition-colors">
+              <Link href={canonicalizeConverterHref("/length/cm-to-inches")} className="inline-flex items-center gap-2 rounded-xl bg-sky-700 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-900/20 hover:bg-sky-800 transition-colors">
                 Start Converting
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/calculators" className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/20 transition-colors">
+              <Link href="/calculators" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-white transition-colors">
                 Open Calculators
               </Link>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-6 text-white/80 text-sm relative z-10">
+            <div className="flex flex-wrap justify-center gap-6 text-slate-600 text-sm relative z-10">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-cyan-200" />
+                <CheckCircle2 className="h-5 w-5 text-sky-600" />
                 No signup required
               </div>
               <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-cyan-200" />
+                <Shield className="h-5 w-5 text-sky-600" />
                 Verified formulas
               </div>
               <div className="flex items-center gap-2">
-                <Lock className="h-5 w-5 text-cyan-200" />
+                <Lock className="h-5 w-5 text-sky-600" />
                 Works offline
               </div>
             </div>
