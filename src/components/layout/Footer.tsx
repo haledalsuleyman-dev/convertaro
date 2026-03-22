@@ -2,6 +2,7 @@ import Link from "next/link";
 import { categories } from "@/data/categories";
 import { calculators } from "@/data/calculators";
 import { Ruler, Twitter, Github, Mail } from "lucide-react";
+import { canonicalizeConverterHref } from "@/lib/converter-routing";
 
 const POPULAR_CONVERTERS = [
   { href: "/length/cm-to-inches", label: "CM to Inches" },
@@ -12,7 +13,10 @@ const POPULAR_CONVERTERS = [
   { href: "/length/km-to-miles", label: "KM to Miles" },
   { href: "/data/mb-to-gb", label: "MB to GB" },
   { href: "/volume/liters-to-gallons", label: "Liters to Gallons" },
-];
+].map((converter) => ({
+  ...converter,
+  href: canonicalizeConverterHref(converter.href),
+}));
 
 export function Footer() {
   const converterCats = categories.slice(0, 5);

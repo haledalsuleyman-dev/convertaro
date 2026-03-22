@@ -4,6 +4,7 @@ import { CalculatorDefinition } from "@/data/calculators";
 import { calculatorCategoryBySlug } from "@/data/calculator-categories";
 import { SITE_URL } from "@/lib/seo";
 import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
+import { canonicalizeConverterHref } from "@/lib/converter-routing";
 
 interface CalculatorShellProps {
   calculator: CalculatorDefinition;
@@ -188,7 +189,7 @@ export function CalculatorShell({ calculator, children }: CalculatorShellProps) 
             {calculator.relatedTools.map((tool) => (
               <Link
                 key={tool.href}
-                href={tool.href}
+                href={canonicalizeConverterHref(tool.href)}
                 className="inline-flex items-center rounded-full border border-border bg-background/70 px-4 py-2 text-sm font-semibold text-text-primary hover:border-primary/35 hover:text-primary hover:bg-white transition-colors"
               >
                 {tool.label}

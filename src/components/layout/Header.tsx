@@ -4,6 +4,7 @@ import { calculators } from "@/data/calculators";
 import { SearchTool } from "@/components/ui/SearchTool";
 import { MobileNav } from "./MobileNav";
 import { ChevronDown, Calculator, Ruler } from "lucide-react";
+import { canonicalizeConverterHref } from "@/lib/converter-routing";
 
 export function Header() {
   const primaryNav = categories.filter((c) =>
@@ -97,7 +98,7 @@ export function Header() {
             <div className="hidden md:block">
               <SearchTool variant="navbar" placeholder="Search..." />
             </div>
-            <Link href="/length/cm-to-inches" className="btn-pro hidden sm:inline-flex">
+            <Link href={canonicalizeConverterHref("/length/cm-to-inches")} className="btn-pro hidden sm:inline-flex">
               Start Converting
             </Link>
             <div className="lg:hidden">

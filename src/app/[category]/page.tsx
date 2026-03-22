@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { categories } from "@/data/categories";
-import convertersData from "@/data/converters.json";
 import { Converter } from "@/types/converter";
 import Link from "next/link";
 import { ChevronRight, Home, Calculator, CheckCircle2 } from "lucide-react";
@@ -16,8 +15,9 @@ import {
   generateFAQSchema,
 } from "@/lib/seo";
 import { PopularToolsSidebar, RelatedCalculators, SEOLinksSection, CrawlableLinkHub } from "@/components/layout/InternalLinks";
+import { canonicalConverters } from "@/lib/converter-routing";
 
-const converters = convertersData as Converter[];
+const converters = canonicalConverters as Converter[];
 
 interface PageProps {
   params: Promise<{

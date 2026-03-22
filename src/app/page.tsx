@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { categories } from "@/data/categories";
-import convertersData from "@/data/converters.json";
 import { Converter } from "@/types/converter";
 import { SearchTool } from "@/components/ui/SearchTool";
 import {
@@ -13,6 +12,7 @@ import {
 } from "@/lib/seo";
 import Link from "next/link";
 import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
+import { canonicalConverters, canonicalizeConverterHref, getCanonicalConverterById } from "@/lib/converter-routing";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
   ),
 };
 
-const converters = convertersData as Converter[];
+const converters = canonicalConverters as Converter[];
 
 const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Ruler, Weight, Thermometer, Droplets, Square, Gauge, Clock, Database, Zap, Wind,
@@ -84,6 +84,11 @@ const QUICK_LINKS = [
   { href: "/volume/liters-to-gallons", label: "L → gallons" },
   { href: "/weight/lbs-to-kg", label: "lbs → kg" },
 ];
+
+const CANONICAL_QUICK_LINKS = QUICK_LINKS.map((link) => ({
+  ...link,
+  href: canonicalizeConverterHref(link.href),
+}));
 
 const TRUST_METRICS = [
   { value: "500+", label: "Conversion tools" },
@@ -103,7 +108,7 @@ const FEATURES = [
 
 export default function Home() {
   const popularConverters = ["cm-to-inches", "kg-to-lbs", "m-to-feet", "km-to-miles"]
-    .map((id) => converters.find((c) => c.id === id))
+    .map((id) => getCanonicalConverterById(id))
     .filter(Boolean) as Converter[];
 
   const softwareSchema = {
@@ -168,7 +173,7 @@ export default function Home() {
             <SearchTool />
             <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm text-slate-300">
               <span className="text-slate-400">Popular searches:</span>
-              {QUICK_LINKS.slice(0, 4).map((link) => (
+              {CANONICAL_QUICK_LINKS.slice(0, 4).map((link) => (
                 <Link key={link.href} href={link.href} className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-cyan-50 hover:bg-white/20 transition-colors">
                   {link.label}
                 </Link>
@@ -293,7 +298,7 @@ export default function Home() {
             </p>
 
             <div className="relative z-10 mb-9 flex flex-wrap justify-center gap-3">
-              <Link href="/length/cm-to-inches" className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-950/20 hover:bg-slate-100 transition-colors">
+              <Link href={canonicalizeConverterHref("/length/cm-to-inches")} className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-950/20 hover:bg-slate-100 transition-colors">
                 Start Converting
                 <ArrowRight className="h-4 w-4" />
               </Link>

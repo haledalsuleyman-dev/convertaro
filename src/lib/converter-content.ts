@@ -1,4 +1,5 @@
 import { Category, Converter, FAQItem } from "@/types/converter";
+import { dedupeCanonicalConverters, getCanonicalConverter, getCanonicalConverterById } from "@/lib/converter-routing";
 
 const UNIT_NAMES: Record<string, string> = {
   cm: "centimeters",
@@ -125,21 +126,24 @@ function unitExplanation(unit: string, categoryName: string): string {
 }
 
 export function getReverseConverter(converter: Converter, converters: Converter[]): Converter | undefined {
-  return converters.find(
+  const reverseConverter = converters.find(
     (item) =>
       item.category === converter.category &&
       item.fromUnit === converter.toUnit &&
       item.toUnit === converter.fromUnit
   );
+
+  return reverseConverter ? getCanonicalConverter(reverseConverter) : undefined;
 }
 
 export function getContextualRelatedConverters(converter: Converter, converters: Converter[]): Converter[] {
   const lookup = new Map(converters.map((item) => [item.id, item]));
 
-  return converter.relatedConverters
-    .map((id) => lookup.get(id))
+  return dedupeCanonicalConverters(
+    converter.relatedConverters
+    .map((id) => lookup.get(id) ?? getCanonicalConverterById(id))
     .filter((item): item is Converter => Boolean(item))
-    .slice(0, 3);
+  ).slice(0, 3);
 }
 
 export function buildConverterFaq(

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Compass, Home, SearchX } from "lucide-react";
 import { SearchTool } from "@/components/ui/SearchTool";
+import { canonicalizeConverterHref } from "@/lib/converter-routing";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -27,7 +28,10 @@ const POPULAR_CONVERTERS = [
   { href: "/speed/mph-to-kmh", label: "mph to km/h" },
   { href: "/data/mb-to-gb", label: "MB to GB" },
   { href: "/length/km-to-miles", label: "km to miles" },
-];
+].map((converter) => ({
+  ...converter,
+  href: canonicalizeConverterHref(converter.href),
+}));
 
 export default function NotFound() {
   return (

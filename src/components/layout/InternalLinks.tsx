@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { categories } from "@/data/categories";
 import { calculators } from "@/data/calculators";
-import convertersData from "@/data/converters.json";
 import { Converter } from "@/types/converter";
 import { ChevronRight, Home } from "lucide-react";
+import { canonicalConverters, canonicalizeConverterHref } from "@/lib/converter-routing";
 
-const converters = convertersData as Converter[];
+const converters = canonicalConverters as Converter[];
 
 interface BreadcrumbItem {
   name: string;
@@ -103,7 +103,8 @@ export function PopularToolsSidebar({ excludeSlug }: { excludeSlug?: string }) {
     { href: "/speed/mph-to-kmh", label: "mph to km/h", category: "Speed" },
     { href: "/data/mb-to-gb", label: "MB to GB", category: "Data" },
     { href: "/volume/liters-to-gallons", label: "liters to gallons", category: "Volume" },
-  ].filter(t => !excludeSlug || !t.href.includes(excludeSlug));
+  ].map((tool) => ({ ...tool, href: canonicalizeConverterHref(tool.href) }))
+    .filter(t => !excludeSlug || !t.href.includes(excludeSlug));
 
   return (
     <div className="bg-white border border-slate-200 rounded-lg p-5">
@@ -159,25 +160,25 @@ export function SEOLinksSection() {
         <div>
           <h3 className="text-sm font-medium text-slate-900 mb-2">Length</h3>
           <ul className="space-y-1">
-            <li><Link href="/length/cm-to-inches" className="text-sm text-slate-500 hover:text-slate-900">cm to inches</Link></li>
-            <li><Link href="/length/meters-to-feet" className="text-sm text-slate-500 hover:text-slate-900">meters to feet</Link></li>
-            <li><Link href="/length/km-to-miles" className="text-sm text-slate-500 hover:text-slate-900">km to miles</Link></li>
+            <li><Link href={canonicalizeConverterHref("/length/cm-to-inches")} className="text-sm text-slate-500 hover:text-slate-900">cm to inches</Link></li>
+            <li><Link href={canonicalizeConverterHref("/length/meters-to-feet")} className="text-sm text-slate-500 hover:text-slate-900">meters to feet</Link></li>
+            <li><Link href={canonicalizeConverterHref("/length/km-to-miles")} className="text-sm text-slate-500 hover:text-slate-900">km to miles</Link></li>
           </ul>
         </div>
         <div>
           <h3 className="text-sm font-medium text-slate-900 mb-2">Weight</h3>
           <ul className="space-y-1">
-            <li><Link href="/weight/kg-to-lbs" className="text-sm text-slate-500 hover:text-slate-900">kg to lbs</Link></li>
-            <li><Link href="/weight/grams-to-ounces" className="text-sm text-slate-500 hover:text-slate-900">g to oz</Link></li>
-            <li><Link href="/weight/lbs-to-kg" className="text-sm text-slate-500 hover:text-slate-900">lbs to kg</Link></li>
+            <li><Link href={canonicalizeConverterHref("/weight/kg-to-lbs")} className="text-sm text-slate-500 hover:text-slate-900">kg to lbs</Link></li>
+            <li><Link href={canonicalizeConverterHref("/weight/grams-to-ounces")} className="text-sm text-slate-500 hover:text-slate-900">g to oz</Link></li>
+            <li><Link href={canonicalizeConverterHref("/weight/lbs-to-kg")} className="text-sm text-slate-500 hover:text-slate-900">lbs to kg</Link></li>
           </ul>
         </div>
         <div>
           <h3 className="text-sm font-medium text-slate-900 mb-2">Temperature</h3>
           <ul className="space-y-1">
-            <li><Link href="/temperature/celsius-to-fahrenheit" className="text-sm text-slate-500 hover:text-slate-900">°C to °F</Link></li>
-            <li><Link href="/temperature/fahrenheit-to-celsius" className="text-sm text-slate-500 hover:text-slate-900">°F to °C</Link></li>
-            <li><Link href="/temperature/celsius-to-kelvin" className="text-sm text-slate-500 hover:text-slate-900">°C to K</Link></li>
+            <li><Link href={canonicalizeConverterHref("/temperature/celsius-to-fahrenheit")} className="text-sm text-slate-500 hover:text-slate-900">°C to °F</Link></li>
+            <li><Link href={canonicalizeConverterHref("/temperature/fahrenheit-to-celsius")} className="text-sm text-slate-500 hover:text-slate-900">°F to °C</Link></li>
+            <li><Link href={canonicalizeConverterHref("/temperature/celsius-to-kelvin")} className="text-sm text-slate-500 hover:text-slate-900">°C to K</Link></li>
           </ul>
         </div>
         <div>

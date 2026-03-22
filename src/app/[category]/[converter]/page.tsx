@@ -1,7 +1,6 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Converter } from "@/types/converter";
-import convertersData from "@/data/converters.json";
 import { categories } from "@/data/categories";
 import { ConverterTool } from "@/components/converter/ConverterTool";
 import { ConversionTable } from "@/components/converter/ConversionTable";
@@ -26,8 +25,9 @@ import {
   getReverseConverter,
 } from "@/lib/converter-content";
 import { PopularToolsSidebar, RelatedCalculators, CategoryNavigation, CrawlableLinkHub } from "@/components/layout/InternalLinks";
+import { canonicalConverters, dedupeCanonicalConverters, getCanonicalConverterById, resolveConverterRoute } from "@/lib/converter-routing";
 
-const converters = convertersData as Converter[];
+const converters = canonicalConverters as Converter[];
 
 interface PageProps {
   params: Promise<{
@@ -45,7 +45,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category, converter: slug } = await params;
-  const converter = converters.find((c) => c.category === category && c.metadata.slug === slug);
+  const { canonicalConverter: converter } = resolveConverterRoute(category, slug);
   const cat = categories.find((c) => c.slug === category);
 
   if (!converter) {
@@ -92,11 +92,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ConverterPage({ params }: PageProps) {
   const { category: categorySlug, converter: slug } = await params;
-  const converter = converters.find((c) => c.category === categorySlug && c.metadata.slug === slug);
+  const { canonicalConverter: converter, isAlias } = resolveConverterRoute(categorySlug, slug);
   const category = categories.find((c) => c.slug === categorySlug);
 
   if (!converter || !category) {
     notFound();
+  }
+
+  if (isAlias) {
+    permanentRedirect(`/${categorySlug}/${converter.metadata.slug}`);
   }
 
   const reverseConverter = getReverseConverter(converter, converters);
@@ -112,7 +116,7 @@ export default async function ConverterPage({ params }: PageProps) {
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://convertaro.com" },
     { name: category.name, url: `https://convertaro.com/${categorySlug}` },
-    { name: converter.title, url: `https://convertaro.com/${categorySlug}/${slug}` },
+    { name: converter.title, url: `https://convertaro.com/${categorySlug}/${converter.metadata.slug}` },
   ]);
 
   const howToSchema = generateHowToSchema(
@@ -137,13 +141,15 @@ export default async function ConverterPage({ params }: PageProps) {
   const webPageSchema = buildWebPageSchema({
     name: converter.title,
     description: converter.description,
-    path: `/${categorySlug}/${slug}`,
+    path: `/${categorySlug}/${converter.metadata.slug}`,
   });
 
   // Get related converters
   const relatedConverters = converter.relatedConverters
-    .map((id) => converters.find((c) => c.id === id))
-    .filter(Boolean)
+    .map((id) => getCanonicalConverterById(id))
+    .filter((item): item is Converter => Boolean(item));
+
+  const uniqueRelatedConverters = dedupeCanonicalConverters(relatedConverters)
     .slice(0, 6) as Converter[];
 
   return (
@@ -291,14 +297,14 @@ export default async function ConverterPage({ params }: PageProps) {
             />
 
             {/* Related Converters */}
-            {relatedConverters.length > 0 && (
+            {uniqueRelatedConverters.length > 0 && (
               <div className="bg-white border border-slate-200 rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <ArrowLeftRight className="h-5 w-5 text-slate-600" />
                   <h2 className="font-semibold text-slate-900">More {category.name} Converters</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                  {relatedConverters.map((rel) => (
+                  {uniqueRelatedConverters.map((rel) => (
                     <Link
                       key={rel.id}
                       href={`/${categorySlug}/${rel.metadata.slug}`}

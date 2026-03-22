@@ -2,28 +2,31 @@ import { MetadataRoute } from "next";
 import { categories } from "@/data/categories";
 import { calculators } from "@/data/calculators";
 import { calculatorCategories } from "@/data/calculator-categories";
-import convertersData from "@/data/converters.json";
-import { Converter } from "@/types/converter";
 import { SITE_URL } from "@/lib/seo";
+import { canonicalConverters, getCanonicalConverterById } from "@/lib/converter-routing";
 
-const converters = convertersData as Converter[];
+const converters = canonicalConverters;
 const BASE_URL = SITE_URL;
 
 // High-priority converters that get more search traffic
-const HIGH_PRIORITY_SLUGS = new Set([
-  "cm-to-inches", "inches-to-cm",
-  "kg-to-lbs", "lbs-to-kg",
-  "miles-to-km", "km-to-miles",
-  "celsius-to-fahrenheit", "fahrenheit-to-celsius",
-  "m-to-feet", "feet-to-m",
-  "mph-to-kmh", "kmh-to-mph",
-  "mb-to-gb", "gb-to-mb",
-  "liters-to-gallons", "gallons-to-liters",
-  "kg-to-grams", "pounds-to-ounces",
-  "meters-to-yards", "yards-to-meters",
-  "celsius-to-kelvin", "kelvin-to-celsius",
-  "feet-to-inches", "inches-to-feet",
-]);
+const HIGH_PRIORITY_SLUGS = new Set(
+  [
+    "cm-to-inches", "inches-to-cm",
+    "kg-to-lbs", "lbs-to-kg",
+    "miles-to-km", "km-to-miles",
+    "celsius-to-fahrenheit", "fahrenheit-to-celsius",
+    "m-to-feet", "feet-to-m",
+    "mph-to-kmh", "kmh-to-mph",
+    "mb-to-gb", "gb-to-mb",
+    "liters-to-gallons", "gallons-to-liters",
+    "kg-to-grams", "pounds-to-ounces",
+    "meters-to-yards", "yards-to-meters",
+    "celsius-to-kelvin", "kelvin-to-celsius",
+    "feet-to-inches", "inches-to-feet",
+  ]
+    .map((id) => getCanonicalConverterById(id)?.metadata.slug)
+    .filter((slug): slug is string => Boolean(slug))
+);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

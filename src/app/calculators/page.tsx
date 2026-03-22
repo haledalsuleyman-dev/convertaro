@@ -13,6 +13,7 @@ import {
 } from "@/lib/seo";
 import { CalculatorDefinition } from "@/data/calculators";
 import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
+import { canonicalizeConverterHref } from "@/lib/converter-routing";
 
 const FEATURED_CALCULATORS = ["mortgage-calculator", "loan-calculator", "bmi-calculator", "percentage-calculator"];
 
@@ -174,7 +175,7 @@ export default function CalculatorsHubPage() {
               { href: "/data/mb-to-gb", label: "MB to GB" },
               { href: "/length/cm-to-inches", label: "cm to inches" },
               { href: "/temperature/celsius-to-fahrenheit", label: "Celsius to Fahrenheit" },
-            ].map((tool) => (
+            ].map((tool) => ({ ...tool, href: canonicalizeConverterHref(tool.href) })).map((tool) => (
               <Link
                 key={tool.href}
                 href={tool.href}
