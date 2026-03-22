@@ -12,6 +12,7 @@ import {
   buildWebPageSchema,
 } from "@/lib/seo";
 import { CalculatorDefinition } from "@/data/calculators";
+import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
 
 const FEATURED_CALCULATORS = ["mortgage-calculator", "loan-calculator", "bmi-calculator", "percentage-calculator"];
 
@@ -204,6 +205,8 @@ export default function CalculatorsHubPage() {
             ))}
           </div>
         </section>
+
+        <CrawlableLinkHub title="Cross-Link Index" limitPerCategory={2} />
       </div>
     </div>
   );

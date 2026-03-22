@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { CalculatorDefinition } from "@/data/calculators";
 import { calculatorCategoryBySlug } from "@/data/calculator-categories";
 import { SITE_URL } from "@/lib/seo";
+import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
 
 interface CalculatorShellProps {
   calculator: CalculatorDefinition;
@@ -195,6 +196,8 @@ export function CalculatorShell({ calculator, children }: CalculatorShellProps) 
             ))}
           </div>
         </section>
+
+        <CrawlableLinkHub title="More Tools You Can Use" limitPerCategory={2} />
       </div>
     </div>
   );

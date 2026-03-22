@@ -12,6 +12,7 @@ import {
   buildWebPageSchema,
 } from "@/lib/seo";
 import Link from "next/link";
+import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -316,6 +317,12 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="py-14 md:py-16 bg-white">
+        <div className="container-pro">
+          <CrawlableLinkHub title="Internal Links Hub" limitPerCategory={3} />
         </div>
       </section>
     </div>

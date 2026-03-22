@@ -15,7 +15,7 @@ import {
   generateBreadcrumbSchema,
   generateFAQSchema,
 } from "@/lib/seo";
-import { PopularToolsSidebar, RelatedCalculators, SEOLinksSection } from "@/components/layout/InternalLinks";
+import { PopularToolsSidebar, RelatedCalculators, SEOLinksSection, CrawlableLinkHub } from "@/components/layout/InternalLinks";
 
 const converters = convertersData as Converter[];
 
@@ -253,6 +253,8 @@ export default async function CategoryPage({ params }: PageProps) {
 
             {/* SEO Links Section */}
             <SEOLinksSection />
+
+            <CrawlableLinkHub title="More Internal Links" limitPerCategory={2} />
           </div>
 
           {/* Sidebar */}

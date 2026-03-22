@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
 
 type PageShellProps = {
   title: string;
@@ -30,6 +31,8 @@ export function PageShell({ title, subtitle, children }: PageShellProps) {
         <div className="mt-10 sm:mt-12 mx-auto max-w-3xl rounded-xl bg-white/80 backdrop-blur border border-border/60 shadow-sm p-6 sm:p-10">
           {children}
         </div>
+
+        <CrawlableLinkHub title="Discover More Converters and Calculators" limitPerCategory={3} />
       </div>
     </div>
   );

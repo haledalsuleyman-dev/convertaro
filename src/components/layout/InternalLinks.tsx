@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { categories } from "@/data/categories";
 import { calculators } from "@/data/calculators";
+import convertersData from "@/data/converters.json";
+import { Converter } from "@/types/converter";
 import { ChevronRight, Home } from "lucide-react";
+
+const converters = convertersData as Converter[];
 
 interface BreadcrumbItem {
   name: string;
@@ -213,5 +217,105 @@ export function CategoryNavigation({ activeCategory }: { activeCategory?: string
         ))}
       </div>
     </div>
+  );
+}
+
+export function CrawlableLinkHub({
+  title = "Explore More Tools",
+  limitPerCategory = 4,
+}: {
+  title?: string;
+  limitPerCategory?: number;
+}) {
+  const topCalculatorLinks = calculators.slice(0, 5);
+  const staticPageLinks = [
+    { href: "/", label: "Home" },
+    { href: "/calculators", label: "All Calculators" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+    { href: "/privacy", label: "Privacy" },
+    { href: "/terms", label: "Terms" },
+  ];
+
+  return (
+    <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6">
+      <h2 className="text-lg font-semibold text-slate-900 mb-4">{title}</h2>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div>
+          <h3 className="text-sm font-semibold text-slate-900 mb-2">Key Pages</h3>
+          <ul className="space-y-1.5">
+            {staticPageLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="text-sm text-slate-600 hover:text-slate-900">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-semibold text-slate-900 mb-2">Popular Calculators</h3>
+          <ul className="space-y-1.5">
+            {topCalculatorLinks.map((calculator) => (
+              <li key={calculator.slug}>
+                <Link href={`/${calculator.slug}`} className="text-sm text-slate-600 hover:text-slate-900">
+                  {calculator.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-semibold text-slate-900 mb-2">Categories</h3>
+          <ul className="space-y-1.5">
+            {categories.map((category) => (
+              <li key={category.slug}>
+                <Link href={`/${category.slug}`} className="text-sm text-slate-600 hover:text-slate-900">
+                  {category.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-6 border-t border-slate-100 pt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {categories.map((category) => {
+          const categoryConverters = converters
+            .filter((converter) => converter.category === category.slug)
+            .slice(0, limitPerCategory);
+
+          if (categoryConverters.length === 0) {
+            return null;
+          }
+
+          return (
+            <div key={category.slug}>
+              <h3 className="text-sm font-semibold text-slate-900 mb-2">{category.name} Converters</h3>
+              <ul className="space-y-1.5">
+                {categoryConverters.map((converter) => (
+                  <li key={converter.id}>
+                    <Link
+                      href={`/${converter.category}/${converter.metadata.slug}`}
+                      className="text-sm text-slate-600 hover:text-slate-900"
+                    >
+                      {converter.title}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <Link href={`/${category.slug}`} className="text-sm font-medium text-cyan-700 hover:text-cyan-800">
+                    View all {category.name.toLowerCase()} tools
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }

@@ -25,7 +25,7 @@ import {
   getContextualRelatedConverters,
   getReverseConverter,
 } from "@/lib/converter-content";
-import { PopularToolsSidebar, RelatedCalculators, CategoryNavigation } from "@/components/layout/InternalLinks";
+import { PopularToolsSidebar, RelatedCalculators, CategoryNavigation, CrawlableLinkHub } from "@/components/layout/InternalLinks";
 
 const converters = convertersData as Converter[];
 
@@ -311,6 +311,8 @@ export default async function ConverterPage({ params }: PageProps) {
                 </div>
               </div>
             )}
+
+            <CrawlableLinkHub title="Explore More Conversion Pages" limitPerCategory={2} />
           </div>
 
           {/* Sidebar */}

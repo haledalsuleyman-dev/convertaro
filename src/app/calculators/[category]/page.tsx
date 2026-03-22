@@ -10,6 +10,7 @@ import {
   buildTwitter,
   buildWebPageSchema,
 } from "@/lib/seo";
+import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -105,6 +106,8 @@ export default async function CalculatorCategoryPage({ params }: CategoryPagePro
             <Link href="/calculators" className="text-sm font-semibold text-primary hover:underline">View all calculators</Link>
           </div>
         </div>
+
+        <CrawlableLinkHub title="Related Conversion and Calculator Links" limitPerCategory={2} />
       </div>
     </div>
   );
