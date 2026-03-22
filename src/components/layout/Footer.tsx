@@ -24,7 +24,7 @@ export function Footer() {
   const featuredCalculators = calculators.slice(0, 4);
 
   return (
-    <footer className="mt-auto border-t border-slate-200/80 bg-[radial-gradient(circle_at_5%_0%,rgba(251,191,36,0.1),transparent_22%),radial-gradient(circle_at_100%_0%,rgba(125,211,252,0.12),transparent_26%),linear-gradient(to_bottom,#fffaf6,#ffffff)]">
+    <footer className="mt-auto border-t border-slate-200/80 bg-[radial-gradient(circle_at_5%_0%,rgba(254,215,170,0.14),transparent_20%),radial-gradient(circle_at_100%_0%,rgba(191,219,254,0.14),transparent_24%),linear-gradient(to_bottom,#fffdfb,#ffffff)]">
       <div className="container-pro py-14">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
 
