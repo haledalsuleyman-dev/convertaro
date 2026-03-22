@@ -9,16 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: [
-          "var(--font-inter)",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
-          "sans-serif",
-        ],
+        sans: ["var(--font-manrope)", "sans-serif"],
+        display: ["var(--font-sora)", "var(--font-manrope)", "sans-serif"],
       },
       colors: {
         // Professional color palette

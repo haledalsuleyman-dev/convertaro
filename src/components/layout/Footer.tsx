@@ -20,18 +20,17 @@ export function Footer() {
   const featuredCalculators = calculators.slice(0, 4);
 
   return (
-    <footer className="bg-slate-50 border-t border-slate-200 mt-auto">
-      {/* Main Footer */}
-      <div className="container-pro py-12">
+    <footer className="mt-auto border-t border-slate-200/80 bg-gradient-to-b from-slate-50 to-white">
+      <div className="container-pro py-14">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
 
           {/* Brand */}
           <div className="col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 bg-slate-900 rounded-md flex items-center justify-center">
+              <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-slate-900 to-slate-700 flex items-center justify-center shadow-lg shadow-slate-900/20">
                 <Ruler className="h-4 w-4 text-white" />
               </div>
-              <span className="text-lg font-semibold">Convertaro</span>
+              <span className="text-lg font-display font-semibold">Convertaro</span>
             </div>
             <p className="text-sm text-slate-500 max-w-xs leading-relaxed mb-4">
               Free, accurate unit converters for professionals. 500+ tools, zero ads, instant results. Built for engineers, students, and everyday use.
@@ -40,21 +39,21 @@ export function Footer() {
               <a
                 href="https://twitter.com/convertaro"
                 aria-label="Twitter"
-                className="h-8 w-8 flex items-center justify-center rounded-md text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                className="h-9 w-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:text-slate-900 hover:bg-white transition-colors"
               >
                 <Twitter className="h-4 w-4" />
               </a>
               <a
                 href="https://github.com/convertaro"
                 aria-label="GitHub"
-                className="h-8 w-8 flex items-center justify-center rounded-md text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                className="h-9 w-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:text-slate-900 hover:bg-white transition-colors"
               >
                 <Github className="h-4 w-4" />
               </a>
               <a
                 href="mailto:hello@convertaro.com"
                 aria-label="Email"
-                className="h-8 w-8 flex items-center justify-center rounded-md text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                className="h-9 w-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:text-slate-900 hover:bg-white transition-colors"
               >
                 <Mail className="h-4 w-4" />
               </a>
@@ -63,7 +62,7 @@ export function Footer() {
 
           {/* Popular Converters */}
           <div>
-            <h3 className="text-sm font-semibold mb-3">Popular Converters</h3>
+            <h3 className="text-sm font-display font-semibold mb-3 text-slate-900">Popular Converters</h3>
             <ul className="space-y-2">
               {POPULAR_CONVERTERS.slice(0, 4).map(({ href, label }) => (
                 <li key={href}>
@@ -77,7 +76,7 @@ export function Footer() {
 
           {/* Categories */}
           <div>
-            <h3 className="text-sm font-semibold mb-3">Categories</h3>
+            <h3 className="text-sm font-display font-semibold mb-3 text-slate-900">Categories</h3>
             <ul className="space-y-2">
               {converterCats.map((cat) => (
                 <li key={cat.id}>
@@ -91,7 +90,7 @@ export function Footer() {
 
           {/* More Tools */}
           <div>
-            <h3 className="text-sm font-semibold mb-3">More Tools</h3>
+            <h3 className="text-sm font-display font-semibold mb-3 text-slate-900">More Tools</h3>
             <ul className="space-y-2">
               {moreCats.map((cat) => (
                 <li key={cat.id}>
@@ -105,7 +104,7 @@ export function Footer() {
 
           {/* Calculators */}
           <div>
-            <h3 className="text-sm font-semibold mb-3">Calculators</h3>
+            <h3 className="text-sm font-display font-semibold mb-3 text-slate-900">Calculators</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/calculators" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">
@@ -124,7 +123,7 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="text-sm font-semibold mb-3">Company</h3>
+            <h3 className="text-sm font-display font-semibold mb-3 text-slate-900">Company</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/about" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">
@@ -151,7 +150,6 @@ export function Footer() {
 
         </div>
 
-        {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-sm text-slate-500">
             © {new Date().getFullYear()} Convertaro. All rights reserved.

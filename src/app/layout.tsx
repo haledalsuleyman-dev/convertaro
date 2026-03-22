@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Manrope, Sora } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
@@ -11,8 +11,15 @@ import {
   WEBSITE_SCHEMA,
 } from "@/lib/seo";
 
-const inter = Inter({
-  variable: "--font-inter",
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+});
+
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
   display: "swap",
   preload: true,
@@ -150,7 +157,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#0f172a" />
         <meta name="color-scheme" content="light" />
       </head>
-      <body className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-white`}>
+      <body className={`${manrope.variable} ${sora.variable} font-sans antialiased min-h-screen flex flex-col bg-white`}>
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />

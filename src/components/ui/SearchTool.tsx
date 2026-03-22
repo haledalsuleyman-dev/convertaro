@@ -145,8 +145,8 @@ export function SearchTool({ variant = "hero", placeholder }: SearchToolProps) {
           aria-autocomplete="list"
           className={
             isHero
-              ? "block w-full h-16 pl-12 pr-28 rounded-full bg-white/80 backdrop-blur border border-white/70 shadow-[0_10px_30px_rgba(15,23,42,0.08)] text-base text-text-primary placeholder:text-text-secondary/60 outline-none focus:ring-4 focus:ring-primary/15"
-              : "block w-full h-10 pl-9 pr-9 rounded-full bg-background/70 backdrop-blur border border-border shadow-sm text-sm text-text-primary placeholder:text-text-secondary/60 outline-none focus:ring-2 focus:ring-primary/15"
+              ? "block w-full h-16 pl-12 pr-28 rounded-full bg-white/90 backdrop-blur border border-white/80 shadow-[0_18px_45px_rgba(15,23,42,0.14)] text-base text-text-primary placeholder:text-text-secondary/60 outline-none focus:ring-4 focus:ring-sky-500/20"
+              : "block w-full h-10 pl-9 pr-9 rounded-full bg-background/80 backdrop-blur border border-border shadow-sm text-sm text-text-primary placeholder:text-text-secondary/60 outline-none focus:ring-2 focus:ring-sky-500/20"
           }
         />
 
@@ -168,7 +168,7 @@ export function SearchTool({ variant = "hero", placeholder }: SearchToolProps) {
         {isHero && (
           <button
             type="submit"
-            className="absolute inset-y-0 right-1.5 my-1.5 px-6 rounded-full bg-gradient-to-r from-primary to-[#7C3AED] text-white text-sm font-semibold shadow-sm hover:from-primary-dark hover:to-[#6D28D9] transition-colors"
+            className="absolute inset-y-0 right-1.5 my-1.5 px-6 rounded-full bg-gradient-to-r from-slate-900 via-slate-800 to-cyan-700 text-white text-sm font-semibold shadow-md shadow-slate-900/25 hover:from-slate-950 hover:to-cyan-800 transition-colors"
           >
             Search
           </button>

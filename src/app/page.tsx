@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { categories } from "@/data/categories";
-import { calculators } from "@/data/calculators";
 import convertersData from "@/data/converters.json";
 import { Converter } from "@/types/converter";
 import { SearchTool } from "@/components/ui/SearchTool";
@@ -10,7 +9,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   Calculator,
-  ChevronRight,
   Database,
   Droplets,
   Gauge,
@@ -20,7 +18,7 @@ import {
   Weight,
   Wind,
   Clock,
-  Zap, // تم استبدال Lightning بـ Zap
+  Zap,
   Smartphone,
   CheckCircle2,
   Lock,
@@ -28,7 +26,6 @@ import {
   Star,
   TrendingUp,
   LayoutGrid,
-  Search,
   Shield,
 } from "lucide-react";
 
@@ -77,6 +74,13 @@ const QUICK_LINKS = [
   { href: "/weight/lbs-to-kg", label: "lbs → kg" },
 ];
 
+const TRUST_METRICS = [
+  { value: "500+", label: "Conversion tools" },
+  { value: "4.9/5", label: "Average rating" },
+  { value: "150+", label: "Countries served" },
+  { value: "0", label: "Signup required" },
+];
+
 const FEATURES = [
   { icon: Zap, title: "Instant Results", desc: "Sub-millisecond calculations. No waiting, no loading." },
   { icon: CheckCircle2, title: "Verified Accuracy", desc: "All formulas verified against SI, NIST, and ISO standards." },
@@ -90,8 +94,6 @@ export default function Home() {
   const popularConverters = ["cm-to-inches", "kg-to-lbs", "m-to-feet", "km-to-miles"]
     .map((id) => converters.find((c) => c.id === id))
     .filter(Boolean) as Converter[];
-
-  const latestConverters = converters.slice(10, 16);
 
   const softwareSchema = {
     "@context": "https://schema.org",
@@ -117,49 +119,63 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
       />
-      
-      {/* Hero Section */}
-      <section className="bg-slate-900 text-white pt-20 pb-32 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-20"></div>
-        <div className="container-pro relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-            </span>
-            500+ Accurate Converters
+      <section className="relative overflow-hidden px-4 pt-16 pb-20 md:pt-24 md:pb-24">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_15%_5%,rgba(14,165,233,0.22),transparent_40%),radial-gradient(circle_at_85%_0%,rgba(15,23,42,0.2),transparent_35%),linear-gradient(180deg,#0f172a_0%,#111827_45%,#0b1425_100%)]" />
+        <div className="absolute inset-0 -z-10 opacity-[0.12] bg-[linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] bg-[size:38px_38px]" />
+
+        <div className="container-pro relative z-10 text-center text-white">
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-200/10 px-4 py-1.5 text-sm font-semibold text-cyan-100 mb-6">
+            <Star className="h-4 w-4 text-cyan-300" />
+            Enterprise-grade converter experience
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-            Convert Any Unit. <span className="text-blue-500">Instantly.</span>
+
+          <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight md:text-6xl md:leading-[1.1]">
+            Convert with confidence.
+            <span className="block bg-gradient-to-r from-cyan-300 via-sky-300 to-white bg-clip-text text-transparent">
+              Fast, precise, and effortless.
+            </span>
           </h1>
-          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            The world&apos;s fastest free unit converter. Length, weight, temperature, speed and 7 more categories — all in one place.
+
+          <p className="mx-auto mt-6 max-w-3xl text-base text-slate-300 md:text-lg leading-relaxed">
+            A premium conversion platform trusted by students, engineers, and teams. Use 500+ tools for length, weight, temperature, speed, data, and more in one unified workspace.
           </p>
-          
-          <div className="max-w-2xl mx-auto">
+
+          <div className="mx-auto mt-10 max-w-2xl">
             <SearchTool />
-            <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm text-slate-500">
-              <span className="text-slate-400">Popular:</span>
+            <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm text-slate-300">
+              <span className="text-slate-400">Popular searches:</span>
               {QUICK_LINKS.slice(0, 4).map((link) => (
-                <Link key={link.href} href={link.href} className="hover:text-blue-400 transition-colors">
+                <Link key={link.href} href={link.href} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 hover:bg-white/10 transition-colors">
                   {link.label}
                 </Link>
               ))}
             </div>
           </div>
+
+          <div className="mt-10 grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur md:grid-cols-4 md:gap-4 md:p-5">
+            {TRUST_METRICS.map((metric) => (
+              <div key={metric.label} className="rounded-xl bg-white/5 p-3 text-left md:text-center">
+                <p className="text-xl font-display font-semibold text-white md:text-2xl tabular-nums">{metric.value}</p>
+                <p className="mt-0.5 text-xs text-slate-300 md:text-sm">{metric.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Categories Grid */}
-      <section className="py-20 bg-white -mt-10 rounded-t-[40px] relative z-20">
+      <section className="py-16 md:py-20 bg-white">
         <div className="container-pro">
-          <div className="flex items-end justify-between mb-12">
+          <div className="mb-12 flex items-end justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-2">Browse by Category</h2>
-              <p className="text-slate-500">10 Categories, 500+ Professional Tools</p>
+              <h2 className="font-display text-3xl font-semibold text-slate-900 mb-2">Browse by Category</h2>
+              <p className="text-slate-500">10 curated categories with 500+ precision tools.</p>
             </div>
+            <Link href="/search" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-slate-600 hover:text-slate-900">
+              Explore all
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categories.map((category) => {
               const Icon = CATEGORY_ICONS[category.name] || LayoutGrid;
@@ -169,10 +185,10 @@ export default function Home() {
                   href={`/${category.slug}`}
                   className="card-pro p-6 group flex flex-col items-center text-center"
                 >
-                  <div className="h-12 w-12 bg-slate-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300">
-                    <Icon className="h-6 w-6 text-slate-600 group-hover:text-white" />
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 text-slate-700 transition-all duration-300 group-hover:from-slate-900 group-hover:to-slate-700 group-hover:text-white">
+                    <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="font-semibold text-slate-900 mb-1">{category.name}</h3>
+                  <h3 className="mb-1 font-display font-semibold text-slate-900">{category.name}</h3>
                   <p className="text-xs text-slate-500">
                     {converters.filter((c) => c.category === category.id).length} Tools
                   </p>
@@ -183,31 +199,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Popular Converters */}
-      <section className="py-20 bg-slate-50">
+      <section className="py-16 md:py-20 bg-slate-50/80">
         <div className="container-pro">
           <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl font-bold text-slate-900">Most Used Tools</h2>
-            <Link href="/calculators" className="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+            <h2 className="font-display text-2xl font-semibold text-slate-900">Most Used Tools</h2>
+            <Link href="/calculators" className="text-sm font-semibold text-sky-700 hover:text-sky-800 flex items-center gap-1">
               View All <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {popularConverters.map((converter) => (
               converter && (
                 <Link
                   key={converter.id}
                   href={`/${converter.category}/${converter.metadata.slug}`}
-                  className="bg-white border border-slate-200 rounded-xl p-5 hover:border-slate-300 hover:shadow-md transition-all group"
+                  className="surface-glass rounded-2xl p-5 transition-all group hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between mb-3">
-                    <div className="h-8 w-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                    <div className="h-8 w-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 group-hover:bg-sky-50 group-hover:text-sky-700 transition-colors">
                       <Calculator className="h-4 w-4" />
                     </div>
                     <ArrowUpRight className="h-4 w-4 text-slate-300 group-hover:text-slate-900 transition-colors" />
                   </div>
-                  <h3 className="font-semibold text-slate-900 text-sm mb-1">{converter.title}</h3>
+                  <h3 className="font-display font-semibold text-slate-900 text-sm mb-1">{converter.title}</h3>
                   <p className="text-xs text-slate-500 line-clamp-2">{converter.description}</p>
                 </Link>
               )
@@ -216,52 +231,64 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-24 bg-white border-y border-slate-100">
-        <div className="container-pro text-center mb-16">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">Built to Be the Best</h2>
+      <section className="py-20 bg-white border-y border-slate-100">
+        <div className="container-pro text-center mb-14">
+          <h2 className="font-display text-3xl font-semibold text-slate-900 mb-4">Built for Modern Workflows</h2>
           <p className="text-slate-500 max-w-2xl mx-auto">
             We obsess over accuracy, speed, and design so you can focus on what matters. Trusted by engineers, students, and professionals in 150+ countries.
           </p>
         </div>
-        
+
         <div className="container-pro">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {FEATURES.map((feature) => (
-              <div key={feature.title} className="text-center">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 mb-6">
+              <div key={feature.title} className="rounded-2xl border border-slate-200 bg-white p-6 text-left hover:border-sky-200 hover:shadow-lg transition-all">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-700 mb-5">
                   <feature.icon className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{feature.desc}</p>
+                <h3 className="font-display text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-slate-900">
+      <section className="py-16 md:py-20 bg-slate-900">
         <div className="container-pro">
-          <div className="bg-blue-600 rounded-[40px] p-8 md:p-16 relative overflow-hidden text-center">
-            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 relative z-10">
-              Start Converting Now
+          <div className="relative overflow-hidden rounded-[32px] border border-slate-700 bg-gradient-to-br from-slate-800 via-slate-900 to-cyan-900/80 p-8 text-center md:p-14">
+            <div className="absolute -top-24 -right-20 h-64 w-64 rounded-full bg-cyan-400/20 blur-3xl" />
+            <div className="absolute -bottom-28 -left-20 h-64 w-64 rounded-full bg-sky-300/10 blur-3xl" />
+
+            <h2 className="relative z-10 font-display text-3xl md:text-5xl font-semibold text-white mb-6">
+              Ready to Convert Smarter?
             </h2>
-            <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
+
+            <p className="relative z-10 mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-sky-100">
               Join millions of users who rely on Convertaro for fast, accurate unit conversions every single day. Always free, forever.
             </p>
+
+            <div className="relative z-10 mb-9 flex flex-wrap justify-center gap-3">
+              <Link href="/length/cm-to-inches" className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100 transition-colors">
+                Start Converting
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/calculators" className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/15 transition-colors">
+                Open Calculators
+              </Link>
+            </div>
+
             <div className="flex flex-wrap justify-center gap-6 text-white/80 text-sm relative z-10">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-blue-200" />
+                <CheckCircle2 className="h-5 w-5 text-sky-200" />
                 No signup required
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-blue-200" />
+                <Shield className="h-5 w-5 text-sky-200" />
                 Verified formulas
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-blue-200" />
+                <Lock className="h-5 w-5 text-sky-200" />
                 Works offline
               </div>
             </div>

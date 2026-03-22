@@ -2,38 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─────────────────────────────────────────
-   PROFESSIONAL DESIGN SYSTEM
-   Clean, minimal, trusted by industry leaders
-───────────────────────────────────────── */
-
 @layer base {
   :root {
-    /* Professional Color Palette - Similar to Stripe/Linear */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    --background: 210 20% 98%;
+    --foreground: 220 38% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 220 38% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 222 47% 11%;
+    --popover-foreground: 220 38% 12%;
+    --primary: 219 53% 19%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222 47% 11%;
+    --secondary: 210 22% 95%;
+    --secondary-foreground: 220 38% 12%;
+    --muted: 210 18% 94%;
+    --muted-foreground: 218 15% 38%;
+    --accent: 193 80% 94%;
+    --accent-foreground: 219 53% 19%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 222 47% 11%;
-    --radius: 0.5rem;
+    --border: 214 26% 86%;
+    --input: 214 26% 86%;
+    --ring: 197 91% 41%;
+    --radius: 0.75rem;
   }
 
   html {
-    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-manrope), sans-serif;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -41,8 +35,20 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background:
+      radial-gradient(circle at 15% -10%, rgba(56, 189, 248, 0.14), transparent 42%),
+      radial-gradient(circle at 100% 0%, rgba(14, 116, 144, 0.1), transparent 36%),
+      hsl(var(--background));
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-sora), var(--font-manrope), sans-serif;
+    letter-spacing: -0.02em;
   }
 
   /* Professional scrollbar */
@@ -71,43 +77,41 @@
 }
 
 @layer components {
-  /* Professional Card */
   .card-pro {
-    @apply bg-white border border-slate-200 rounded-lg shadow-sm;
-    @apply transition-all duration-200 ease-out;
+    @apply bg-white/95 border border-slate-200/90 rounded-2xl shadow-sm;
+    @apply transition-all duration-300 ease-out;
+    backdrop-filter: blur(4px);
   }
 
   .card-pro:hover {
-    @apply border-slate-300 shadow-md;
-    transform: translateY(-1px);
+    @apply border-sky-200 shadow-lg;
+    transform: translateY(-2px);
   }
 
-  /* Professional Button */
   .btn-pro {
     @apply inline-flex items-center justify-center;
-    @apply px-4 py-2 text-sm font-medium;
-    @apply bg-slate-900 text-white rounded-md;
-    @apply transition-all duration-150 ease-out;
-    @apply hover:bg-slate-800;
+    @apply px-4 py-2 text-sm font-semibold;
+    @apply bg-slate-900 text-white rounded-xl;
+    @apply transition-all duration-200 ease-out;
+    @apply hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20;
     @apply active:scale-[0.98];
   }
 
   .btn-pro-secondary {
     @apply inline-flex items-center justify-center;
-    @apply px-4 py-2 text-sm font-medium;
-    @apply bg-white text-slate-900 border border-slate-200 rounded-md;
-    @apply transition-all duration-150 ease-out;
-    @apply hover:bg-slate-50 hover:border-slate-300;
+    @apply px-4 py-2 text-sm font-semibold;
+    @apply bg-white text-slate-900 border border-slate-200 rounded-xl;
+    @apply transition-all duration-200 ease-out;
+    @apply hover:bg-slate-50 hover:border-slate-300 hover:shadow-md;
     @apply active:scale-[0.98];
   }
 
-  /* Professional Input */
   .input-pro {
-    @apply px-3 py-2 text-sm;
-    @apply bg-white border border-slate-200 rounded-md;
+    @apply px-3 py-2 text-sm font-medium;
+    @apply bg-white/90 border border-slate-200 rounded-xl;
     @apply placeholder:text-slate-400;
     @apply transition-colors duration-150;
-    @apply focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900;
+    @apply focus:outline-none focus:ring-4 focus:ring-sky-500/15 focus:border-sky-500;
     @apply hover:border-slate-300;
   }
 
@@ -121,10 +125,9 @@
     @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Professional Nav Item */
   .nav-item {
-    @apply px-3 py-2 text-sm font-medium text-slate-600 rounded-md;
-    @apply transition-colors duration-150;
+    @apply px-3 py-2 text-sm font-semibold text-slate-600 rounded-lg;
+    @apply transition-all duration-150;
     @apply hover:text-slate-900 hover:bg-slate-100;
   }
 
@@ -132,15 +135,14 @@
     @apply px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-md;
   }
 
-  /* Professional Badge */
   .badge-pro {
     @apply inline-flex items-center px-2 py-0.5 text-xs font-medium;
-    @apply bg-slate-100 text-slate-700 rounded;
+    @apply bg-slate-100 text-slate-700 rounded-full;
   }
 
   .badge-pro-primary {
     @apply inline-flex items-center px-2 py-0.5 text-xs font-medium;
-    @apply bg-slate-900 text-white rounded;
+    @apply bg-slate-900 text-white rounded-full;
   }
 
   /* Ad container - cleaner */
@@ -181,14 +183,12 @@
     @apply bg-white border border-slate-200 rounded-lg shadow-sm;
   }
 
-  /* Tool wrapper */
   .tool-wrapper {
-    @apply bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden;
+    @apply bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden;
   }
 
-  /* Formula display */
   .formula-box {
-    @apply bg-slate-900 text-slate-50 px-4 py-3 rounded-md font-mono text-sm;
+    @apply bg-slate-900 text-slate-50 px-4 py-3 rounded-xl font-mono text-sm;
   }
 
   /* Section heading */
@@ -207,19 +207,23 @@
 }
 
 @layer utilities {
-  /* Focus ring */
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:ring-offset-2;
+    @apply focus:outline-none focus:ring-4 focus:ring-sky-500/15 focus:ring-offset-2;
   }
 
-  /* Professional gradient - very subtle */
   .gradient-subtle {
-    background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+    background: linear-gradient(180deg, #f4f8fc 0%, #ffffff 100%);
   }
 
-  /* Border gradient - subtle */
   .border-gradient {
     border-image: linear-gradient(to right, hsl(var(--border)), hsl(var(--border))) 1;
+  }
+
+  .surface-glass {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.72));
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    box-shadow: 0 16px 40px -28px rgba(2, 6, 23, 0.55);
+    backdrop-filter: blur(8px);
   }
 
   /* Animation - fade in */
