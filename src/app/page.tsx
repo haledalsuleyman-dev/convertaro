@@ -131,7 +131,7 @@ export default function Home() {
 
           <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight md:text-6xl md:leading-[1.1]">
             Convert with confidence.
-            <span className="block bg-gradient-to-r from-cyan-300 via-sky-300 to-white bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-cyan-300 via-cyan-200 to-white bg-clip-text text-transparent">
               Fast, precise, and effortless.
             </span>
           </h1>
@@ -203,7 +203,7 @@ export default function Home() {
         <div className="container-pro">
           <div className="flex items-center justify-between mb-10">
             <h2 className="font-display text-2xl font-semibold text-slate-900">Most Used Tools</h2>
-            <Link href="/calculators" className="text-sm font-semibold text-sky-700 hover:text-sky-800 flex items-center gap-1">
+            <Link href="/calculators" className="text-sm font-semibold text-cyan-700 hover:text-cyan-800 flex items-center gap-1">
               View All <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -217,7 +217,7 @@ export default function Home() {
                   className="surface-glass rounded-2xl p-5 transition-all group hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between mb-3">
-                    <div className="h-8 w-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 group-hover:bg-sky-50 group-hover:text-sky-700 transition-colors">
+                    <div className="h-8 w-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 group-hover:bg-cyan-50 group-hover:text-cyan-700 transition-colors">
                       <Calculator className="h-4 w-4" />
                     </div>
                     <ArrowUpRight className="h-4 w-4 text-slate-300 group-hover:text-slate-900 transition-colors" />
@@ -242,8 +242,8 @@ export default function Home() {
         <div className="container-pro">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {FEATURES.map((feature) => (
-              <div key={feature.title} className="rounded-2xl border border-slate-200 bg-white p-6 text-left hover:border-sky-200 hover:shadow-lg transition-all">
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-700 mb-5">
+              <div key={feature.title} className="rounded-2xl border border-slate-200 bg-white p-6 text-left hover:border-cyan-200 hover:shadow-lg transition-all">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-50 text-cyan-700 mb-5">
                   <feature.icon className="h-6 w-6" />
                 </div>
                 <h3 className="font-display text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
@@ -258,13 +258,13 @@ export default function Home() {
         <div className="container-pro">
           <div className="relative overflow-hidden rounded-[32px] border border-slate-700 bg-gradient-to-br from-slate-800 via-slate-900 to-cyan-900/80 p-8 text-center md:p-14">
             <div className="absolute -top-24 -right-20 h-64 w-64 rounded-full bg-cyan-400/20 blur-3xl" />
-            <div className="absolute -bottom-28 -left-20 h-64 w-64 rounded-full bg-sky-300/10 blur-3xl" />
+            <div className="absolute -bottom-28 -left-20 h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
 
             <h2 className="relative z-10 font-display text-3xl md:text-5xl font-semibold text-white mb-6">
               Ready to Convert Smarter?
             </h2>
 
-            <p className="relative z-10 mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-sky-100">
+            <p className="relative z-10 mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-cyan-100">
               Join millions of users who rely on Convertaro for fast, accurate unit conversions every single day. Always free, forever.
             </p>
 
@@ -280,15 +280,15 @@ export default function Home() {
 
             <div className="flex flex-wrap justify-center gap-6 text-white/80 text-sm relative z-10">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-sky-200" />
+                <CheckCircle2 className="h-5 w-5 text-cyan-200" />
                 No signup required
               </div>
               <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-sky-200" />
+                <Shield className="h-5 w-5 text-cyan-200" />
                 Verified formulas
               </div>
               <div className="flex items-center gap-2">
-                <Lock className="h-5 w-5 text-sky-200" />
+                <Lock className="h-5 w-5 text-cyan-200" />
                 Works offline
               </div>
             </div>

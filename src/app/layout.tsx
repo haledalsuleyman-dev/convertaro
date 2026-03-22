@@ -154,7 +154,7 @@ export default function RootLayout({
 
         {/* Meta tags for better indexing */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#0f172a" />
+        <meta name="theme-color" content="#153a5f" />
         <meta name="color-scheme" content="light" />
       </head>
       <body className={`${manrope.variable} ${sora.variable} font-sans antialiased min-h-screen flex flex-col bg-white`}>

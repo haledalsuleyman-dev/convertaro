@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 220 38% 12%;
+    --background: 210 33% 98%;
+    --foreground: 216 45% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 220 38% 12%;
+    --card-foreground: 216 45% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 38% 12%;
-    --primary: 219 53% 19%;
+    --popover-foreground: 216 45% 14%;
+    --primary: 213 61% 23%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 22% 95%;
-    --secondary-foreground: 220 38% 12%;
-    --muted: 210 18% 94%;
-    --muted-foreground: 218 15% 38%;
-    --accent: 193 80% 94%;
-    --accent-foreground: 219 53% 19%;
+    --secondary: 210 36% 95%;
+    --secondary-foreground: 216 45% 14%;
+    --muted: 210 28% 93%;
+    --muted-foreground: 216 16% 40%;
+    --accent: 194 82% 92%;
+    --accent-foreground: 200 88% 24%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 26% 86%;
-    --input: 214 26% 86%;
-    --ring: 197 91% 41%;
+    --border: 213 28% 85%;
+    --input: 213 28% 85%;
+    --ring: 199 89% 42%;
     --radius: 0.75rem;
   }
 
@@ -71,7 +71,7 @@
 
   /* Professional text selection */
   ::selection {
-    background: hsl(222 47% 11% / 0.1);
+    background: hsl(var(--primary) / 0.18);
     color: hsl(var(--foreground));
   }
 }
@@ -91,18 +91,18 @@
   .btn-pro {
     @apply inline-flex items-center justify-center;
     @apply px-4 py-2 text-sm font-semibold;
-    @apply bg-slate-900 text-white rounded-xl;
+    @apply bg-primary text-primary-foreground rounded-xl;
     @apply transition-all duration-200 ease-out;
-    @apply hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20;
+    @apply hover:bg-primary-800 hover:shadow-lg hover:shadow-primary-900/30;
     @apply active:scale-[0.98];
   }
 
   .btn-pro-secondary {
     @apply inline-flex items-center justify-center;
     @apply px-4 py-2 text-sm font-semibold;
-    @apply bg-white text-slate-900 border border-slate-200 rounded-xl;
+    @apply bg-white text-primary border border-slate-200 rounded-xl;
     @apply transition-all duration-200 ease-out;
-    @apply hover:bg-slate-50 hover:border-slate-300 hover:shadow-md;
+    @apply hover:bg-accent hover:border-sky-200 hover:shadow-md;
     @apply active:scale-[0.98];
   }
 
@@ -111,7 +111,7 @@
     @apply bg-white/90 border border-slate-200 rounded-xl;
     @apply placeholder:text-slate-400;
     @apply transition-colors duration-150;
-    @apply focus:outline-none focus:ring-4 focus:ring-sky-500/15 focus:border-sky-500;
+    @apply focus:outline-none focus:ring-4 focus:ring-sky-500/20 focus:border-sky-500;
     @apply hover:border-slate-300;
   }
 
@@ -128,7 +128,7 @@
   .nav-item {
     @apply px-3 py-2 text-sm font-semibold text-slate-600 rounded-lg;
     @apply transition-all duration-150;
-    @apply hover:text-slate-900 hover:bg-slate-100;
+    @apply hover:text-primary hover:bg-accent;
   }
 
   .nav-item-active {
@@ -208,7 +208,7 @@
 
 @layer utilities {
   .focus-ring {
-    @apply focus:outline-none focus:ring-4 focus:ring-sky-500/15 focus:ring-offset-2;
+    @apply focus:outline-none focus:ring-4 focus:ring-sky-500/20 focus:ring-offset-2;
   }
 
   .gradient-subtle {
@@ -221,7 +221,7 @@
 
   .surface-glass {
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.72));
-    border: 1px solid rgba(148, 163, 184, 0.22);
+    border: 1px solid rgba(96, 165, 250, 0.2);
     box-shadow: 0 16px 40px -28px rgba(2, 6, 23, 0.55);
     backdrop-filter: blur(8px);
   }
