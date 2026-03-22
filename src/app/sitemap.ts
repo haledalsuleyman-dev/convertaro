@@ -4,9 +4,10 @@ import { calculators } from "@/data/calculators";
 import { calculatorCategories } from "@/data/calculator-categories";
 import convertersData from "@/data/converters.json";
 import { Converter } from "@/types/converter";
+import { SITE_URL } from "@/lib/seo";
 
 const converters = convertersData as Converter[];
-const BASE_URL = "https://convertaro.com";
+const BASE_URL = SITE_URL;
 
 // High-priority converters that get more search traffic
 const HIGH_PRIORITY_SLUGS = new Set([
@@ -43,7 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/privacy", changeFrequency: "yearly" as const, priority: 0.4 },
     { path: "/terms", changeFrequency: "yearly" as const, priority: 0.4 },
     { path: "/calculators", changeFrequency: "weekly" as const, priority: 0.85 },
-    { path: "/search", changeFrequency: "weekly" as const, priority: 0.5 },
   ];
 
   staticPages.forEach((page) => {
@@ -109,8 +109,7 @@ export function getAllPageUrls(): string[] {
     `${BASE_URL}/contact`,
     `${BASE_URL}/privacy`,
     `${BASE_URL}/terms`,
-    `${BASE_URL}/calculators`,
-    `${BASE_URL}/search`
+    `${BASE_URL}/calculators`
   );
 
   // Calculator pages
@@ -165,7 +164,7 @@ export function getHighPriorityUrls(): string[] {
 export function getSiteStats() {
   return {
     totalPages: getAllPageUrls().length,
-    staticPages: 6,
+    staticPages: 5,
     categoryPages: categories.length,
     calculatorPages: calculators.length + calculatorCategories.length,
     converterPages: converters.length,

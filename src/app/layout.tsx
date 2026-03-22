@@ -6,6 +6,9 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import {
   SITE_URL,
+  SITE_NAME,
+  buildOpenGraph,
+  buildTwitter,
   HOMEPAGE_LONGTAIL_KEYWORDS,
   ORGANIZATION_SCHEMA,
   WEBSITE_SCHEMA,
@@ -28,6 +31,13 @@ const sora = Sora({
 // Enhanced metadata with long-tail keywords
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   title: {
     default: "Convertaro - Free Online Unit Converter | 500+ Accurate Tools",
     template: "%s | Convertaro",
@@ -59,6 +69,13 @@ export const metadata: Metadata = {
   authors: [{ name: "Convertaro" }],
   creator: "Convertaro",
   publisher: "Convertaro",
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      "en-US": SITE_URL,
+      "x-default": SITE_URL,
+    },
+  },
   robots: {
     index: true,
     follow: true,
@@ -70,32 +87,18 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    siteName: "Convertaro",
+  openGraph: buildOpenGraph({
     title: "Convertaro - Free Online Unit Converter | 500+ Accurate Tools",
     description:
       "Free online unit converter with 500+ accurate tools. Convert any unit instantly - length, weight, temperature, volume, speed & more.",
-    url: SITE_URL,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Convertaro - Free Online Unit Converter | 500+ Accurate Tools",
-    description:
-      "500+ free unit converters for length, weight, temperature, volume, speed, and more. Instant, accurate, and private.",
-    site: "@convertaro",
-    creator: "@convertaro",
-  },
+    path: "/",
+  }),
+  twitter: buildTwitter(
+    "Convertaro - Free Online Unit Converter | 500+ Accurate Tools",
+    "500+ free unit converters for length, weight, temperature, volume, speed, and more. Instant, accurate, and private."
+  ),
   verification: {
-    google: "your-google-verification-code", // Add your verification code
-  },
-  alternates: {
-    canonical: SITE_URL,
-    languages: {
-      "en-US": SITE_URL,
-      "en-GB": `${SITE_URL}/en-gb`,
-    },
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
   category: "Technology",
   classification: "Unit Conversion Tools",

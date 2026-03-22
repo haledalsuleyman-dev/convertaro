@@ -3,7 +3,14 @@ import Link from "next/link";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { calculators } from "@/data/calculators";
 import { calculatorCategories } from "@/data/calculator-categories";
-import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
+import {
+  canonicalFromPath,
+  INDEXABLE_ROBOTS,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+  buildWebPageSchema,
+} from "@/lib/seo";
 import { CalculatorDefinition } from "@/data/calculators";
 
 const FEATURED_CALCULATORS = ["mortgage-calculator", "loan-calculator", "bmi-calculator", "percentage-calculator"];
@@ -13,9 +20,7 @@ export const metadata: Metadata = {
   description:
     "Browse Convertaro calculators by category. Use finance, health, math, and time calculators with clear formulas, examples, and practical guidance.",
   robots: INDEXABLE_ROBOTS,
-  alternates: {
-    canonical: canonicalFromPath("/calculators"),
-  },
+  alternates: buildAlternates("/calculators"),
   keywords: [
     "online calculators",
     "calculator hub",
@@ -24,6 +29,16 @@ export const metadata: Metadata = {
     "math calculators",
     "time calculators",
   ],
+  openGraph: buildOpenGraph({
+    title: "Online Calculators Hub | Convertaro",
+    description:
+      "Browse Convertaro calculators by category. Use finance, health, math, and time calculators with clear formulas, examples, and practical guidance.",
+    path: "/calculators",
+  }),
+  twitter: buildTwitter(
+    "Online Calculators Hub | Convertaro",
+    "Browse finance, health, math, and time calculators with clear formulas and practical guidance."
+  ),
 };
 
 export default function CalculatorsHubPage() {
@@ -50,6 +65,13 @@ export default function CalculatorsHubPage() {
     })),
   };
 
+  const webPageSchema = buildWebPageSchema({
+    name: "Convertaro Calculators Hub",
+    description:
+      "Browse finance, health, math, and time calculators with practical examples and clear formulas.",
+    path: "/calculators",
+  });
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden py-12 sm:py-16">
       <div className="pointer-events-none absolute inset-0 dot-grid" />
@@ -57,6 +79,7 @@ export default function CalculatorsHubPage() {
       <div className="pointer-events-none absolute top-10 right-0 h-[520px] w-[520px] rounded-full bg-secondary/10 blur-[95px]" />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <section className="text-center">

@@ -3,7 +3,14 @@ import { categories } from "@/data/categories";
 import convertersData from "@/data/converters.json";
 import { Converter } from "@/types/converter";
 import { SearchTool } from "@/components/ui/SearchTool";
-import { canonicalFromPath, INDEXABLE_ROBOTS, HOMEPAGE_LONGTAIL_KEYWORDS } from "@/lib/seo";
+import {
+  INDEXABLE_ROBOTS,
+  HOMEPAGE_LONGTAIL_KEYWORDS,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+  buildWebPageSchema,
+} from "@/lib/seo";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -48,13 +55,16 @@ export const metadata: Metadata = {
     "imperial converter",
     ...HOMEPAGE_LONGTAIL_KEYWORDS.slice(0, 20),
   ],
-  alternates: { canonical: canonicalFromPath("/") },
-  openGraph: {
+  alternates: buildAlternates("/"),
+  openGraph: buildOpenGraph({
     title: "Free Online Unit Converter - 500+ Accurate Tools | Convertaro",
     description: "Convert any unit instantly. 500+ free converters for length, weight, temperature, volume, speed & more.",
-    url: "https://convertaro.com",
-    type: "website",
-  },
+    path: "/",
+  }),
+  twitter: buildTwitter(
+    "Free Online Unit Converter - 500+ Accurate Tools | Convertaro",
+    "Convert any unit instantly. 500+ free converters for length, weight, temperature, volume, speed, data and more."
+  ),
 };
 
 const converters = convertersData as Converter[];
@@ -113,11 +123,22 @@ export default function Home() {
     },
   };
 
+  const webPageSchema = buildWebPageSchema({
+    name: "Convertaro Home",
+    description:
+      "Convert any unit instantly with 500+ free online conversion tools for length, weight, temperature, volume, speed, data, and more.",
+    path: "/",
+  });
+
   return (
     <div className="relative flex flex-col min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
       <section className="relative overflow-hidden px-4 pt-16 pb-20 md:pt-24 md:pb-24">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_14%_0%,rgba(34,211,238,0.34),transparent_36%),radial-gradient(circle_at_84%_-6%,rgba(251,191,36,0.16),transparent_32%),linear-gradient(180deg,#062033_0%,#0b2c40_42%,#0a1f31_100%)]" />

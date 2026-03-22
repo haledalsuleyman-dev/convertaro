@@ -3,7 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { calculators } from "@/data/calculators";
 import { calculatorCategories, calculatorCategoryBySlug } from "@/data/calculator-categories";
-import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
+import {
+  INDEXABLE_ROBOTS,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+  buildWebPageSchema,
+} from "@/lib/seo";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -29,15 +35,19 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     title: `${categoryDef.name} | Convertaro`,
     description: categoryDef.description,
     robots: INDEXABLE_ROBOTS,
-    alternates: {
-      canonical: canonicalFromPath(`/calculators/${category}`),
-    },
+    alternates: buildAlternates(`/calculators/${category}`),
     keywords: [
       `${categoryDef.shortLabel.toLowerCase()} calculator`,
       `${categoryDef.shortLabel.toLowerCase()} calculators`,
       "online calculators",
       "calculator tools",
     ],
+    openGraph: buildOpenGraph({
+      title: `${categoryDef.name} | Convertaro`,
+      description: categoryDef.description,
+      path: `/calculators/${category}`,
+    }),
+    twitter: buildTwitter(`${categoryDef.name} | Convertaro`, categoryDef.description),
   };
 }
 
@@ -50,9 +60,15 @@ export default async function CalculatorCategoryPage({ params }: CategoryPagePro
   }
 
   const items = calculators.filter((calculator) => calculator.category === category);
+  const webPageSchema = buildWebPageSchema({
+    name: categoryDef.name,
+    description: categoryDef.description,
+    path: `/calculators/${category}`,
+  });
 
   return (
     <div className="min-h-screen bg-background py-12 sm:py-16">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="rounded-3xl border border-border bg-white shadow-card p-6 sm:p-8">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">

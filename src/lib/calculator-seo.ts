@@ -1,29 +1,24 @@
 import type { Metadata } from "next";
 import { CalculatorDefinition } from "@/data/calculators";
-import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
+import {
+  INDEXABLE_ROBOTS,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+} from "@/lib/seo";
 
 export function buildCalculatorMetadata(calculator: CalculatorDefinition): Metadata {
-  const canonical = canonicalFromPath(`/${calculator.slug}`);
-
   return {
     title: `${calculator.title} | Convertaro`,
     description: calculator.description,
     robots: INDEXABLE_ROBOTS,
     keywords: calculator.keywords,
-    alternates: {
-      canonical,
-    },
-    openGraph: {
+    alternates: buildAlternates(`/${calculator.slug}`),
+    openGraph: buildOpenGraph({
       title: `${calculator.title} | Convertaro`,
       description: calculator.description,
-      type: "website",
-      url: canonical,
-      siteName: "Convertaro",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${calculator.title} | Convertaro`,
-      description: calculator.description,
-    },
+      path: `/${calculator.slug}`,
+    }),
+    twitter: buildTwitter(`${calculator.title} | Convertaro`, calculator.description),
   };
 }

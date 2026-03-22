@@ -4,6 +4,9 @@ import type { Metadata } from "next";
 // Long-tail keywords are less competitive and have higher conversion rates
 
 export const SITE_URL = "https://convertaro.com";
+export const SITE_NAME = "Convertaro";
+export const DEFAULT_LOCALE = "en_US";
+export const DEFAULT_SOCIAL_IMAGE = `${SITE_URL}/opengraph-image`;
 
 
 
@@ -24,6 +27,83 @@ export function categoryCanonical(category: string): string {
 
 export function converterCanonical(category: string, converter: string): string {
   return canonicalFromPath(`/${category}/${converter}`);
+}
+
+export function buildAlternates(path: string): NonNullable<Metadata["alternates"]> {
+  const canonical = canonicalFromPath(path);
+  return {
+    canonical,
+    languages: {
+      "en-US": canonical,
+      "x-default": canonical,
+    },
+  };
+}
+
+interface SocialMetadataInput {
+  title: string;
+  description: string;
+  path: string;
+  type?: "website" | "article";
+}
+
+export function buildOpenGraph({
+  title,
+  description,
+  path,
+  type = "website",
+}: SocialMetadataInput): NonNullable<Metadata["openGraph"]> {
+  return {
+    title,
+    description,
+    type,
+    url: canonicalFromPath(path),
+    siteName: SITE_NAME,
+    locale: DEFAULT_LOCALE,
+    images: [
+      {
+        url: DEFAULT_SOCIAL_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} - Free online converters and calculators`,
+      },
+    ],
+  };
+}
+
+export function buildTwitter(
+  title: string,
+  description: string
+): NonNullable<Metadata["twitter"]> {
+  return {
+    card: "summary_large_image",
+    title,
+    description,
+    site: "@convertaro",
+    creator: "@convertaro",
+    images: [DEFAULT_SOCIAL_IMAGE],
+  };
+}
+
+export function buildWebPageSchema(input: {
+  name: string;
+  description: string;
+  path: string;
+}): Record<string, unknown> {
+  const url = canonicalFromPath(input.path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: input.name,
+    description: input.description,
+    url,
+    inLanguage: "en-US",
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  };
 }
 
 export const INDEXABLE_ROBOTS: NonNullable<Metadata["robots"]> = {
@@ -466,7 +546,7 @@ export const ORGANIZATION_SCHEMA = {
   "@type": "Organization",
   name: "Convertaro",
   url: SITE_URL,
-  logo: `${SITE_URL}/logo.png`,
+  logo: `${SITE_URL}/favicon.ico`,
   description:
     "Free online unit converter with 500+ tools. Accurate, fast, and private.",
   sameAs: [
@@ -479,7 +559,7 @@ export const ORGANIZATION_SCHEMA = {
 export const WEBSITE_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Convertaro",
+  name: SITE_NAME,
   url: SITE_URL,
   description: "Free online unit converter with 500+ accurate tools",
   potentialAction: {

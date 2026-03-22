@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description:
     "This page does not exist on Convertaro. Use search or jump to a popular converter.",
   robots: {
+    index: false,
+    follow: false,
     googleBot: {
       index: false,
       follow: false,

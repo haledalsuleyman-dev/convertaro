@@ -1,23 +1,43 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell } from "@/components/ui/PageShell";
-import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
+import {
+  INDEXABLE_ROBOTS,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+  buildWebPageSchema,
+} from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Convertaro",
   description: "Read Convertaro’s privacy policy covering analytics, cookies, ads, and user data.",
   robots: INDEXABLE_ROBOTS,
-  alternates: {
-    canonical: canonicalFromPath("/privacy"),
-  },
+  alternates: buildAlternates("/privacy"),
+  openGraph: buildOpenGraph({
+    title: "Privacy Policy | Convertaro",
+    description: "Read Convertaro’s privacy policy covering analytics, cookies, ads, and user data.",
+    path: "/privacy",
+  }),
+  twitter: buildTwitter(
+    "Privacy Policy | Convertaro",
+    "Read Convertaro’s privacy policy covering analytics, cookies, ads, and user data."
+  ),
 };
 
 export default function PrivacyPage() {
+  const webPageSchema = buildWebPageSchema({
+    name: "Privacy Policy | Convertaro",
+    description: "Read Convertaro’s privacy policy covering analytics, cookies, ads, and user data.",
+    path: "/privacy",
+  });
+
   return (
     <PageShell
       title="Privacy Policy"
       subtitle="This policy explains what we collect, how we use it, and the choices you have."
     >
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <div className="space-y-10 text-text-secondary">
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-text-primary">Overview</h2>

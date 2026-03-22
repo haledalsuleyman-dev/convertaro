@@ -10,9 +10,12 @@ import { ConverterContentSections } from "@/components/converter/ConverterConten
 import Link from "next/link";
 import { ChevronRight, Home, Calculator, Lightbulb, Table, ArrowLeftRight } from "lucide-react";
 import {
-  converterCanonical,
   INDEXABLE_ROBOTS,
   getConverterLongTailKeywords,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+  buildWebPageSchema,
   generateBreadcrumbSchema,
   generateFAQSchema,
   generateHowToSchema,
@@ -74,21 +77,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "free online converter",
       ...longTailKeywords.slice(0, 10),
     ].filter(Boolean),
-    alternates: {
-      canonical: converterCanonical(category, slug),
-    },
-    openGraph: {
+    alternates: buildAlternates(`/${category}/${slug}`),
+    openGraph: buildOpenGraph({
       title: `${converter.title} - Free Online Tool`,
       description: `${converter.description} Instant results with formula and conversion table.`,
-      siteName: "Convertaro",
-      type: "website",
-      url: converterCanonical(category, slug),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${converter.title} - Free Online Calculator`,
-      description: `${converter.description} Free, instant, and accurate.`,
-    },
+      path: `/${category}/${slug}`,
+    }),
+    twitter: buildTwitter(
+      `${converter.title} - Free Online Calculator`,
+      `${converter.description} Free, instant, and accurate.`
+    ),
   };
 }
 
@@ -136,6 +134,12 @@ export default async function ConverterPage({ params }: PageProps) {
     ]
   );
 
+  const webPageSchema = buildWebPageSchema({
+    name: converter.title,
+    description: converter.description,
+    path: `/${categorySlug}/${slug}`,
+  });
+
   // Get related converters
   const relatedConverters = converter.relatedConverters
     .map((id) => converters.find((c) => c.id === id))
@@ -147,6 +151,7 @@ export default async function ConverterPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
 
       <div className="border-b border-slate-200 bg-slate-50">
         <div className="container-pro py-8">

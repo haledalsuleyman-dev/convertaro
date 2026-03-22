@@ -1,23 +1,40 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell } from "@/components/ui/PageShell";
-import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
+import {
+  INDEXABLE_ROBOTS,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+  buildWebPageSchema,
+} from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "About Convertaro",
   description: "Learn what Convertaro is, what it does, and who it is for.",
   robots: INDEXABLE_ROBOTS,
-  alternates: {
-    canonical: canonicalFromPath("/about"),
-  },
+  alternates: buildAlternates("/about"),
+  openGraph: buildOpenGraph({
+    title: "About Convertaro",
+    description: "Learn what Convertaro is, what it does, and who it is for.",
+    path: "/about",
+  }),
+  twitter: buildTwitter("About Convertaro", "Learn what Convertaro is, what it does, and who it is for."),
 };
 
 export default function AboutPage() {
+  const webPageSchema = buildWebPageSchema({
+    name: "About Convertaro",
+    description: "Learn what Convertaro is, what it does, and who it is for.",
+    path: "/about",
+  });
+
   return (
     <PageShell
       title="About Convertaro"
       subtitle="Convertaro is a fast, accurate unit conversion platform built for everyday use and professional workflows."
     >
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <div className="space-y-8 text-text-secondary">
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-text-primary">What Convertaro does</h2>

@@ -6,9 +6,12 @@ import { Converter } from "@/types/converter";
 import Link from "next/link";
 import { ChevronRight, Home, Calculator, CheckCircle2 } from "lucide-react";
 import {
-  categoryCanonical,
   INDEXABLE_ROBOTS,
   getCategoryLongTailKeywords,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+  buildWebPageSchema,
   generateBreadcrumbSchema,
   generateFAQSchema,
 } from "@/lib/seo";
@@ -54,16 +57,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "free online converter",
       ...longTailKeywords.slice(0, 10),
     ],
-    alternates: {
-      canonical: categoryCanonical(slug),
-    },
-    openGraph: {
-      siteName: "Convertaro",
+    alternates: buildAlternates(`/${slug}`),
+    openGraph: buildOpenGraph({
       title: `${category.name} Converters - ${count} Free Online Tools | Convertaro`,
       description: `${category.description} ${count} free, accurate ${category.name.toLowerCase()} conversion tools.`,
-      type: "website",
-      url: categoryCanonical(slug),
-    },
+      path: `/${slug}`,
+    }),
+    twitter: buildTwitter(
+      `${category.name} Converters - ${count} Free Online Tools | Convertaro`,
+      `${category.description} ${count} free, accurate ${category.name.toLowerCase()} conversion tools.`
+    ),
   };
 }
 
@@ -132,11 +135,17 @@ export default async function CategoryPage({ params }: PageProps) {
   };
 
   const faqSchema = faqs.length > 0 ? generateFAQSchema(faqs) : null;
+  const webPageSchema = buildWebPageSchema({
+    name: `${category.name} Converters`,
+    description: `${category.description} Browse all ${categoryConverters.length} tools with formulas and reference tables.`,
+    path: `/${slug}`,
+  });
 
   return (
     <div className="min-h-screen bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       )}

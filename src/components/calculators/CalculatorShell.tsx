@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { CalculatorDefinition } from "@/data/calculators";
 import { calculatorCategoryBySlug } from "@/data/calculator-categories";
+import { SITE_URL } from "@/lib/seo";
 
 interface CalculatorShellProps {
   calculator: CalculatorDefinition;
@@ -10,6 +11,7 @@ interface CalculatorShellProps {
 
 export function CalculatorShell({ calculator, children }: CalculatorShellProps) {
   const category = calculatorCategoryBySlug.get(calculator.category);
+  const canonical = `${SITE_URL}/${calculator.slug}`;
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -24,6 +26,60 @@ export function CalculatorShell({ calculator, children }: CalculatorShellProps) 
     })),
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Calculators",
+        item: `${SITE_URL}/calculators`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: calculator.title,
+        item: canonical,
+      },
+    ],
+  };
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: calculator.title,
+    description: calculator.description,
+    url: canonical,
+    inLanguage: "en-US",
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Convertaro",
+      url: SITE_URL,
+    },
+  };
+
+  const softwareSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: calculator.title,
+    applicationCategory: "CalculatorApplication",
+    operatingSystem: "Web",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    url: canonical,
+    description: calculator.description,
+  };
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden py-12 sm:py-16">
       <div className="pointer-events-none absolute inset-0 dot-grid" />
@@ -31,6 +87,9 @@ export function CalculatorShell({ calculator, children }: CalculatorShellProps) 
       <div className="pointer-events-none absolute top-10 right-0 h-[460px] w-[460px] rounded-full bg-secondary/10 blur-[95px]" />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
 
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6">
         <header className="text-center">

@@ -1,23 +1,40 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell } from "@/components/ui/PageShell";
-import { canonicalFromPath, INDEXABLE_ROBOTS } from "@/lib/seo";
+import {
+  INDEXABLE_ROBOTS,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+  buildWebPageSchema,
+} from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Terms of Use | Convertaro",
   description: "Read the Convertaro terms of use and disclaimer.",
   robots: INDEXABLE_ROBOTS,
-  alternates: {
-    canonical: canonicalFromPath("/terms"),
-  },
+  alternates: buildAlternates("/terms"),
+  openGraph: buildOpenGraph({
+    title: "Terms of Use | Convertaro",
+    description: "Read the Convertaro terms of use and disclaimer.",
+    path: "/terms",
+  }),
+  twitter: buildTwitter("Terms of Use | Convertaro", "Read the Convertaro terms of use and disclaimer."),
 };
 
 export default function TermsPage() {
+  const webPageSchema = buildWebPageSchema({
+    name: "Terms of Use | Convertaro",
+    description: "Read the Convertaro terms of use and disclaimer.",
+    path: "/terms",
+  });
+
   return (
     <PageShell
       title="Terms of Use"
       subtitle="By using Convertaro, you agree to these terms. Please read them carefully."
     >
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <div className="space-y-10 text-text-secondary">
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-text-primary">Acceptance of terms</h2>
