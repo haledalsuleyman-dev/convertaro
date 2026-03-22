@@ -19,7 +19,7 @@ import {
   Weight,
   Wind,
   Clock,
-  Zap,
+  Zap, // تم استبدال Lightning بـ Zap
   Smartphone,
   CheckCircle2,
   Lock,
@@ -29,7 +29,6 @@ import {
   LayoutGrid,
   Search,
   Shield,
-  Lightning,
 } from "lucide-react";
 
 // Enhanced SEO with long-tail keywords
@@ -78,7 +77,7 @@ const QUICK_LINKS = [
 ];
 
 const FEATURES = [
-  { icon: Lightning, title: "Instant Results", desc: "Sub-millisecond calculations. No waiting, no loading." },
+  { icon: Zap, title: "Instant Results", desc: "Sub-millisecond calculations. No waiting, no loading." },
   { icon: CheckCircle2, title: "Verified Accuracy", desc: "All formulas verified against SI, NIST, and ISO standards." },
   { icon: Lock, title: "100% Private", desc: "Your data never leaves your browser. No account required." },
   { icon: Smartphone, title: "Works Everywhere", desc: "Fully responsive. Desktop, tablet, and mobile." },
@@ -93,15 +92,12 @@ export default function Home() {
 
   const latestConverters = converters.slice(10, 16);
 
-  // Schema markup for homepage
   const softwareSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Convertaro Unit Converter",
-    applicationCategory: "UtilitiesApplication",
+    applicationCategory: "UtilityApplication",
     operatingSystem: "Web",
-    url: "https://convertaro.com",
-    description: "Free online unit conversion tool with 500+ converters across 10 categories.",
     offers: {
       "@type": "Offer",
       price: "0",
@@ -115,95 +111,68 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
       />
-
-      {/* Hero Section - Clean, Professional */}
-      <section className="border-b border-slate-200 bg-slate-50">
-        <div className="container-pro py-16 md:py-24">
-          <div className="max-w-3xl mx-auto text-center">
-            {/* Trust Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-xs font-medium text-slate-600 mb-6">
-              <Shield className="h-3.5 w-3.5 text-emerald-500" />
-              <span>500+ Free Tools · Accurate · No Signup</span>
-            </div>
-
-            {/* Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 mb-4">
-              Convert Any Unit.
-              <br />
-              <span className="text-slate-400">Instantly.</span>
-            </h1>
-
-            <p className="text-lg text-slate-500 max-w-xl mx-auto mb-8">
-              The world&apos;s fastest free unit converter. Length, weight, temperature, speed, and 7 more categories — all in one place.
-            </p>
-
-            {/* Search Bar */}
-            <div className="max-w-xl mx-auto mb-6">
-              <SearchTool variant="hero" placeholder="Search any conversion (e.g., kg to lbs)" />
-            </div>
-
-            {/* Quick Links */}
-            <div className="flex flex-wrap justify-center gap-2 mb-10">
-              {QUICK_LINKS.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="px-3 py-1.5 text-sm text-slate-600 bg-white border border-slate-200 rounded-md hover:border-slate-300 hover:text-slate-900 transition-colors"
-                >
-                  {label}
+      
+      {/* Hero Section */}
+      <section className="bg-slate-900 text-white pt-20 pb-32 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-20"></div>
+        <div className="container-pro relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+            </span>
+            500+ Accurate Converters
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
+            Convert Any Unit. <span className="text-blue-500">Instantly.</span>
+          </h1>
+          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+            The world&apos;s fastest free unit converter. Length, weight, temperature, speed and 7 more categories — all in one place.
+          </p>
+          
+          <div className="max-w-2xl mx-auto">
+            <SearchTool />
+            <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm text-slate-500">
+              <span className="text-slate-400">Popular:</span>
+              {QUICK_LINKS.slice(0, 4).map((link) => (
+                <Link key={link.href} href={link.href} className="hover:text-blue-400 transition-colors">
+                  {link.label}
                 </Link>
-              ))}
-            </div>
-
-            {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-              {[
-                { value: "500+", label: "Free Tools" },
-                { value: "10", label: "Categories" },
-                { value: "150+", label: "Countries" },
-                { value: "100%", label: "Free" },
-              ].map(({ value, label }) => (
-                <div key={label} className="text-center">
-                  <div className="text-2xl md:text-3xl font-semibold text-slate-900 tabular-nums">{value}</div>
-                  <div className="text-sm text-slate-500">{label}</div>
-                </div>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="section-pro border-b border-slate-200">
+      {/* Categories Grid */}
+      <section className="py-20 bg-white -mt-10 rounded-t-[40px] relative z-20">
         <div className="container-pro">
-          <div className="mb-10">
-            <h2 className="heading-section mb-2">Browse Categories</h2>
-            <p className="text-muted-pro">10 categories with 500+ conversion tools</p>
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <h2 className="text-3xl font-bold text-slate-900 mb-2">Browse by Category</h2>
+              <p className="text-slate-500">10 Categories, 500+ Professional Tools</p>
+            </div>
           </div>
-
+          
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categories.map((category) => {
-              const Icon = CATEGORY_ICONS[category.icon] ?? Ruler;
-              const count = converters.filter((c) => c.category === category.slug).length;
+              const Icon = CATEGORY_ICONS[category.name] || LayoutGrid;
               return (
                 <Link
                   key={category.id}
                   href={`/${category.slug}`}
-                  className="card-pro p-5 group"
+                  className="card-pro p-6 group flex flex-col items-center text-center"
                 >
-                  <div className="h-10 w-10 bg-slate-100 rounded-md flex items-center justify-center mb-4 group-hover:bg-slate-900 group-hover:text-white transition-colors"
-                  >
-                    <Icon className="h-5 w-5 text-slate-600 group-hover:text-white" />
+                  <div className="h-12 w-12 bg-slate-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300">
+                    <Icon className="h-6 w-6 text-slate-600 group-hover:text-white" />
                   </div>
-                  <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-slate-700">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm text-slate-500">{count} tools</p>
+                  <h3 className="font-semibold text-slate-900 mb-1">{category.name}</h3>
+                  <p className="text-xs text-slate-500">{category.count} Tools</p>
                 </Link>
               );
             })}
@@ -211,163 +180,87 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Calculators */}
-      <section className="section-pro border-b border-slate-200 bg-slate-50">
+      {/* Popular Converters */}
+      <section className="py-20 bg-slate-50">
         <div className="container-pro">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <h2 className="heading-section mb-2">Calculators</h2>
-              <p className="text-muted-pro">Beyond conversions: finance, health, and everyday math</p>
-            </div>
-            <Link href="/calculators" className="btn-pro-secondary hidden sm:inline-flex">
-              View All <ArrowRight className="h-4 w-4 ml-1" />
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl font-bold text-slate-900">Most Used Tools</h2>
+            <Link href="/calculators" className="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+              View All <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {calculators.map((calculator) => (
-              <Link
-                key={calculator.slug}
-                href={`/${calculator.slug}`}
-                className="card-pro p-4"
-              >
-                <h3 className="font-semibold text-slate-900 mb-1">{calculator.title}</h3>
-                <p className="text-sm text-slate-500 line-clamp-2">{calculator.description}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Popular Tools */}
-      <section className="section-pro border-b border-slate-200">
-        <div className="container-pro">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="heading-section mb-2">Popular Converters</h2>
-              <p className="text-muted-pro">Most used conversion tools this month</p>
-            </div>
-            <Link href="/length" className="text-sm font-medium text-slate-900 hover:text-slate-600 hidden sm:inline-flex items-center">
-              Browse All <ArrowRight className="h-4 w-4 ml-1" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {popularConverters.map((converter, i) => (
-              <Link
-                key={converter.id}
-                href={`/${converter.category}/${converter.metadata.slug}`}
-                className="card-pro p-5 relative overflow-hidden"
-              >
-                <span className="absolute top-3 right-4 text-5xl font-bold text-slate-100 select-none">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="relative">
-                  <p className="text-xs font-medium text-slate-400 uppercase tracking-wide mb-2">
-                    {converter.category}
-                  </p>
-                  <h3 className="font-semibold text-slate-900 mb-4">{converter.title}</h3>
-                  <div className="flex items-center text-sm text-slate-600">
-                    <span>Open Tool</span>
-                    <ArrowUpRight className="h-4 w-4 ml-1" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {popularConverters.map((converter) => (
+              converter && (
+                <Link
+                  key={converter.id}
+                  href={`/${converter.category}/${converter.metadata.slug}`}
+                  className="bg-white border border-slate-200 rounded-xl p-5 hover:border-slate-300 hover:shadow-md transition-all group"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="h-8 w-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                      <Calculator className="h-4 w-4" />
+                    </div>
+                    <ArrowUpRight className="h-4 w-4 text-slate-300 group-hover:text-slate-900 transition-colors" />
                   </div>
-                </div>
-              </Link>
+                  <h3 className="font-semibold text-slate-900 text-sm mb-1">{converter.title}</h3>
+                  <p className="text-xs text-slate-500 line-clamp-2">{converter.description}</p>
+                </Link>
+              )
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="section-pro border-b border-slate-200">
+      {/* Features Section */}
+      <section className="py-24 bg-white border-y border-slate-100">
+        <div className="container-pro text-center mb-16">
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">Built to Be the Best</h2>
+          <p className="text-slate-500 max-w-2xl mx-auto">
+            We obsess over accuracy, speed, and design so you can focus on what matters. Trusted by engineers, students, and professionals in 150+ countries.
+          </p>
+        </div>
+        
         <div className="container-pro">
-          <div className="text-center mb-12">
-            <h2 className="heading-section mb-2">Built Different</h2>
-            <p className="text-muted-pro max-w-md mx-auto">
-              We obsess over accuracy, speed, and design so you can focus on what matters.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {FEATURES.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="p-6 border border-slate-200 rounded-lg bg-white">
-                <div className="h-10 w-10 bg-slate-100 rounded-md flex items-center justify-center mb-4">
-                  <Icon className="h-5 w-5 text-slate-600" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {FEATURES.map((feature) => (
+              <div key={feature.title} className="text-center">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 mb-6">
+                  <feature.icon className="h-6 w-6" />
                 </div>
-                <h3 className="font-semibold text-slate-900 mb-2">{title}</h3>
-                <p className="text-sm text-slate-500">{desc}</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Recently Added + Quick Jump */}
-      <section className="section-pro border-b border-slate-200 bg-slate-50">
-        <div className="container-pro">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Recently Added */}
-            <div className="lg:col-span-2">
-              <div className="bg-white border border-slate-200 rounded-lg p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="heading-subsection">Recently Added</h3>
-                  <span className="badge-pro">New</span>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {latestConverters.map((converter) => (
-                    <Link
-                      key={converter.id}
-                      href={`/${converter.category}/${converter.metadata.slug}`}
-                      className="flex items-center justify-between p-3 border border-slate-200 rounded-md hover:border-slate-300 hover:bg-slate-50 transition-colors"
-                    >
-                      <div>
-                        <p className="font-medium text-slate-900">{converter.title}</p>
-                        <p className="text-xs text-slate-500 capitalize">{converter.category}</p>
-                      </div>
-                      <ChevronRight className="h-4 w-4 text-slate-400" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Navigation */}
-            <div>
-              <div className="bg-white border border-slate-200 rounded-lg p-6">
-                <h3 className="heading-subsection mb-4">Quick Jump</h3>
-                <div className="space-y-1">
-                  {categories.map((cat) => (
-                    <Link
-                      key={cat.id}
-                      href={`/${cat.slug}`}
-                      className="flex items-center justify-between px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md transition-colors"
-                    >
-                      <span>{cat.name}</span>
-                      <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="section-pro">
+      <section className="py-20 bg-slate-900">
         <div className="container-pro">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-semibold text-slate-900 mb-4">Ready to Convert?</h2>
-            <p className="text-slate-500 mb-8">
-              Join millions of users who rely on Convertaro for fast, accurate conversions.
+          <div className="bg-blue-600 rounded-[40px] p-8 md:p-16 relative overflow-hidden text-center">
+            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 relative z-10">
+              Start Converting Now
+            </h2>
+            <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
+              Join millions of users who rely on Convertaro for fast, accurate unit conversions every single day. Always free, forever.
             </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Link href="/length/cm-to-inches" className="btn-pro">
-                Try cm to inches
-              </Link>
-              <Link href="/weight/kg-to-lbs" className="btn-pro-secondary">
-                Try kg to lbs
-              </Link>
+            <div className="flex flex-wrap justify-center gap-6 text-white/80 text-sm relative z-10">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-5 w-5 text-blue-200" />
+                No signup required
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-5 w-5 text-blue-200" />
+                Verified formulas
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-5 w-5 text-blue-200" />
+                Works offline
+              </div>
             </div>
           </div>
         </div>

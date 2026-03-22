@@ -1,20 +1,12 @@
+import type { Metadata } from "next";
+
 // Enhanced SEO Configuration with Long-Tail Keywords Strategy
 // Long-tail keywords are less competitive and have higher conversion rates
 
 export const SITE_URL = "https://convertaro.com";
 
-export type RobotsConfig = {
-  index: boolean;
-  follow: boolean;
-  nocache?: boolean;
-  googleBot?: {
-    index: boolean;
-    follow: boolean;
-    "max-video-preview"?: number;
-    "max-image-preview"?: string;
-    "max-snippet"?: number;
-  };
-};
+
+
 
 export function normalizePath(path: string): string {
   if (!path || path === "/") return "";
@@ -34,7 +26,7 @@ export function converterCanonical(category: string, converter: string): string 
   return canonicalFromPath(`/${category}/${converter}`);
 }
 
-export const INDEXABLE_ROBOTS: RobotsConfig = {
+export const INDEXABLE_ROBOTS: NonNullable<Metadata["robots"]> = {
   index: true,
   follow: true,
   nocache: false,

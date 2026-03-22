@@ -67,7 +67,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-// FAQ data for each category
 const CATEGORY_FAQS: Record<string, { question: string; answer: string }[]> = {
   length: [
     {
@@ -112,7 +111,6 @@ export default async function CategoryPage({ params }: PageProps) {
   const categoryConverters = converters.filter((c) => c.category === slug);
   const faqs = CATEGORY_FAQS[slug] || [];
 
-  // Schema data
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://convertaro.com" },
     { name: `${category.name} Converters`, url: `https://convertaro.com/${slug}` },
@@ -156,7 +154,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
           <div className="space-y-8">
-            {/* Hero */}
+            {/* Hero Section */}
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-6 md:p-8">
               <div className="flex items-center gap-2 mb-4">
                 <span className="badge-pro-primary">{categoryConverters.length} Free Tools</span>
