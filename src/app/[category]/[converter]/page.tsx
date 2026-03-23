@@ -9,6 +9,7 @@ import { ConverterContentSections } from "@/components/converter/ConverterConten
 import Link from "next/link";
 import { ChevronRight, Calculator, Lightbulb, Table, ArrowLeftRight } from "lucide-react";
 import {
+  buildConverterHeading,
   buildWebPageSchema,
   converterCanonical,
   generateBreadcrumbSchemaFromPaths,
@@ -91,6 +92,12 @@ export default async function ConverterPage({ params }: PageProps) {
   const conversionSteps = getConversionSteps(converter);
   const trustMetadata = getConverterTrustMetadata(converter, category);
   const staticValuePages = getStaticValuePagesForConverter(categorySlug, converter.metadata.slug);
+  const displayTitle = buildConverterHeading(converter.fromUnit, converter.toUnit);
+  const formattedLastUpdated = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(converter.metadata.lastUpdated));
 
   // Schema markup
   const pageFaqSchema = generateFAQSchema(pageFaq.map((item) => ({
@@ -175,14 +182,14 @@ export default async function ConverterPage({ params }: PageProps) {
             items={[
               { label: "Home", href: "/" },
               { label: category.name, href: `/${categorySlug}` },
-              { label: converter.title },
+              { label: displayTitle },
             ]}
           />
 
           <div className="flex items-center gap-2 mb-2">
             <span className="badge-pro uppercase">{category.name} Converter</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-2">{converter.title}</h1>
+          <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-2">{displayTitle}</h1>
           <p className="text-sm font-medium uppercase tracking-[0.18em] text-slate-500 mb-3">{introContent.eyebrow}</p>
           <div className="max-w-3xl space-y-2 text-slate-600">
             <p>{introContent.summary}</p>
@@ -325,7 +332,12 @@ export default async function ConverterPage({ params }: PageProps) {
               contextualLinks={contextualLinks}
             />
 
-            <TrustMetadataBlock metadata={trustMetadata} title="Trust and editorial review" />
+            <div className="space-y-3">
+              <TrustMetadataBlock metadata={trustMetadata} title="Trust and editorial review" />
+              <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+                <span className="font-medium text-slate-900">Last updated:</span> {formattedLastUpdated}
+              </div>
+            </div>
 
             {/* Related Converters */}
             {relatedRecommendations.length > 0 && (

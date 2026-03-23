@@ -60,6 +60,10 @@ function capitalizeUnitLabel(unit: string): string {
   return /^[A-Z0-9]+$/.test(unit) ? unit : `${unit.charAt(0).toUpperCase()}${unit.slice(1)}`;
 }
 
+export function buildConverterHeading(fromUnit: string, toUnit: string): string {
+  return `${fromUnit} to ${capitalizeUnitLabel(toUnit)} Converter`;
+}
+
 function compactFormula(formula: string): string {
   return formula.replace(/(\d+\.\d{4})\d+/g, "$1");
 }

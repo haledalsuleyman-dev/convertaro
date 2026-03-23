@@ -6,6 +6,7 @@ import { SITE_URL } from "@/lib/seo";
 import { canonicalConverters, getCanonicalConverterById } from "@/lib/converter-routing";
 import { generateStaticParams as generateValuePageStaticParams } from "@/app/[category]/[converter]/[value]/page";
 import { STATIC_VALUE_PAGE_PARAMS } from "@/lib/value-pages";
+import { guides } from "@/lib/guides";
 
 const converters = canonicalConverters;
 const BASE_URL = SITE_URL;
@@ -51,6 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/terms", changeFrequency: "yearly" as const, priority: 0.4 },
     { path: "/calculators", changeFrequency: "weekly" as const, priority: 0.85 },
     { path: "/popular-conversion-tools", changeFrequency: "weekly" as const, priority: 0.85 },
+    { path: "/guides", changeFrequency: "weekly" as const, priority: 0.8 },
   ];
 
   staticPages.forEach((page) => {
@@ -103,6 +105,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   });
 
+  guides.forEach((guide) => {
+    routes.push({
+      url: `${BASE_URL}/guides/${guide.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    });
+  });
+
   valuePageParams.forEach((entry) => {
     routes.push({
       url: `${BASE_URL}/${entry.category}/${entry.converter}/${entry.value}`,
@@ -126,7 +137,8 @@ export function getAllPageUrls(): string[] {
     `${BASE_URL}/privacy`,
     `${BASE_URL}/terms`,
     `${BASE_URL}/calculators`,
-    `${BASE_URL}/popular-conversion-tools`
+    `${BASE_URL}/popular-conversion-tools`,
+    `${BASE_URL}/guides`
   );
 
   // Calculator pages
@@ -147,6 +159,10 @@ export function getAllPageUrls(): string[] {
   // Converter pages
   converters.forEach((conv) => {
     urls.push(`${BASE_URL}/${conv.category}/${conv.metadata.slug}`);
+  });
+
+  guides.forEach((guide) => {
+    urls.push(`${BASE_URL}/guides/${guide.slug}`);
   });
 
   STATIC_VALUE_PAGE_PARAMS.forEach((entry) => {
@@ -185,7 +201,7 @@ export function getHighPriorityUrls(): string[] {
 export function getSiteStats() {
   return {
     totalPages: getAllPageUrls().length,
-    staticPages: 6,
+    staticPages: 7 + guides.length,
     categoryPages: categories.length,
     calculatorPages: calculators.length + calculatorCategories.length,
     converterPages: converters.length + STATIC_VALUE_PAGE_PARAMS.length,
