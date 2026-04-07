@@ -12,6 +12,7 @@ import {
   buildConverterHeading,
   buildWebPageSchema,
   converterCanonical,
+  formatUnitLabel,
   generateBreadcrumbSchemaFromPaths,
   generateFAQSchema,
   generateHowToSchema,
@@ -286,7 +287,7 @@ export default async function ConverterPage({ params }: PageProps) {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="font-semibold text-slate-900">
-                    {converter.fromUnit} → {converter.toUnit} Table
+                    {formatUnitLabel(converter.fromUnit)} → {formatUnitLabel(converter.toUnit)} Table
                   </h2>
                   <p className="text-sm text-slate-500">Common reference values</p>
                 </div>

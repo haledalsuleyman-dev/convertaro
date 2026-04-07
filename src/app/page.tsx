@@ -45,9 +45,9 @@ import {
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Free Online Unit Converter - 500+ Accurate Tools",
+  title: "Free Unit Converter & Conversion Calculator - 500+ Tools",
   description:
-    "Convert any unit instantly with Convertaro. 500+ free converters for length, weight, temperature, volume, speed, data & more. Fast, accurate, no signup.",
+    "Convert units instantly with Convertaro. 500+ free converters with formulas, reverse conversions, tables, and fast tools for length, weight, temperature, volume, speed, data, and more.",
   robots: INDEXABLE_ROBOTS,
   keywords: [
     "free unit converter",
@@ -64,13 +64,13 @@ export const metadata: Metadata = {
   ],
   alternates: buildAlternates("/"),
   openGraph: buildOpenGraph({
-    title: "Free Online Unit Converter - 500+ Accurate Tools | Convertaro",
-    description: "Convert any unit instantly. 500+ free converters for length, weight, temperature, volume, speed & more.",
+    title: "Free Unit Converter & Conversion Calculator - 500+ Tools | Convertaro",
+    description: "Convert units instantly with formulas, reverse conversions, and tables across 500+ free tools.",
     path: "/",
   }),
   twitter: buildTwitter(
-    "Free Online Unit Converter - 500+ Accurate Tools | Convertaro",
-    "Convert any unit instantly. 500+ free converters for length, weight, temperature, volume, speed, data and more."
+    "Free Unit Converter & Conversion Calculator - 500+ Tools | Convertaro",
+    "Convert units instantly with formulas, reverse conversions, and tables across 500+ free tools."
   ),
 };
 
@@ -96,6 +96,10 @@ const QUICK_LINKS = [
   { href: "/data/megabytes-to-gigabytes", label: "MB → GB" },
   { href: "/volume/liters-to-gallons", label: "L → gallons" },
   { href: "/weight/lbs-to-kg", label: "lbs → kg" },
+  { href: "/length/feet-to-inches", label: "ft → in" },
+  { href: "/volume/gallons-to-liters", label: "gallons → L" },
+  { href: "/data/gigabytes-to-megabytes", label: "GB → MB" },
+  { href: "/temperature/fahrenheit-to-celsius", label: "°F → °C" },
 ];
 
 const CANONICAL_QUICK_LINKS = QUICK_LINKS.map((link) => ({
@@ -132,6 +136,14 @@ const POPULAR_TOOL_EXAMPLES: Record<string, { example: string; note: string }> =
     example: "25 C = 77 F",
     note: "Helpful for weather, cooking, and travel.",
   },
+  "liters-to-gallons": {
+    example: "10 L = 2.64 gal",
+    note: "Useful for fuel, water storage, and container planning.",
+  },
+  "megabytes-to-gigabytes": {
+    example: "1024 MB = 1 GB",
+    note: "Helpful for file sizes, storage plans, and downloads.",
+  },
   "km-h-to-mph": {
     example: "100 km/h = 62.14 mph",
     note: "Good for driving, road trips, and speed checks.",
@@ -147,7 +159,14 @@ const POPULAR_TOOL_EXAMPLES: Record<string, { example: string; note: string }> =
 };
 
 export default function Home() {
-  const popularConverters = ["cm-to-inches", "kg-to-lbs", "celsius-to-fahrenheit", "kmh-to-mph"]
+  const popularConverters = [
+    "cm-to-inches",
+    "kg-to-lbs",
+    "celsius-to-fahrenheit",
+    "kmh-to-mph",
+    "liters-to-gallons",
+    "megabytes-to-gigabytes",
+  ]
     .map((id) => getCanonicalConverterById(id))
     .filter(Boolean) as Converter[];
 
@@ -199,21 +218,21 @@ export default function Home() {
           </div>
 
           <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight md:text-6xl md:leading-[1.1]">
-            Convert with confidence.
+            Free unit converter
             <span className="block bg-gradient-to-r from-slate-950 via-slate-800 to-slate-600 bg-clip-text text-transparent">
-              Fast, precise, and effortless.
+              with formulas, tables, and fast results.
             </span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-base text-slate-600 md:text-lg leading-relaxed">
-            Convertaro gives you a cleaner way to handle unit conversion. Search quickly, browse familiar categories, and open pages with formulas, examples, and reference tables when you need more detail.
+            Convertaro helps you convert length, weight, temperature, volume, speed, data, and more in seconds. Search quickly, browse familiar categories, and open pages with formulas, reverse conversions, examples, and reference tables when you need more detail.
           </p>
 
           <div className="mx-auto mt-10 max-w-2xl rounded-[28px] border border-white/90 bg-white/55 p-3 shadow-[0_26px_60px_-38px_rgba(15,23,42,0.16)] backdrop-blur-xl animate-fade-in sm:p-4">
             <SearchTool placeholder="Search conversions..." />
             <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm text-slate-600">
               <span className="text-slate-500">Popular searches:</span>
-              {CANONICAL_QUICK_LINKS.slice(0, 4).map((link) => (
+               {CANONICAL_QUICK_LINKS.slice(0, 8).map((link) => (
                 <Link key={link.href} href={link.href} className="rounded-full border border-slate-200/80 bg-white/90 px-3 py-1 text-slate-700 hover:border-slate-400 hover:bg-slate-50 transition-colors">
                   {link.label}
                 </Link>

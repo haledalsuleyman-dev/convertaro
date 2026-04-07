@@ -23,6 +23,7 @@ import {
   getCategoryHubSections,
   getCategorySupportLinks,
 } from "@/lib/internal-linking";
+import { getTopCategoryContent, isTopCategory } from "@/lib/priority-pages";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -51,10 +52,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const count = converters.filter((c) => c.category === slug).length;
   const longTailKeywords = getCategoryLongTailKeywords(category.name, category.slug);
+  const topCategoryContent = getTopCategoryContent(slug);
+  const title = topCategoryContent?.title ?? `${category.name} Converters - ${count} Free Online Tools`;
+  const description =
+    topCategoryContent?.description ??
+    `${category.description} Browse all ${count} free ${category.name.toLowerCase()} converters. Instant results, accurate formulas, and reference tables for every ${category.name.toLowerCase()} unit conversion.`;
 
   return {
-    title: `${category.name} Converters - ${count} Free Online Tools`,
-    description: `${category.description} Browse all ${count} free ${category.name.toLowerCase()} converters. Instant results, accurate formulas, and reference tables for every ${category.name.toLowerCase()} unit conversion.`,
+    title,
+    description,
     robots: INDEXABLE_ROBOTS,
     keywords: [
       `${category.name.toLowerCase()} converter`,
@@ -69,13 +75,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ],
     alternates: buildAlternates(`/${slug}`),
     openGraph: buildOpenGraph({
-      title: `${category.name} Converters - ${count} Free Online Tools | Convertaro`,
-      description: `${category.description} ${count} free, accurate ${category.name.toLowerCase()} conversion tools.`,
+      title: `${title} | Convertaro`,
+      description,
       path: `/${slug}`,
     }),
     twitter: buildTwitter(
-      `${category.name} Converters - ${count} Free Online Tools | Convertaro`,
-      `${category.description} ${count} free, accurate ${category.name.toLowerCase()} conversion tools.`
+      `${title} | Convertaro`,
+      description
     ),
   };
 }
@@ -128,6 +134,7 @@ export default async function CategoryPage({ params }: PageProps) {
   const supportLinks = getCategorySupportLinks(category, converters);
   const relevantCalculators = getCategoryCalculatorLinks(slug);
   const faqs = CATEGORY_FAQS[slug] || [];
+  const topCategoryContent = getTopCategoryContent(slug);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://convertaro.com" },
@@ -186,7 +193,12 @@ export default async function CategoryPage({ params }: PageProps) {
               <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-3">
                 {category.name} Converters
               </h1>
-              <p className="text-slate-500 text-lg max-w-3xl">{hubIntro.summary}</p>
+              <div className="max-w-3xl space-y-3">
+                <p className="text-slate-500 text-lg">{hubIntro.summary}</p>
+                {isTopCategory(slug) ? (
+                  <p className="text-sm leading-6 text-slate-600">{topCategoryContent?.lead}</p>
+                ) : null}
+              </div>
 
               <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
                 {hubIntro.actions.map((action) => (

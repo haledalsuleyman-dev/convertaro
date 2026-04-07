@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { Converter } from "@/types/converter";
 import { formatValue } from "@/lib/converter";
 import { getStaticValuePageHref } from "@/lib/value-pages";
+import { formatUnitLabel } from "@/lib/seo";
 
 interface ConversionTableProps {
   converter: Converter;
@@ -29,6 +30,8 @@ function formatFeetAndInches(cm: number): string {
 export function ConversionTable({ converter }: ConversionTableProps) {
   const [expanded, setExpanded] = useState(false);
   const isCmToInches = converter.fromUnit === "cm" && converter.toUnit === "inches";
+  const fromLabel = formatUnitLabel(converter.fromUnit);
+  const toLabel = formatUnitLabel(converter.toUnit);
   const visibleExamples = useMemo(
     () => (expanded ? converter.examples : converter.examples.slice(0, DEFAULT_VISIBLE_ROWS)),
     [converter.examples, expanded]
@@ -41,13 +44,13 @@ export function ConversionTable({ converter }: ConversionTableProps) {
         <div className="overflow-x-auto">
           <table className="min-w-full border-separate border-spacing-0 text-left">
             <caption className="border-b border-slate-200 bg-slate-50/80 px-4 py-3 text-left text-sm text-slate-500 sm:px-6">
-              Quick reference values for common {converter.fromUnit} to {converter.toUnit} conversions.
+              Quick reference values for common {fromLabel} to {toLabel} conversions.
               {hasMoreRows ? ` Showing ${visibleExamples.length} of ${converter.examples.length} values.` : ""}
             </caption>
             <thead>
               <tr className="bg-slate-900 text-white">
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] sm:px-6">{converter.fromUnit}</th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] sm:px-6">{converter.toUnit}</th>
+                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] sm:px-6">{fromLabel}</th>
+                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] sm:px-6">{toLabel}</th>
                 {isCmToInches ? (
                   <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] sm:px-6">Feet & inches</th>
                 ) : null}
@@ -61,7 +64,7 @@ export function ConversionTable({ converter }: ConversionTableProps) {
                   <tr key={`${example.input}-${example.output}-${index}`} className="border-t border-slate-200 odd:bg-white even:bg-slate-50/70 hover:bg-sky-50/60">
                     <td className="border-t border-slate-200 px-4 py-3 align-top sm:px-6">
                       <div className="flex flex-col gap-1">
-                        <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400 sm:hidden">{converter.fromUnit}</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400 sm:hidden">{fromLabel}</span>
                         {valuePageHref ? (
                           <Link
                             href={valuePageHref}
@@ -79,9 +82,9 @@ export function ConversionTable({ converter }: ConversionTableProps) {
                     </td>
                     <td className="border-t border-slate-200 px-4 py-3 align-top sm:px-6">
                       <div className="flex flex-col gap-1">
-                        <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400 sm:hidden">{converter.toUnit}</span>
+                        <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400 sm:hidden">{toLabel}</span>
                         <span className="inline-flex w-fit rounded-full bg-sky-100 px-3 py-1 text-sm font-semibold text-sky-900">
-                          {formatValue(example.output)} {converter.toUnit}
+                          {formatValue(example.output)} {toLabel}
                         </span>
                       </div>
                     </td>

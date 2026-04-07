@@ -56,12 +56,75 @@ interface PageMetadataInput {
   type?: "website" | "article";
 }
 
-function capitalizeUnitLabel(unit: string): string {
-  return /^[A-Z0-9]+$/.test(unit) ? unit : `${unit.charAt(0).toUpperCase()}${unit.slice(1)}`;
+const SEO_UNIT_LABELS: Record<string, string> = {
+  cm: "centimeters",
+  mm: "millimeters",
+  m: "meters",
+  km: "kilometers",
+  inches: "inches",
+  feet: "feet",
+  yards: "yards",
+  miles: "miles",
+  nmi: "nautical miles",
+  kg: "kilograms",
+  g: "grams",
+  mg: "milligrams",
+  lbs: "pounds",
+  oz: "ounces",
+  t: "metric tons",
+  st: "stones",
+  C: "Celsius",
+  F: "Fahrenheit",
+  K: "Kelvin",
+  L: "liters",
+  ml: "milliliters",
+  gal: "US gallons",
+  cups: "cups",
+  pt: "pints",
+  qt: "quarts",
+  floz: "fluid ounces",
+  sec: "seconds",
+  min: "minutes",
+  hr: "hours",
+  day: "days",
+  week: "weeks",
+  month: "months",
+  year: "years",
+  B: "bytes",
+  KB: "KB",
+  MB: "MB",
+  GB: "GB",
+  TB: "TB",
+  bits: "bits",
+  sqm: "square meters",
+  sqft: "square feet",
+  acres: "acres",
+  hectares: "hectares",
+  sqkm: "square kilometers",
+  sqmi: "square miles",
+  kmh: "km/h",
+  mph: "mph",
+  ms: "m/s",
+  knots: "knots",
+  mach: "Mach",
+  J: "joules",
+  cal: "calories",
+  kWh: "kWh",
+  eV: "electronvolts",
+  btu: "BTU",
+  Pa: "pascals",
+  bar: "bar",
+  psi: "PSI",
+  atm: "atmospheres",
+  torr: "torr",
+};
+
+export function formatUnitLabel(unit: string): string {
+  return SEO_UNIT_LABELS[unit] ?? (/^[A-Z0-9/]+$/.test(unit) ? unit : `${unit.charAt(0).toUpperCase()}${unit.slice(1)}`);
 }
 
 export function buildConverterHeading(fromUnit: string, toUnit: string): string {
-  return `${fromUnit} to ${capitalizeUnitLabel(toUnit)} Converter`;
+  return `${formatUnitLabel(fromUnit)} to ${formatUnitLabel(toUnit)} Converter`;
 }
 
 function compactFormula(formula: string): string {
@@ -69,18 +132,22 @@ function compactFormula(formula: string): string {
 }
 
 export function buildConverterMetaTitle(fromUnit: string, toUnit: string): string {
+  const fromLabel = formatUnitLabel(fromUnit);
+  const toLabel = formatUnitLabel(toUnit);
   const candidates = [
-    `${fromUnit} to ${capitalizeUnitLabel(toUnit)} – Free Online Converter`,
-    `${fromUnit} to ${capitalizeUnitLabel(toUnit)} – Free Converter`,
-    `${fromUnit} to ${capitalizeUnitLabel(toUnit)} Converter`,
+    `${fromLabel} to ${toLabel} - Free Online Converter`,
+    `${fromLabel} to ${toLabel} - Free Converter`,
+    `${fromLabel} to ${toLabel} Converter`,
   ];
 
   return candidates.find((candidate) => withSiteName(candidate).length <= 60) ?? candidates[candidates.length - 1];
 }
 
 export function buildConverterMetaDescription(fromUnit: string, toUnit: string, formula: string): string {
+  const fromLabel = formatUnitLabel(fromUnit);
+  const toLabel = formatUnitLabel(toUnit);
   return cleanMetaDescription(
-    `Convert ${fromUnit} to ${toUnit} instantly. Formula: ${compactFormula(formula)}. Free, accurate, no sign-up needed. Try Convertaro now for fast results.`,
+    `Convert ${fromLabel} to ${toLabel} instantly. Formula: ${compactFormula(formula)}. Free, accurate, no sign-up needed. Try Convertaro now for fast results.`,
     155
   );
 }

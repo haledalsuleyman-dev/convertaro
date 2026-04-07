@@ -77,8 +77,8 @@ const CATEGORY_FEATURED_SLUGS: Record<string, string[]> = {
   weight: ["kilograms-to-pounds", "pounds-to-kilograms", "grams-to-ounces"],
   temperature: ["celsius-to-fahrenheit", "fahrenheit-to-celsius", "celsius-to-kelvin"],
   volume: ["cups-to-grams", "grams-to-cups", "floz-to-ml", "cups-to-ml", "milliliters-to-cups"],
-  speed: ["mph-to-kmh", "kilometers-per-hour-to-miles-per-hour", "knots-to-mph"],
-  data: ["mb-to-gb", "gb-to-mb", "gigabytes-to-terabytes"],
+  speed: ["mph-to-km-h", "km-h-to-mph", "knots-to-mph"],
+  data: ["megabytes-to-gigabytes", "gigabytes-to-megabytes", "gigabytes-to-terabytes"],
 };
 
 const CATEGORY_HUB_CONFIG: Record<string, CategoryHubConfig> = {
@@ -256,7 +256,7 @@ const CATEGORY_HUB_CONFIG: Record<string, CategoryHubConfig> = {
       {
         title: "Driving and Travel",
         description: "The most common speed conversions for road signs, vehicles, and route planning.",
-        converterSlugs: ["mph-to-kmh", "kilometers-per-hour-to-miles-per-hour"],
+        converterSlugs: ["mph-to-km-h", "km-h-to-mph"],
       },
       {
         title: "Marine Speed",

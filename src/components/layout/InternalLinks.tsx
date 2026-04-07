@@ -6,11 +6,15 @@ import { canonicalConvertersByCategory, canonicalizeConverterHref } from "@/lib/
 import { getCategoryCalculatorLinks, getRelevantCalculatorLinks } from "@/lib/internal-linking";
 const POPULAR_TOOLS = [
   { href: "/length/cm-to-inches", label: "cm to inches", category: "Length" },
+  { href: "/length/feet-to-inches", label: "feet to inches", category: "Length" },
   { href: "/weight/kg-to-lbs", label: "kg to lbs", category: "Weight" },
+  { href: "/weight/lbs-to-kg", label: "lbs to kg", category: "Weight" },
   { href: "/temperature/celsius-to-fahrenheit", label: "°C to °F", category: "Temperature" },
   { href: "/speed/mph-to-kmh", label: "mph to km/h", category: "Speed" },
   { href: "/data/megabytes-to-gigabytes", label: "MB to GB", category: "Data" },
+  { href: "/data/gigabytes-to-megabytes", label: "GB to MB", category: "Data" },
   { href: "/volume/liters-to-gallons", label: "liters to gallons", category: "Volume" },
+  { href: "/volume/gallons-to-liters", label: "gallons to liters", category: "Volume" },
 ].map((tool) => ({ ...tool, href: canonicalizeConverterHref(tool.href) }));
 
 const STATIC_PAGE_LINKS = [
@@ -166,7 +170,7 @@ export function SEOLinksSection() {
   return (
     <section className="border-t border-slate-200 pt-8 mt-8">
       <h2 className="text-lg font-semibold text-slate-900 mb-4">Quick Links</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
         <div>
           <h3 className="text-sm font-medium text-slate-900 mb-2">Length</h3>
           <ul className="space-y-1">
@@ -189,6 +193,30 @@ export function SEOLinksSection() {
             <li><Link href={canonicalizeConverterHref("/temperature/celsius-to-fahrenheit")} className="text-sm text-slate-500 hover:text-slate-900">°C to °F</Link></li>
             <li><Link href={canonicalizeConverterHref("/temperature/fahrenheit-to-celsius")} className="text-sm text-slate-500 hover:text-slate-900">°F to °C</Link></li>
             <li><Link href={canonicalizeConverterHref("/temperature/celsius-to-kelvin")} className="text-sm text-slate-500 hover:text-slate-900">°C to K</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-sm font-medium text-slate-900 mb-2">Volume</h3>
+          <ul className="space-y-1">
+            <li><Link href={canonicalizeConverterHref("/volume/liters-to-gallons")} className="text-sm text-slate-500 hover:text-slate-900">liters to gallons</Link></li>
+            <li><Link href={canonicalizeConverterHref("/volume/gallons-to-liters")} className="text-sm text-slate-500 hover:text-slate-900">gallons to liters</Link></li>
+            <li><Link href={canonicalizeConverterHref("/volume/milliliters-to-cups")} className="text-sm text-slate-500 hover:text-slate-900">mL to cups</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-sm font-medium text-slate-900 mb-2">Speed</h3>
+          <ul className="space-y-1">
+            <li><Link href={canonicalizeConverterHref("/speed/mph-to-kmh")} className="text-sm text-slate-500 hover:text-slate-900">mph to km/h</Link></li>
+            <li><Link href={canonicalizeConverterHref("/speed/kmh-to-mph")} className="text-sm text-slate-500 hover:text-slate-900">km/h to mph</Link></li>
+            <li><Link href={canonicalizeConverterHref("/speed/knots-to-mph")} className="text-sm text-slate-500 hover:text-slate-900">knots to mph</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-sm font-medium text-slate-900 mb-2">Data</h3>
+          <ul className="space-y-1">
+            <li><Link href={canonicalizeConverterHref("/data/megabytes-to-gigabytes")} className="text-sm text-slate-500 hover:text-slate-900">MB to GB</Link></li>
+            <li><Link href={canonicalizeConverterHref("/data/gigabytes-to-megabytes")} className="text-sm text-slate-500 hover:text-slate-900">GB to MB</Link></li>
+            <li><Link href={canonicalizeConverterHref("/data/gigabytes-to-terabytes")} className="text-sm text-slate-500 hover:text-slate-900">GB to TB</Link></li>
           </ul>
         </div>
         <div>

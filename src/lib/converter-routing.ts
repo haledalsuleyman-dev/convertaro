@@ -1,5 +1,6 @@
 import convertersData from "@/data/converters.json";
 import { Converter } from "@/types/converter";
+import { mergePriorityConverterData } from "@/lib/priority-pages";
 
 type RouteResolution = {
   requestedConverter?: Converter;
@@ -39,10 +40,10 @@ const canonicalBySlug = new Map<string, Converter>();
 const canonicalById = new Map<string, Converter>();
 const aliasToCanonicalSlug = new Map<string, string>();
 
-function getDisplayConverter(converter: Converter): Converter {
+function buildDisplayConverter(converter: Converter): Converter {
   const group = groupedConverters.get(groupKey(converter));
   if (!group || group.length === 0) {
-    return converter;
+    return mergePriorityConverterData(converter);
   }
 
   const richestExamples = group.reduce((best, current) =>
@@ -55,12 +56,12 @@ function getDisplayConverter(converter: Converter): Converter {
     current.relatedConverters.length > best.relatedConverters.length ? current : best
   );
 
-  return {
+  return mergePriorityConverterData({
     ...converter,
     examples: richestExamples.examples,
     faq: richestFaq.faq,
     relatedConverters: richestRelated.relatedConverters,
-  };
+  });
 }
 
 for (const converter of allConverters) {
@@ -91,6 +92,12 @@ for (const [key, group] of groupedConverters) {
 export const canonicalConverters: Converter[] = allConverters.filter(
   (converter) => canonicalByKey.get(groupKey(converter))?.id === converter.id
 );
+
+const displayByKey = new Map<string, Converter>();
+
+for (const converter of canonicalConverters) {
+  displayByKey.set(groupKey(converter), buildDisplayConverter(converter));
+}
 
 export const canonicalConvertersByCategory = new Map<string, Converter[]>();
 export const canonicalConverterCountByCategory = new Map<string, number>();
@@ -131,7 +138,8 @@ export function resolveConverterRoute(category: string, slug: string): RouteReso
     };
   }
 
-  const canonicalConverter = getDisplayConverter(getCanonicalConverter(requestedConverter));
+  const canonicalBase = getCanonicalConverter(requestedConverter);
+  const canonicalConverter = displayByKey.get(groupKey(canonicalBase)) ?? buildDisplayConverter(canonicalBase);
 
   return {
     requestedConverter,

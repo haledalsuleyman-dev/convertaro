@@ -7,6 +7,7 @@ import {
   buildPageMetadata,
   getConverterLongTailKeywords,
 } from "@/lib/seo";
+import { getPriorityConverterContent } from "@/lib/priority-pages";
 
 const CALCULATOR_ENDINGS: Partial<Record<CalculatorDefinition["category"], string>> = {
   finance: "Useful for planning and comparison.",
@@ -20,7 +21,8 @@ function buildConverterTitle(converter: Converter): string {
 }
 
 function buildConverterDescription(converter: Converter, _category: Category): string {
-  return buildConverterMetaDescription(converter.fromUnit, converter.toUnit, converter.formula);
+  const priority = getPriorityConverterContent(converter);
+  return priority?.metaDescription ?? buildConverterMetaDescription(converter.fromUnit, converter.toUnit, converter.formula);
 }
 
 function buildCalculatorTitle(calculator: CalculatorDefinition): string {

@@ -1,6 +1,7 @@
 import { Category, Converter, FAQItem } from "@/types/converter";
 import { dedupeCanonicalConverters, getCanonicalConverter, getCanonicalConverterById } from "@/lib/converter-routing";
 import { getStrategicRelatedConverters } from "@/lib/internal-linking";
+import { getPriorityConverterContent } from "@/lib/priority-pages";
 
 type LinkRecommendation = {
   converter: Converter;
@@ -248,12 +249,15 @@ function compactNumber(value: number): string {
   return Number(value.toFixed(6)).toString();
 }
 
-function parseFormula(converter: Converter): { factor?: number; isDirect: boolean } {
-  const match = converter.formula.match(/=\s*[^=]+\s*[×x*]\s*([-+]?\d*\.?\d+(?:e[-+]?\d+)?)/i);
+function parseFormula(converter: Converter): { factor?: number; isDirect: boolean; operation?: "multiply" | "divide" } {
+  const expression = converter.formula.split("=")[1] ?? "";
+  const multiplyMatch = expression.match(/[×x*]\s*([-+]?\d*\.?\d+(?:e[-+]?\d+)?)/i);
+  const divideMatch = expression.match(/[÷/]\s*([-+]?\d*\.?\d+(?:e[-+]?\d+)?)/i);
 
   return {
-    factor: match ? Number(match[1]) : undefined,
-    isDirect: !/[+-]\s*\d/.test(converter.formula.split("=")[1] ?? ""),
+    factor: multiplyMatch ? Number(multiplyMatch[1]) : divideMatch ? Number(divideMatch[1]) : undefined,
+    operation: multiplyMatch ? "multiply" : divideMatch ? "divide" : undefined,
+    isDirect: !/[+-]\s*\d/.test(expression),
   };
 }
 
@@ -295,6 +299,7 @@ export function getIntroContent(
 ): IntroContent {
   const from = unitName(converter.fromUnit);
   const to = unitName(converter.toUnit);
+  const priority = getPriorityConverterContent(converter);
   const links: ContentLink[] = [];
 
   if (reverseConverter) {
@@ -313,16 +318,20 @@ export function getIntroContent(
 
   return {
     eyebrow: `${from} to ${to} converter`,
-    summary: SPECIAL_CONVERTER_SUMMARIES[converter.id] ?? `Convert ${from} to ${to} instantly with the formula, clear examples, and a quick reference table for common values.`,
-    intent: selectContextualSentence(category),
+    summary:
+      priority?.summary ??
+      SPECIAL_CONVERTER_SUMMARIES[converter.id] ??
+      `Convert ${from} to ${to} instantly with the formula, clear examples, and a quick reference table for common values.`,
+    intent: priority?.intent ?? selectContextualSentence(category),
     links,
   };
 }
 
 export function getFormulaContent(converter: Converter): FormulaContent {
-  const { factor, isDirect } = parseFormula(converter);
+  const { factor, isDirect, operation } = parseFormula(converter);
   const from = unitName(converter.fromUnit);
   const to = unitName(converter.toUnit);
+  const priority = getPriorityConverterContent(converter);
 
   if (converter.category === "temperature") {
     return {
@@ -341,16 +350,25 @@ export function getFormulaContent(converter: Converter): FormulaContent {
   }
 
   if (factor !== undefined && isDirect) {
+    const explanation = operation === "divide"
+      ? `Take the value in ${from}, divide it by ${compactNumber(factor)}, and the result is the same amount in ${to}.`
+      : `Take the value in ${from}, multiply it by ${compactNumber(factor)}, and the result is the same amount in ${to}.`;
+    const note = operation === "divide"
+      ? `This works because ${compactNumber(factor)} ${from} equal 1 ${to}. Keep extra decimals if you need higher precision.`
+      : `This works because each ${converter.fromUnit} equals ${compactNumber(factor)} ${converter.toUnit}. Keep extra decimals if you need higher precision.`;
+
     return {
-      explanation: `Take the value in ${from}, multiply it by ${compactNumber(factor)}, and the result is the same amount in ${to}.`,
-      note: `This works because each ${converter.fromUnit} equals ${compactNumber(factor)} ${converter.toUnit}. Keep extra decimals if you need higher precision.`,
+      explanation,
+      note: priority?.note ?? note,
       reverseNote: `To go the other way, use the reverse formula so the unit relationship stays exact.`,
     };
   }
 
   return {
     explanation: `Start with the value in ${from} and apply the formula exactly to get the matching value in ${to}.`,
-    note: `If you are converting several numbers, keep the same formula and rounding method across all of them for consistent results.`,
+    note:
+      priority?.note ??
+      `If you are converting several numbers, keep the same formula and rounding method across all of them for consistent results.`,
     reverseNote: `Use the reverse formula for ${to} back to ${from}.`,
   };
 }

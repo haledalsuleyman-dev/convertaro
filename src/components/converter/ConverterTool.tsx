@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Converter } from "@/types/converter";
 import { convertValue, formatValue } from "@/lib/converter";
+import { formatUnitLabel } from "@/lib/seo";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent } from "@/components/ui/Card";
 import { ArrowRightLeft, Zap } from "lucide-react";
@@ -17,6 +18,8 @@ export function ConverterTool({ converter }: ConverterToolProps) {
 
   const fromUnit = isReversed ? converter.toUnit : converter.fromUnit;
   const toUnit = isReversed ? converter.fromUnit : converter.toUnit;
+  const fromLabel = formatUnitLabel(fromUnit);
+  const toLabel = formatUnitLabel(toUnit);
 
   const result = useMemo(() => {
     const val = parseFloat(inputValue);
@@ -42,7 +45,7 @@ export function ConverterTool({ converter }: ConverterToolProps) {
           <div className="flex-1 w-full space-y-4">
             <div className="flex justify-between items-center">
               <label className="text-sm font-bold text-text-secondary uppercase tracking-widest">
-                From {fromUnit}
+                From {fromLabel}
               </label>
             </div>
             <div className="relative group">
@@ -53,9 +56,9 @@ export function ConverterTool({ converter }: ConverterToolProps) {
                 className="text-2xl h-20 font-bold px-6 bg-background border-2 border-transparent focus:border-primary focus:bg-white rounded-2xl transition-all shadow-inner group-hover:border-border"
                 placeholder="0"
               />
-              <div className="absolute right-6 top-1/2 -translate-y-1/2 text-text-secondary font-bold text-lg opacity-40 group-focus-within:opacity-100 transition-opacity">
-                {fromUnit}
-              </div>
+                <div className="absolute right-6 top-1/2 -translate-y-1/2 text-text-secondary font-bold text-lg opacity-40 group-focus-within:opacity-100 transition-opacity">
+                  {fromLabel}
+                </div>
             </div>
           </div>
 
@@ -72,7 +75,7 @@ export function ConverterTool({ converter }: ConverterToolProps) {
           <div className="flex-1 w-full space-y-4">
             <div className="flex justify-between items-center">
               <label className="text-sm font-bold text-text-secondary uppercase tracking-widest">
-                To {toUnit}
+                To {toLabel}
               </label>
             </div>
             <div className="relative group">
@@ -80,7 +83,7 @@ export function ConverterTool({ converter }: ConverterToolProps) {
                 {result || "0"}
               </div>
               <div className="absolute right-6 top-1/2 -translate-y-1/2 text-primary font-bold text-lg opacity-40">
-                {toUnit}
+                {toLabel}
               </div>
             </div>
           </div>
