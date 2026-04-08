@@ -1,12 +1,10 @@
-"use client";
-
 import Link from "next/link";
-import { useMemo, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Converter } from "@/types/converter";
 import { formatValue } from "@/lib/converter";
 import { getStaticValuePageHref } from "@/lib/value-pages";
 import { formatUnitLabel } from "@/lib/seo";
+import { ConversionTableToggle } from "@/components/converter/ConversionTableToggle";
 
 interface ConversionTableProps {
   converter: Converter;
@@ -27,16 +25,16 @@ function formatFeetAndInches(cm: number): string {
   return `${feet}'${inches}"`;
 }
 
+function buildTableId(converter: Converter): string {
+  return `${converter.category}-${converter.metadata.slug}`;
+}
+
 export function ConversionTable({ converter }: ConversionTableProps) {
-  const [expanded, setExpanded] = useState(false);
   const isCmToInches = converter.fromUnit === "cm" && converter.toUnit === "inches";
   const fromLabel = formatUnitLabel(converter.fromUnit);
   const toLabel = formatUnitLabel(converter.toUnit);
-  const visibleExamples = useMemo(
-    () => (expanded ? converter.examples : converter.examples.slice(0, DEFAULT_VISIBLE_ROWS)),
-    [converter.examples, expanded]
-  );
   const hasMoreRows = converter.examples.length > DEFAULT_VISIBLE_ROWS;
+  const tableId = buildTableId(converter);
 
   return (
     <div className="space-y-4">
@@ -45,7 +43,7 @@ export function ConversionTable({ converter }: ConversionTableProps) {
           <table className="min-w-full border-separate border-spacing-0 text-left">
             <caption className="border-b border-slate-200 bg-slate-50/80 px-4 py-3 text-left text-sm text-slate-500 sm:px-6">
               Quick reference values for common {fromLabel} to {toLabel} conversions.
-              {hasMoreRows ? ` Showing ${visibleExamples.length} of ${converter.examples.length} values.` : ""}
+              {hasMoreRows ? ` Showing ${DEFAULT_VISIBLE_ROWS} of ${converter.examples.length} values.` : ""}
             </caption>
             <thead>
               <tr className="bg-slate-900 text-white">
@@ -57,11 +55,17 @@ export function ConversionTable({ converter }: ConversionTableProps) {
               </tr>
             </thead>
             <tbody>
-              {visibleExamples.map((example, index) => {
+              {converter.examples.map((example, index) => {
                 const valuePageHref = getStaticValuePageHref(converter.category, converter.metadata.slug, example.input);
+                const isExtraRow = index >= DEFAULT_VISIBLE_ROWS;
 
                 return (
-                  <tr key={`${example.input}-${example.output}-${index}`} className="border-t border-slate-200 odd:bg-white even:bg-slate-50/70 hover:bg-sky-50/60">
+                  <tr
+                    key={`${example.input}-${example.output}-${index}`}
+                    className="border-t border-slate-200 odd:bg-white even:bg-slate-50/70 hover:bg-sky-50/60"
+                    data-extra-table-row={isExtraRow ? tableId : undefined}
+                    hidden={isExtraRow}
+                  >
                     <td className="border-t border-slate-200 px-4 py-3 align-top sm:px-6">
                       <div className="flex flex-col gap-1">
                         <span className="text-xs font-medium uppercase tracking-[0.18em] text-slate-400 sm:hidden">{fromLabel}</span>
@@ -106,15 +110,7 @@ export function ConversionTable({ converter }: ConversionTableProps) {
         </div>
       </div>
 
-      {hasMoreRows ? (
-        <button
-          type="button"
-          onClick={() => setExpanded((current) => !current)}
-          className="inline-flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 sm:w-auto"
-        >
-          {expanded ? "Show fewer values" : `Show all ${converter.examples.length} values`}
-        </button>
-      ) : null}
+      {hasMoreRows ? <ConversionTableToggle tableId={tableId} totalCount={converter.examples.length} /> : null}
     </div>
   );
 }

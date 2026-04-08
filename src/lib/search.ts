@@ -1,3 +1,4 @@
+import "server-only";
 import convertersData from "@/data/converters.json";
 import { categories } from "@/data/categories";
 import { calculators } from "@/data/calculators";

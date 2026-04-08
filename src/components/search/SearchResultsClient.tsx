@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { searchConverters } from "@/lib/search";
+import type { SearchResult } from "@/lib/search";
 
 function highlightText(text: string, query: string) {
   const safeQuery = query.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -33,6 +33,8 @@ export function SearchResultsClient() {
   const currentQuery = searchParams.get("q")?.trim() ?? "";
   const [query, setQuery] = useState(initialQuery);
   const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setQuery(initialQuery);
@@ -62,7 +64,40 @@ export function SearchResultsClient() {
     router.replace(nextUrl, { scroll: false });
   }, [currentQuery, debouncedQuery, router, searchParams]);
 
-  const results = useMemo(() => searchConverters(debouncedQuery, 120), [debouncedQuery]);
+  useEffect(() => {
+    const nextQuery = debouncedQuery.trim();
+
+    if (nextQuery.length < 2) {
+      setResults([]);
+      setIsLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    setIsLoading(true);
+
+    fetch(`/api/search?q=${encodeURIComponent(nextQuery)}&limit=120`, {
+      signal: controller.signal,
+    })
+      .then((response) => response.json())
+      .then((data: SearchResult[]) => {
+        setResults(data);
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+
+        setResults([]);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => controller.abort();
+  }, [debouncedQuery]);
 
   return (
     <section className="py-10 sm:py-14">
@@ -85,10 +120,14 @@ export function SearchResultsClient() {
           </div>
 
           <div className="mt-5 text-sm text-text-secondary">
-            {debouncedQuery.trim() ? `${results.length} results for "${debouncedQuery.trim()}"` : "Start typing to search all converters."}
+            {debouncedQuery.trim().length < 2
+              ? "Start typing to search all converters."
+              : isLoading
+                ? `Searching for "${debouncedQuery.trim()}"...`
+                : `${results.length} results for "${debouncedQuery.trim()}"`}
           </div>
 
-          {debouncedQuery.trim().length > 0 && (
+          {debouncedQuery.trim().length >= 2 && (
             <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {results.map((result) => (
                 <Link
@@ -106,7 +145,7 @@ export function SearchResultsClient() {
             </div>
           )}
 
-          {debouncedQuery.trim().length > 0 && results.length === 0 && (
+          {debouncedQuery.trim().length >= 2 && !isLoading && results.length === 0 && (
             <div className="mt-6 rounded-xl border border-border bg-background/60 px-4 py-5 text-sm text-text-secondary">
               No converter matched this query. Try broader terms like unit names (for example, "meters", "pounds", or "fahrenheit").
             </div>

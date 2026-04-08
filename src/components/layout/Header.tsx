@@ -1,10 +1,14 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { categories } from "@/data/categories";
 import { calculators } from "@/data/calculators";
-import { SearchTool } from "@/components/ui/SearchTool";
-import { MobileNav } from "./MobileNav";
+import { HeaderSearch } from "./HeaderSearch";
 import { ChevronDown, Calculator, Ruler } from "lucide-react";
 import { canonicalizeConverterHref } from "@/lib/converter-routing";
+
+const MobileNav = dynamic(() => import("./MobileNav").then((mod) => mod.MobileNav), {
+  loading: () => <div className="h-9 w-9" aria-hidden="true" />,
+});
 
 const PRIMARY_CATEGORY_SLUGS = new Set(["length", "weight", "temperature", "volume", "area", "speed"]);
 const primaryNav = categories.filter((category) => PRIMARY_CATEGORY_SLUGS.has(category.slug));
@@ -90,10 +94,10 @@ export function Header() {
             </div>
           </nav>
 
-          {/* Right side */}
+            {/* Right side */}
           <div className="flex items-center gap-3">
             <div className="hidden md:block">
-              <SearchTool variant="navbar" placeholder="Search..." />
+              <HeaderSearch />
             </div>
             <Link href={canonicalizeConverterHref("/length/cm-to-inches")} className="hidden sm:inline-flex items-center justify-center rounded-xl bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-slate-800">
               Start Converting

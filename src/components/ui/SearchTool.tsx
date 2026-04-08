@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Search, X, ArrowUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { searchConverters, SearchResult } from "@/lib/search";
+import type { SearchResult } from "@/lib/search";
 
 type SearchToolVariant = "hero" | "navbar";
 
@@ -16,7 +16,9 @@ interface SearchToolProps {
 export function SearchTool({ variant = "hero", placeholder }: SearchToolProps) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -31,12 +33,39 @@ export function SearchTool({ variant = "hero", placeholder }: SearchToolProps) {
     };
   }, [query]);
 
-  const results = useMemo<SearchResult[]>(() => {
-    if (debouncedQuery.trim().length < 1) {
-      return [];
+  useEffect(() => {
+    const nextQuery = debouncedQuery.trim();
+
+    if (nextQuery.length < 2) {
+      setResults([]);
+      setIsLoading(false);
+      return;
     }
 
-    return searchConverters(debouncedQuery, 8);
+    const controller = new AbortController();
+    setIsLoading(true);
+
+    fetch(`/api/search?q=${encodeURIComponent(nextQuery)}&limit=8`, {
+      signal: controller.signal,
+    })
+      .then((response) => response.json())
+      .then((data: SearchResult[]) => {
+        setResults(data);
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+
+        setResults([]);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => controller.abort();
   }, [debouncedQuery]);
 
   useEffect(() => {
@@ -101,7 +130,8 @@ export function SearchTool({ variant = "hero", placeholder }: SearchToolProps) {
 
   const isHero = variant === "hero";
   const inputPlaceholder = placeholder ?? (isHero ? "Search conversions..." : "Search tools");
-  const showDropdown = isOpen && (results.length > 0 || query.trim().length > 0);
+  const trimmedQuery = query.trim();
+  const showDropdown = isOpen && trimmedQuery.length >= 2;
 
   const renderHighlightedText = (text: string, queryValue: string) => {
     const safeQuery = queryValue.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -122,6 +152,12 @@ export function SearchTool({ variant = "hero", placeholder }: SearchToolProps) {
       return <span key={`${part}-${index}`}>{part}</span>;
     });
   };
+
+  const dropdownMessage = isLoading
+    ? "Searching..."
+    : results.length === 0
+      ? "No direct matches. Press Enter to view all search results."
+      : null;
 
   return (
     <div ref={containerRef} className={isHero ? "relative w-full" : "relative w-[260px]"}>
@@ -200,17 +236,15 @@ export function SearchTool({ variant = "hero", placeholder }: SearchToolProps) {
                 </li>
               ))}
             </ul>
-          ) : (
-            <div className="px-4 py-3 text-sm text-text-secondary">No direct matches. Press Enter to view all search results.</div>
-          )}
+          ) : dropdownMessage ? <div className="px-4 py-3 text-sm text-text-secondary">{dropdownMessage}</div> : null}
 
-          {query.trim().length > 0 && (
+          {trimmedQuery.length > 0 && (
             <div className="border-t border-border/70 px-4 py-2.5 bg-background/60">
               <Link
-                href={`/search?q=${encodeURIComponent(query.trim())}`}
+                href={`/search?q=${encodeURIComponent(trimmedQuery)}`}
                 onMouseDown={(event) => {
                   event.preventDefault();
-                  router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+                  router.push(`/search?q=${encodeURIComponent(trimmedQuery)}`);
                   setIsOpen(false);
                 }}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary-dark"
