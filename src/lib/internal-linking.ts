@@ -365,11 +365,15 @@ const CALCULATOR_LINK_STRATEGY: Record<string, RelatedToolLink[]> = {
 };
 
 function scoreConverterRelationship(source: Converter, candidate: Converter): number {
-  if (source.id === candidate.id || source.category !== candidate.category) {
+  if (source.id === candidate.id) {
     return -1;
   }
 
   let score = 0;
+
+  if (source.category === candidate.category) {
+    score += 10;
+  }
 
   if (source.fromUnit === candidate.toUnit && source.toUnit === candidate.fromUnit) {
     score += 100;

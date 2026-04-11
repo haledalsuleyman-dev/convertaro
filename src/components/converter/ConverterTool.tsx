@@ -14,6 +14,8 @@ export function ConverterTool({ converter }: ConverterToolProps) {
           category={converter.category}
           fromUnit={converter.fromUnit}
           toUnit={converter.toUnit}
+          title={converter.title}
+          slug={`/${converter.category}/${converter.metadata.slug}`}
           formula={converter.formula}
           inverseFormula={converter.inverseFormula}
         />

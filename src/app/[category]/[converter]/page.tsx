@@ -26,6 +26,8 @@ import {
   getReverseConverter,
 } from "@/lib/converter-content";
 import { PopularToolsSidebar, RelatedCalculators, CategoryNavigation, CrawlableLinkHub } from "@/components/layout/InternalLinks";
+import { RecentConversions } from "@/components/layout/RecentConversions";
+import { AdSlot } from "@/components/ads/AdSlot";
 import { canonicalConverters, dedupeCanonicalConverters, getCanonicalConverterById, resolveConverterRoute } from "@/lib/converter-routing";
 import { TrustMetadataBlock } from "@/components/trust/TrustMetadataBlock";
 import { getConverterTrustMetadata } from "@/lib/trust";
@@ -228,6 +230,8 @@ export default async function ConverterPage({ params }: PageProps) {
               </div>
             </div>
 
+            <AdSlot type="in-content" id="converter-tool-bottom-ad" />
+
             {/* Formula & How-to */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-white border border-slate-200 rounded-lg p-5">
@@ -326,6 +330,8 @@ export default async function ConverterPage({ params }: PageProps) {
               <FAQSection faq={pageFaq} />
             </div>
 
+            <AdSlot type="in-content" id="converter-faq-top-ad" />
+
             {/* Content Sections */}
             <ConverterContentSections
               converter={converter}
@@ -370,12 +376,12 @@ export default async function ConverterPage({ params }: PageProps) {
                 </div>
               </div>
             )}
-
-            <CrawlableLinkHub title="Explore More Conversion Pages" limitPerCategory={2} />
           </div>
 
           {/* Sidebar */}
           <aside className="space-y-6">
+            <RecentConversions />
+            <AdSlot type="sidebar" id="converter-sidebar-ad-1" className="hidden lg:flex" />
             <CategoryNavigation activeCategory={categorySlug} />
             <PopularToolsSidebar excludeSlug={slug} />
             <RelatedCalculators categoryContext={categorySlug} />
@@ -389,6 +395,10 @@ export default async function ConverterPage({ params }: PageProps) {
               <p className="text-sm text-white/70">
                 All calculations run on your device. Sub-millisecond results, zero server latency.
               </p>
+            </div>
+
+            <div className="sticky top-6">
+              <AdSlot type="sidebar" id="converter-sidebar-ad-2" />
             </div>
           </aside>
         </div>

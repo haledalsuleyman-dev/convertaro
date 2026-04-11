@@ -10,7 +10,6 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Conversion Guides and Charts",
   description: "Browse practical conversion guides for height, weight, and temperature charts with FAQs and direct links to related converters.",
   path: "/guides",
-  keywords: ["conversion guides", "conversion charts", "height chart", "weight chart", "temperature chart"],
 });
 
 export default function GuidesPage() {

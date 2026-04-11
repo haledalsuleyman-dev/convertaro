@@ -12,6 +12,7 @@ import {
 } from "@/lib/seo";
 import Link from "next/link";
 import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
+import { AdSlot } from "@/components/ads/AdSlot";
 import {
   canonicalConverterCountByCategory,
   canonicalizeConverterHref,
@@ -45,32 +46,19 @@ import {
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Free Unit Converter & Conversion Calculator - 500+ Tools",
+  title: "Unit Converter - Instant, Free & Accurate | Convertaro",
   description:
-    "Convert units instantly with Convertaro. 500+ free converters with formulas, reverse conversions, tables, and fast tools for length, weight, temperature, volume, speed, data, and more.",
+    "Convert any unit instantly — length, weight, temperature, speed, volume, data, and more. 500+ free converters with exact formulas, reference tables, and no sign-up needed.",
   robots: INDEXABLE_ROBOTS,
-  keywords: [
-    "free unit converter",
-    "online unit converter",
-    "cm to inches",
-    "kg to lbs",
-    "celsius to fahrenheit",
-    "miles to km",
-    "unit conversion",
-    "measurement converter",
-    "metric converter",
-    "imperial converter",
-    ...HOMEPAGE_LONGTAIL_KEYWORDS.slice(0, 20),
-  ],
   alternates: buildAlternates("/"),
   openGraph: buildOpenGraph({
-    title: "Free Unit Converter & Conversion Calculator - 500+ Tools | Convertaro",
-    description: "Convert units instantly with formulas, reverse conversions, and tables across 500+ free tools.",
+    title: "Unit Converter - Instant, Free & Accurate | Convertaro",
+    description: "500+ free converters for length, weight, temperature, speed & more. Instant results, verified formulas, no sign-up.",
     path: "/",
   }),
   twitter: buildTwitter(
-    "Free Unit Converter & Conversion Calculator - 500+ Tools | Convertaro",
-    "Convert units instantly with formulas, reverse conversions, and tables across 500+ free tools."
+    "Unit Converter - Instant, Free & Accurate | Convertaro",
+    "500+ free converters for length, weight, temperature, speed & more. Instant results, verified formulas, no sign-up."
   ),
 };
 
@@ -212,20 +200,20 @@ export default function Home() {
         <div className="absolute -left-24 bottom-4 -z-10 h-72 w-72 rounded-full bg-slate-100/90 blur-3xl" />
 
         <div className="container-pro relative z-10 text-center text-slate-900">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/70 px-4 py-1.5 text-sm font-semibold text-slate-700 shadow-[0_18px_35px_-26px_rgba(15,23,42,0.12)] backdrop-blur-xl">
-            <Star className="h-4 w-4 text-slate-900" />
-            Trusted by students, teams, and professionals
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-sky-100 bg-sky-50 px-4 py-1.5 text-sm font-semibold text-sky-800 shadow-sm">
+            <Shield className="h-4 w-4" />
+            Verified against SI & NIST Standards
           </div>
 
-          <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight md:text-6xl md:leading-[1.1]">
-            Free unit converter
-            <span className="block bg-gradient-to-r from-slate-950 via-slate-800 to-slate-600 bg-clip-text text-transparent">
-              with formulas, tables, and fast results.
+          <h1 className="font-display text-4xl font-bold leading-tight tracking-tight md:text-6xl lg:text-7xl md:leading-[1.1]">
+            Convert Any Unit,
+            <span className="block bg-gradient-to-r from-slate-900 via-sky-800 to-indigo-800 bg-clip-text text-transparent py-1">
+              Instantly & Accurately.
             </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-3xl text-base text-slate-600 md:text-lg leading-relaxed">
-            Convertaro helps you convert length, weight, temperature, volume, speed, data, and more in seconds. Search quickly, browse familiar categories, and open pages with formulas, reverse conversions, examples, and reference tables when you need more detail.
+          <p className="mx-auto mt-6 max-w-2xl text-base text-slate-600 md:text-xl leading-relaxed">
+            Professional-grade unit converters and calculators for students, developers, and daily tasks. 500+ free tools with live reference tables and step-by-step formulas.
           </p>
 
           <div className="mx-auto mt-10 max-w-2xl rounded-[28px] border border-white/90 bg-white/55 p-3 shadow-[0_26px_60px_-38px_rgba(15,23,42,0.16)] backdrop-blur-xl animate-fade-in sm:p-4">
@@ -251,55 +239,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[linear-gradient(180deg,#ffffff_0%,#fbfcfd_100%)] py-16 md:py-20">
-        <div className="container-pro">
-          <div className="mb-12 flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 className="font-display text-3xl font-semibold text-slate-900 mb-2">Browse by Category</h2>
-              <p className="text-slate-500">Clear categories designed to feel familiar, light, and easy to browse.</p>
-            </div>
-            <Link href="/search" className="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 hover:text-slate-900">
-              Explore all
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            {categories.map((category) => {
-              const Icon = CATEGORY_ICONS[category.name] || LayoutGrid;
-              return (
-                <Link
-                  key={category.id}
-                  href={`/${category.slug}`}
-                  className="card-pro rounded-[20px] p-6 group flex flex-col items-center text-center hover:border-slate-300"
-                >
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 text-slate-800 transition-all duration-300 group-hover:from-slate-950 group-hover:to-slate-800 group-hover:text-white">
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="mb-1 font-display font-semibold text-slate-900">{category.name}</h3>
-                  <p className="text-xs text-slate-500">
-                    {canonicalConverterCountByCategory.get(category.id) ?? 0} Tools
-                  </p>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[radial-gradient(circle_at_96%_0%,rgba(226,232,240,0.18),transparent_24%),radial-gradient(circle_at_0%_16%,rgba(229,231,235,0.18),transparent_22%),linear-gradient(180deg,#fbfbfc_0%,#f5f6f7_100%)] py-16 md:py-20">
+      <section className="bg-[radial-gradient(circle_at_96%_0%,rgba(226,232,240,0.18),transparent_24%),radial-gradient(circle_at_0%_16%,rgba(229,231,235,0.18),transparent_22%),linear-gradient(180deg,#fbfbfc_0%,#f5f6f7_100%)] py-16 md:py-24">
         <div className="container-pro">
           <div className="mb-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="font-display text-2xl font-semibold text-slate-900">Most Used Tools</h2>
+            <h2 className="font-display text-2xl md:text-3xl font-semibold text-slate-900">Most Used Conversions</h2>
             <div className="flex flex-wrap items-center gap-4">
-              <Link href="/popular-conversion-tools" className="text-sm font-semibold text-slate-700 hover:text-slate-950 flex items-center gap-1">
-                Popular conversions <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href="/calculators" className="text-sm font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1">
-                Calculators <ArrowRight className="h-4 w-4" />
+              <Link href="/popular-conversion-tools" className="text-sm font-semibold text-sky-700 hover:text-sky-900 flex items-center gap-1">
+                View all popular conversions <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
+
+          <AdSlot type="leaderboard" id="homepage-top-ad" className="mb-10" />
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             {popularConverters.map((converter) => (
@@ -314,28 +265,28 @@ export default function Home() {
                 <Link
                   key={converter.id}
                   href={`/${converter.category}/${converter.metadata.slug}`}
-                  className="surface-glass rounded-[22px] p-5 transition-all group hover:-translate-y-1"
+                  className="bg-white border border-slate-200 rounded-2xl p-6 transition-all hover:border-sky-200 hover:shadow-md group"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex gap-4">
-                      <div className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 text-slate-700 group-hover:from-slate-100 group-hover:to-slate-50 transition-colors">
-                        <Calculator className="h-5 w-5" />
+                      <div className="mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-slate-500 group-hover:bg-sky-50 group-hover:text-sky-600 transition-colors">
+                        <ArrowRight className="h-6 w-6" />
                       </div>
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Popular tool</p>
-                        <h3 className="mt-2 font-display font-semibold text-slate-900 text-base">{converter.title}</h3>
-                        <p className="mt-2 text-sm text-slate-600 leading-relaxed">{details.note}</p>
+                        <h3 className="font-display font-semibold text-slate-900 text-lg leading-tight group-hover:text-sky-700 transition-colors">
+                          {converter.title}
+                        </h3>
+                        <p className="mt-1.5 text-sm text-slate-500 leading-relaxed max-w-sm">{details.note}</p>
                       </div>
                     </div>
-                    <ArrowUpRight className="h-4 w-4 text-slate-300 group-hover:text-slate-900 transition-colors" />
                   </div>
-                  <div className="mt-4 flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-semibold text-slate-700">
-                      <CircleDot className="h-3.5 w-3.5 text-slate-700" />
+                  <div className="mt-6 flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 border border-slate-100">
+                      <CircleDot className="h-3 w-3 text-emerald-500" />
                       {details.example}
                     </span>
-                    <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-800">
-                      Formula and examples included
+                    <span className="rounded-lg bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-500 border border-slate-100">
+                      Formula & Table
                     </span>
                   </div>
                 </Link>
@@ -347,23 +298,91 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-y border-slate-100 bg-white py-20">
+      <section className="bg-white py-16 md:py-24 border-t border-slate-100">
+        <div className="container-pro">
+          <div className="mb-12 flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 className="font-display text-3xl font-semibold text-slate-900 mb-2">Browse by Category</h2>
+              <p className="text-slate-500 text-lg">Every possible unit organized neatly into core silos.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+            {categories.map((category) => {
+              const Icon = CATEGORY_ICONS[category.name] || LayoutGrid;
+              return (
+                <Link
+                  key={category.id}
+                  href={`/${category.slug}`}
+                  className="rounded-2xl border border-slate-200 bg-slate-50/50 p-6 group flex flex-col items-center text-center hover:border-slate-300 hover:bg-white transition-all shadow-sm hover:shadow-md"
+                >
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-600 shadow-sm transition-all duration-300 group-hover:text-sky-600 group-hover:shadow">
+                    <Icon className="h-7 w-7" />
+                  </div>
+                  <h3 className="mb-1 font-display font-semibold text-slate-900">{category.name}</h3>
+                  <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    {canonicalConverterCountByCategory.get(category.id) ?? 0} Tools
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-slate-900 text-white py-20 border-t border-slate-800">
+        <div className="container-pro text-center mb-10">
+          <h2 className="font-display text-3xl font-semibold mb-4">Professional Calculators</h2>
+          <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+            Beyond direct unit conversions, we cover robust formula-driven calculators for health, math, and finance.
+          </p>
+        </div>
+
+        <div className="container-pro grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link href="/bmi-calculator" className="bg-slate-800/80 border border-slate-700 hover:border-slate-500 rounded-2xl p-6 transition-all block">
+            <h3 className="font-semibold text-lg text-white mb-2">BMI Calculator</h3>
+            <p className="text-slate-400 text-sm">Calculate your Body Mass Index exactly as medical professionals do.</p>
+          </Link>
+          <Link href="/percentage-calculator" className="bg-slate-800/80 border border-slate-700 hover:border-slate-500 rounded-2xl p-6 transition-all block">
+            <h3 className="font-semibold text-lg text-white mb-2">Percentage Calculator</h3>
+            <p className="text-slate-400 text-sm">Solve percentage changes, differences, and fractions effortlessly.</p>
+          </Link>
+          <Link href="/loan-calculator" className="bg-slate-800/80 border border-slate-700 hover:border-slate-500 rounded-2xl p-6 transition-all block">
+            <h3 className="font-semibold text-lg text-white mb-2">Loan Calculator</h3>
+            <p className="text-slate-400 text-sm">Determine monthly payments and deep amortization schedules.</p>
+          </Link>
+        </div>
+        <div className="text-center mt-10">
+          <Link href="/calculators" className="inline-flex py-2 px-5 text-sm font-semibold border border-slate-700 rounded-full hover:bg-slate-800 transition-colors">
+            View All Core Calculators <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
+      <section className="py-12 border-t border-slate-100 bg-slate-50/50">
+        <div className="container-pro">
+           <AdSlot type="leaderboard" id="homepage-bottom-ad" />
+        </div>
+      </section>
+
+      <section className="border-t border-slate-100 bg-white py-20">
         <div className="container-pro text-center mb-14">
+          <span className="badge-pro mb-4 inline-block uppercase tracing-wide text-xs">Quality Architecture</span>
           <h2 className="font-display text-3xl font-semibold text-slate-900 mb-4">Built for Modern Workflows</h2>
-          <p className="text-slate-500 max-w-2xl mx-auto">
-            We obsess over accuracy, speed, and design so you can focus on what matters. Trusted by engineers, students, and professionals in 150+ countries.
+          <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+            We obsess over algorithmic accuracy, DOM speed, and interface design so you can focus on what matters.
           </p>
         </div>
 
         <div className="container-pro">
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {FEATURES.map((feature) => (
-              <div key={feature.title} className="rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50/70 p-6 text-left hover:-translate-y-0.5 hover:border-cyan-200 hover:shadow-lg transition-all">
-                <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-900">
+              <div key={feature.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-8 text-left transition-all">
+                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm text-slate-700 border border-slate-100">
                   <feature.icon className="h-6 w-6" />
                 </div>
                 <h3 className="font-display text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{feature.desc}</p>
+                <p className="text-sm text-slate-500 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>

@@ -15,7 +15,6 @@ export function buildGuideMetadata(slug: string): Metadata {
     title: guide.title,
     description: guide.description,
     path: `/guides/${guide.slug}`,
-    keywords: [guide.slug.replace(/-/g, " "), guide.relatedConverterLabel.toLowerCase(), "conversion chart", "guide"],
   });
 }
 

@@ -20,28 +20,20 @@ export const dynamic = "force-static";
 const FEATURED_CALCULATORS = ["mortgage-calculator", "loan-calculator", "bmi-calculator", "percentage-calculator"];
 
 export const metadata: Metadata = {
-  title: "Online Calculators Hub",
+  title: "Free Online Calculators – Finance, Health, Math & More",
   description:
-    "Browse Convertaro calculators by category. Use finance, health, math, and time calculators with clear formulas, examples, and practical guidance.",
+    "Free calculators for mortgage payments, BMI, loan interest, percentage, and more. Each tool includes clear formulas, worked examples, and instant results. No sign-up needed.",
   robots: INDEXABLE_ROBOTS,
   alternates: buildAlternates("/calculators"),
-  keywords: [
-    "online calculators",
-    "calculator hub",
-    "finance calculators",
-    "health calculators",
-    "math calculators",
-    "time calculators",
-  ],
   openGraph: buildOpenGraph({
-    title: "Online Calculators Hub | Convertaro",
+    title: "Free Online Calculators – Finance, Health, Math & More | Convertaro",
     description:
-      "Browse Convertaro calculators by category. Use finance, health, math, and time calculators with clear formulas, examples, and practical guidance.",
+      "Free calculators for mortgage, BMI, loan, percentage & more. Instant results, clear formulas, no sign-up.",
     path: "/calculators",
   }),
   twitter: buildTwitter(
-    "Online Calculators Hub | Convertaro",
-    "Browse finance, health, math, and time calculators with clear formulas and practical guidance."
+    "Free Online Calculators – Finance, Health, Math & More | Convertaro",
+    "Free calculators for mortgage, BMI, loan, percentage & more. Instant results, clear formulas, no sign-up."
   ),
 };
 

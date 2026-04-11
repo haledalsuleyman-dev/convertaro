@@ -2,6 +2,7 @@ import { Category, Converter, FAQItem } from "@/types/converter";
 import { dedupeCanonicalConverters, getCanonicalConverter, getCanonicalConverterById } from "@/lib/converter-routing";
 import { getStrategicRelatedConverters } from "@/lib/internal-linking";
 import { getPriorityConverterContent } from "@/lib/priority-pages";
+import { getConverterLongTailKeywords } from "@/lib/seo";
 
 type LinkRecommendation = {
   converter: Converter;
@@ -134,68 +135,68 @@ const UNIT_EXPLANATIONS: Record<string, string> = {
 };
 
 const CATEGORY_USE_CASES: Record<string, string[]> = {
-  length: ["construction and interior dimensions", "clothing and body measurements", "map and route planning"],
-  weight: ["nutrition and fitness tracking", "shipping and logistics labels", "lab and manufacturing workflows"],
-  temperature: ["weather and climate checks", "cooking and food safety", "engineering and scientific measurements"],
-  volume: ["cooking and recipes", "tank and container sizing", "lab and industrial liquid handling"],
-  area: ["land and property measurements", "flooring and paint planning", "agriculture and map analysis"],
-  speed: ["driving and transport", "aviation and marine references", "performance and telemetry data"],
-  time: ["project planning", "scheduling and productivity", "scientific duration calculations"],
-  data: ["file size and storage planning", "network and transfer estimates", "backup and infrastructure decisions"],
-  energy: ["electricity and utility tracking", "engineering calculations", "fuel and thermal comparisons"],
-  pressure: ["tire and mechanical checks", "industrial process control", "weather and altitude readings"],
+  length: ["height and body measurement checks", "room dimensions and home renovation planning", "travel route and map distance comparisons"],
+  weight: ["body weight tracking and health forms", "shipping and parcel weight labels", "recipe and nutritional ingredient measurements"],
+  temperature: ["daily weather and travel forecasts", "oven and cooking temperature settings", "science, lab, and engineering references"],
+  volume: ["cooking recipes and kitchen measurements", "fuel tank and container capacity comparisons", "aquarium, pool, and liquid storage planning"],
+  area: ["property listings and floor plan readings", "flooring, tiling, and paint coverage estimates", "agricultural field sizing and map analysis"],
+  speed: ["road sign and vehicle speed limit checks", "GPS and navigation between imperial and metric", "running pace and athletic performance comparisons"],
+  time: ["project scheduling and deadline planning", "work hour and billing log conversions", "scientific duration and interval calculations"],
+  data: ["file download size and storage quota checks", "cloud backup plan and device capacity comparisons", "network transfer rate and data cap budgeting"],
+  energy: ["electricity bill and utility consumption tracking", "food calorie and nutritional energy comparisons", "engineering and thermal energy calculations"],
+  pressure: ["tire inflation and mechanical pressure checks", "industrial process control readings", "weather station and altitude measurement conversions"],
 };
 
 const CATEGORY_EXAMPLE_CONTEXTS: Record<string, ExampleContent[]> = {
   length: [
-    { title: "Clothing and sizing", description: "Useful when a size chart lists centimeters but the label or product spec uses inches." },
-    { title: "Home projects", description: "Helpful for furniture, wall spacing, or renovation measurements that mix metric and imperial dimensions." },
-    { title: "Travel and mapping", description: "Good for comparing route, altitude, or field measurements across different unit systems." },
+    { title: "Height and body measurements", description: "Useful when a doctor's record, passport form, or fitness profile lists height in one system and you need the equivalent in the other." },
+    { title: "Home improvement and renovation", description: "Helpful for furniture dimensions, wall spacing, countertop measurements, and room layouts that mix metric and imperial units." },
+    { title: "Travel, mapping, and navigation", description: "Good for comparing route distances, GPS readings, and geographic measurements when switching between metric and imperial maps." },
   ],
   weight: [
-    { title: "Fitness tracking", description: "Common when a workout app, scale, or meal plan uses a different weight unit than your usual routine." },
-    { title: "Shipping and packing", description: "Helpful for parcel labels, baggage limits, and product weights across regions." },
-    { title: "Cooking and nutrition", description: "Useful when recipes, serving sizes, or supplement labels mix grams, ounces, and pounds." },
+    { title: "Body weight and fitness goals", description: "Common when a gym tracker, health app, or doctor's scale shows weight in a different unit than your usual reference." },
+    { title: "Shipping, luggage, and parcels", description: "Helpful for airline baggage limits, international shipping labels, and postal service weight requirements." },
+    { title: "Cooking, recipes, and nutrition", description: "Useful when ingredient amounts, supplement serving sizes, or food packaging show grams, ounces, and pounds in the same document." },
   ],
   temperature: [
-    { title: "Cooking and food safety", description: "Useful when an oven, recipe, or thermometer shows a different temperature scale." },
-    { title: "Weather and travel", description: "Helpful for understanding forecasts while traveling between countries that use different scales." },
-    { title: "Science and engineering", description: "Important when lab notes, equipment, or calculations require Celsius, Fahrenheit, or Kelvin." },
+    { title: "Weather forecasts and travel", description: "Essential when a weather app, travel guide, or climate report shows temperatures in a scale that is unfamiliar to you." },
+    { title: "Cooking, baking, and food safety", description: "Useful when a recipe calls for a specific oven temperature or safe cooking temperature in Fahrenheit or Celsius." },
+    { title: "Science, engineering, and lab work", description: "Important when equipment, research notes, or technical standards express temperature differently from your calculation tool." },
   ],
   volume: [
-    { title: "Recipe adjustments", description: "Useful when cups, fluid ounces, milliliters, and liters appear in the same recipe." },
-    { title: "Fuel and storage", description: "Helpful for tanks, bottles, and containers with capacities shown in different units." },
-    { title: "Lab measurements", description: "Important when mixing liquids or comparing measurements from different standards." },
+    { title: "Cooking, baking, and recipe scaling", description: "Useful when a recipe mixes cups, fluid ounces, milliliters, and liters from different regional measurement traditions." },
+    { title: "Fuel, tanks, and storage capacity", description: "Helpful for comparing tank sizes, container volumes, and fuel quantities expressed in liters versus gallons." },
+    { title: "Lab measurements and pharmacy", description: "Important when dosage instructions, chemical preparations, or medical quantities switch between metric and US volume units." },
   ],
   area: [
-    { title: "Property listings", description: "Useful when land or floor plans are shown in square feet, square meters, acres, or hectares." },
-    { title: "Renovation planning", description: "Helpful for flooring, paint, tile, and landscaping estimates." },
-    { title: "Agriculture and mapping", description: "Important for field sizes, survey work, and map overlays." },
+    { title: "Property listings and real estate", description: "Useful when floor plans, land sizes, or property listings show square footage versus square meters or acres versus hectares." },
+    { title: "Renovation, flooring, and materials", description: "Helpful for estimating paint, flooring, tile, and landscaping materials when room dimensions use different area units." },
+    { title: "Agriculture, surveying, and mapping", description: "Important for field measurements, survey reports, and GIS overlays that cross regional unit boundaries." },
   ],
   speed: [
-    { title: "Driving abroad", description: "Useful when speed limits, vehicle dashboards, and maps use different speed units." },
-    { title: "Running and cycling", description: "Helpful for pace, treadmill, and fitness-device comparisons." },
-    { title: "Aviation and marine use", description: "Important when technical references switch between knots, mph, and km/h." },
+    { title: "Driving, road signs, and car dashboards", description: "Useful when traveling between mph and km/h countries where speed limits, speedometers, and GPS apps use different units." },
+    { title: "Running, cycling, and fitness pace", description: "Helpful for comparing treadmill speeds, training paces, and race finish times across imperial and metric training plans." },
+    { title: "Aviation, marine, and technical navigation", description: "Important when aircraft or nautical references switch between knots, mph, and km/h in the same document or instrument." },
   ],
   time: [
-    { title: "Scheduling", description: "Useful when a task, event, or timer needs to be expressed in a more practical unit." },
-    { title: "Work and billing", description: "Helpful for translating logs between minutes, hours, days, and weeks." },
-    { title: "Science and reporting", description: "Important when measurements span from seconds to longer durations." },
+    { title: "Project scheduling and deadlines", description: "Useful when a timeline uses different time units than the reporting format or billing system requires." },
+    { title: "Work hours, billing, and logging", description: "Helpful for translating hours worked, session durations, and time logs between minutes, hours, and days." },
+    { title: "Scientific experiments and intervals", description: "Important when reaction times, observation periods, or measurement windows span from seconds to longer durations." },
   ],
   data: [
-    { title: "File sizes", description: "Useful when downloads, uploads, or storage limits are shown in different data units." },
-    { title: "Backups and cloud plans", description: "Helpful for comparing device capacity and online storage quotas." },
-    { title: "Technical planning", description: "Important when specs switch between bytes, kilobytes, megabytes, gigabytes, and beyond." },
+    { title: "Downloads, uploads, and file transfers", description: "Useful when a file size is shown in MB but your storage device or quota is measured in GB, or when comparing transfer speeds." },
+    { title: "Cloud storage and device capacity", description: "Helpful for comparing phone storage plans, cloud backup quotas, and hard drive capacities that mix MB, GB, and TB." },
+    { title: "Technical specs and planning", description: "Important when server RAM, database sizes, or network infrastructure specs express capacity in different data units." },
   ],
   energy: [
-    { title: "Utility tracking", description: "Useful when power bills, appliance labels, or energy dashboards use different units." },
-    { title: "Nutrition and heat", description: "Helpful when calories, joules, or BTU appear in different sources." },
-    { title: "Engineering work", description: "Important for comparing thermal and electrical energy measurements." },
+    { title: "Electricity bills and appliance labels", description: "Useful when energy consumption on a power bill, appliance spec, or smart meter uses a different unit than your calculation." },
+    { title: "Food and nutrition labeling", description: "Helpful when caloric content is listed in kilocalories (kcal), calories (cal), or joules across different sources." },
+    { title: "Engineering, science, and thermal work", description: "Important when heat, work, or energy calculations involve BTU, joules, kilowatt-hours, or other energy standards." },
   ],
   pressure: [
-    { title: "Tire pressure", description: "Useful when a manual, pump, or gauge uses PSI, bar, or kPa." },
-    { title: "Industrial systems", description: "Helpful for machinery, tanks, and process-control readings." },
-    { title: "Lab and weather use", description: "Important when equipment or reports switch between pressure standards." },
+    { title: "Tire inflation and vehicle maintenance", description: "Useful when a tire manual lists PSI but a pump gauge shows bar or kPa, or when inflating while abroad." },
+    { title: "Industrial pumps, tanks, and systems", description: "Helpful for machinery specs, pressure vessel ratings, and process control readings that use different pressure standards." },
+    { title: "Weather, altitude, and barometric readings", description: "Important when comparing atmospheric pressure measurements from different instruments or regional weather services." },
   ],
 };
 
@@ -316,12 +317,14 @@ export function getIntroContent(
     });
   }
 
+  const topKeyword = getConverterLongTailKeywords(converter.fromUnit, converter.toUnit, category.slug)[0] ?? `convert ${from} to ${to}`;
+
   return {
     eyebrow: `${from} to ${to} converter`,
     summary:
       priority?.summary ??
       SPECIAL_CONVERTER_SUMMARIES[converter.id] ??
-      `Convert ${from} to ${to} instantly with the formula, clear examples, and a quick reference table for common values.`,
+      `Looking for ${topKeyword}? Convert ${from} to ${to} instantly. Understand the formula, review clear examples, and check a quick reference table for common values.`,
     intent: priority?.intent ?? selectContextualSentence(category),
     links,
   };
@@ -467,6 +470,23 @@ export function buildConverterFaq(
     ? `For the reverse direction, use the ${reverseConverter.title} page.`
     : `Use the swap direction for the reverse conversion from ${to} to ${from}.`;
 
+  // Use hand-written priority FAQs when available — much higher quality than the template.
+  const priorityContent = getPriorityConverterContent(converter);
+  if (priorityContent?.faqs && priorityContent.faqs.length > 0) {
+    const priorityFaqs: FAQItem[] = priorityContent.faqs.map((faq) => ({
+      question: faq.question,
+      answer: faq.answer,
+      keywords: faq.keywords,
+    }));
+    // Always append a reverse converter link as a final FAQ for crawlability.
+    priorityFaqs.push({
+      question: `How do I convert ${to} back to ${from}?`,
+      answer: reverseHint,
+      keywords: [`${converter.toUnit} to ${converter.fromUnit}`],
+    });
+    return priorityFaqs;
+  }
+
   if (SPECIAL_CONVERTER_NOTES[converter.id]) {
     return [
       {
@@ -497,19 +517,21 @@ export function buildConverterFaq(
     ];
   }
 
+  const longTails = getConverterLongTailKeywords(converter.fromUnit, converter.toUnit, category.slug);
+
   return [
     {
-      question: `What is the quickest way to convert ${from} to ${to}?`,
-      answer: `Enter the ${from} value and apply ${converter.formula}. The calculator returns the matching ${to} value instantly.`,
+      question: `${longTails[0].charAt(0).toUpperCase()}${longTails[0].slice(1)}?`,
+      answer: `Enter the ${from} value and apply the formula (${converter.formula}). The calculator returns the matching ${to} value instantly.`,
       keywords: [`convert ${converter.fromUnit} to ${converter.toUnit}`],
     },
     {
-      question: `When would I use ${from} instead of ${to}?`,
-      answer: `${from} is the better choice when your source, audience, or tool already uses that unit. ${to} is better when you need to match local conventions, labels, or reporting formats.`,
+      question: `${longTails[1].charAt(0).toUpperCase()}${longTails[1].slice(1)}?`,
+      answer: `Since each ${from} equals a specific amount of ${to}, multiply or divide by the conversion factor to find exactly how many ${to} are in your ${from} value.`,
       keywords: [`${converter.fromUnit} vs ${converter.toUnit}`],
     },
     {
-      question: `What formula should I use for ${converter.fromUnit} to ${converter.toUnit}?`,
+      question: `What is the ${longTails[2]}?`,
       answer: `Use ${converter.formula}. If you need to go back from ${to} to ${from}, use ${converter.inverseFormula}.`,
       keywords: [`${converter.fromUnit} to ${converter.toUnit} formula`],
     },

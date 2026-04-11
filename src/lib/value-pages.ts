@@ -10,58 +10,96 @@ export function formatStaticValue(value: number): string {
   return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(6)));
 }
 
-const CM_TO_INCHES_VALUES = [150, 155, 160, 163, 165, 167, 168, 170, 172, 173, 175, 177, 178, 180, 183, 185, 190, 195, 200];
-const KG_TO_LBS_VALUES = [50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
-const CELSIUS_TO_FAHRENHEIT_VALUES = [-40, -20, -10, 0, 10, 20, 25, 30, 37, 40, 50, 100, 150, 200];
-const MILES_TO_KM_VALUES = [1, 5, 10, 13.1, 20, 26.2, 50, 100];
-const METERS_TO_FEET_VALUES = [1, 2, 3, 5, 10, 20, 50, 100, 1000];
-const FEET_TO_CM_VALUES = [4.5, 5, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6, 6.1, 6.2, 6.3, 6.4, 6.5];
-const INCHES_TO_CM_VALUES = [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75];
-const LBS_TO_KG_VALUES = [100, 110, 120, 125, 130, 140, 150, 160, 170, 175, 180, 190, 200];
-const FAHRENHEIT_TO_CELSIUS_VALUES = [32, 68, 77, 86, 98.6, 100, 212, 350, 400];
+// Helper to generate a range with a step
+function generateRange(start: number, end: number, step: number = 1): number[] {
+  const result = [];
+  for (let i = start; i <= end; i += step) {
+    result.push(Number(i.toFixed(2))); // limit decimal precision
+  }
+  return result;
+}
+
+// Helper to safely deduplicate values
+function dedupeAndSort(base: number[], extra: number[] = []) {
+  return Array.from(new Set([...base, ...extra])).sort((a, b) => a - b);
+}
+
+// --- Length ---
+// Human heights: very high search volume, every cm/inch matters
+const CM_TO_INCHES_VALUES = generateRange(150, 200, 1);
+const CM_TO_FEET_VALUES = generateRange(150, 200, 1);
+const INCHES_TO_CM_VALUES = generateRange(48, 80, 1); // 4ft to 6ft 8in
+const FEET_TO_CM_VALUES = generateRange(4.0, 7.0, 0.1);
+
+// General distances: people search common round numbers
+const METERS_TO_FEET_VALUES = [...generateRange(1, 20, 1), 25, 30, 40, 50, 100];
+const MILES_TO_KM_VALUES = [...generateRange(1, 20, 1), 25, 30, 40, 50, 100];
+const EXTRA_MILES_TO_KM = [13.1, 26.2]; // Marathons
+
+// --- Weight ---
+// Round numbers and intervals of 5/10 are the most searched for bodyweight/shipping
+const LBS_TO_KG_VALUES = generateRange(100, 250, 5); 
+const KG_TO_LBS_VALUES = generateRange(40, 120, 2);
+
+// --- Temperature ---
+// Weather temps (small jumps) + Baking/Cooking temps (large round numbers)
+const CELSIUS_TO_FAHRENHEIT_VALUES = [
+  ...generateRange(-20, 40, 2), // Weather
+  100, 120, 150, 160, 180, 200, 220, 250 // Baking & Boiling
+];
+const FAHRENHEIT_TO_CELSIUS_VALUES = [
+  ...generateRange(0, 100, 5), // Weather
+  212, 300, 325, 350, 375, 400, 425, 450 // Baking & Boiling
+];
+const EXTRA_FAHRENHEIT = [98.6]; // Body temp
 
 export const STATIC_VALUE_PAGE_PARAMS: StaticValuePageParam[] = [
-  ...CM_TO_INCHES_VALUES.map((value) => ({
+  ...dedupeAndSort(CM_TO_INCHES_VALUES).map((value) => ({
     category: "length",
     converter: "cm-to-inches",
-    value: `${value}-cm-to-inches`,
+    value: `${formatStaticValue(value)}-cm-to-inches`,
   })),
-  ...KG_TO_LBS_VALUES.map((value) => ({
-    category: "weight",
-    converter: "kg-to-lbs",
-    value: `${value}-kg-to-lbs`,
-  })),
-  ...CELSIUS_TO_FAHRENHEIT_VALUES.map((value) => ({
-    category: "temperature",
-    converter: "celsius-to-fahrenheit",
-    value: `${value}-celsius-to-fahrenheit`,
-  })),
-  ...MILES_TO_KM_VALUES.map((value) => ({
-    category: "length",
-    converter: "miles-to-km",
-    value: `${formatStaticValue(value)}-miles-to-km`,
-  })),
-  ...METERS_TO_FEET_VALUES.map((value) => ({
-    category: "length",
-    converter: "meters-to-feet",
-    value: `${value}-meters-to-feet`,
-  })),
-  ...FEET_TO_CM_VALUES.map((value) => ({
-    category: "length",
-    converter: "feet-to-cm",
-    value: `${formatStaticValue(value)}-feet-to-cm`,
-  })),
-  ...INCHES_TO_CM_VALUES.map((value) => ({
+  ...dedupeAndSort(INCHES_TO_CM_VALUES).map((value) => ({
     category: "length",
     converter: "inches-to-cm",
     value: `${formatStaticValue(value)}-inches-to-cm`,
   })),
-  ...LBS_TO_KG_VALUES.map((value) => ({
+  ...dedupeAndSort(CM_TO_FEET_VALUES).map((value) => ({
+    category: "length",
+    converter: "cm-to-feet",
+    value: `${formatStaticValue(value)}-cm-to-feet`,
+  })),
+  ...dedupeAndSort(METERS_TO_FEET_VALUES).map((value) => ({
+    category: "length",
+    converter: "meters-to-feet",
+    value: `${formatStaticValue(value)}-meters-to-feet`,
+  })),
+  ...dedupeAndSort(FEET_TO_CM_VALUES).map((value) => ({
+    category: "length",
+    converter: "feet-to-cm",
+    value: `${formatStaticValue(value)}-feet-to-cm`,
+  })),
+  ...dedupeAndSort(MILES_TO_KM_VALUES, EXTRA_MILES_TO_KM).map((value) => ({
+    category: "length",
+    converter: "miles-to-km",
+    value: `${formatStaticValue(value)}-miles-to-km`,
+  })),
+  ...dedupeAndSort(LBS_TO_KG_VALUES).map((value) => ({
     category: "weight",
     converter: "lbs-to-kg",
     value: `${formatStaticValue(value)}-lbs-to-kg`,
   })),
-  ...FAHRENHEIT_TO_CELSIUS_VALUES.map((value) => ({
+  ...dedupeAndSort(KG_TO_LBS_VALUES).map((value) => ({
+    category: "weight",
+    converter: "kg-to-lbs",
+    value: `${formatStaticValue(value)}-kg-to-lbs`,
+  })),
+  ...dedupeAndSort(CELSIUS_TO_FAHRENHEIT_VALUES).map((value) => ({
+    category: "temperature",
+    converter: "celsius-to-fahrenheit",
+    value: `${formatStaticValue(value)}-celsius-to-fahrenheit`,
+  })),
+  ...dedupeAndSort(FAHRENHEIT_TO_CELSIUS_VALUES, EXTRA_FAHRENHEIT).map((value) => ({
     category: "temperature",
     converter: "fahrenheit-to-celsius",
     value: `${formatStaticValue(value)}-fahrenheit-to-celsius`,

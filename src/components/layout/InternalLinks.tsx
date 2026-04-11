@@ -2,8 +2,8 @@ import Link from "next/link";
 import { categories } from "@/data/categories";
 import { calculators } from "@/data/calculators";
 import { ChevronRight, Home } from "lucide-react";
-import { canonicalConvertersByCategory, canonicalizeConverterHref } from "@/lib/converter-routing";
-import { getCategoryCalculatorLinks, getRelevantCalculatorLinks } from "@/lib/internal-linking";
+import { canonicalConvertersByCategory, canonicalizeConverterHref, canonicalConverters } from "@/lib/converter-routing";
+import { getCategoryCalculatorLinks, getRelevantCalculatorLinks, getCategoryFeaturedConverters } from "@/lib/internal-linking";
 const POPULAR_TOOLS = [
   { href: "/length/cm-to-inches", label: "cm to inches", category: "Length" },
   { href: "/length/feet-to-inches", label: "feet to inches", category: "Length" },
@@ -115,8 +115,26 @@ export function CrossCategoryLinks({ currentCategory }: { currentCategory: strin
 }
 
 // Popular Tools Sidebar
-export function PopularToolsSidebar({ excludeSlug }: { excludeSlug?: string }) {
-  const popular = POPULAR_TOOLS.filter((tool) => !excludeSlug || !tool.href.includes(excludeSlug));
+export function PopularToolsSidebar({ excludeSlug, categoryContext }: { excludeSlug?: string; categoryContext?: string }) {
+  let popular = POPULAR_TOOLS;
+
+  if (categoryContext) {
+    const categoryDef = categories.find((c) => c.slug === categoryContext);
+    if (categoryDef) {
+      const topCategoryConverters = getCategoryFeaturedConverters(categoryDef, canonicalConverters as any[])
+        .slice(0, 5)
+        .map((c) => ({
+          href: canonicalizeConverterHref(`/${c.category}/${c.metadata.slug}`),
+          label: c.title,
+          category: categoryDef.name,
+        }));
+        
+      const fallback = POPULAR_TOOLS.filter((t) => t.category !== categoryDef.name).slice(0, 5);
+      popular = [...topCategoryConverters, ...fallback];
+    }
+  }
+
+  const filtered = popular.filter((tool) => !excludeSlug || !tool.href.includes(excludeSlug));
 
   return (
     <div className="bg-white border border-slate-200 rounded-lg p-5">
@@ -124,7 +142,7 @@ export function PopularToolsSidebar({ excludeSlug }: { excludeSlug?: string }) {
         Popular Tools
       </h3>
       <div className="space-y-2">
-        {popular.map((tool) => (
+        {filtered.map((tool) => (
           <Link
             key={tool.href}
             href={tool.href}
@@ -165,72 +183,7 @@ export function RelatedCalculators({ currentSlug, categoryContext }: { currentSl
   );
 }
 
-// SEO Text Links Section (for content pages)
-export function SEOLinksSection() {
-  return (
-    <section className="border-t border-slate-200 pt-8 mt-8">
-      <h2 className="text-lg font-semibold text-slate-900 mb-4">Quick Links</h2>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
-        <div>
-          <h3 className="text-sm font-medium text-slate-900 mb-2">Length</h3>
-          <ul className="space-y-1">
-            <li><Link href={canonicalizeConverterHref("/length/cm-to-inches")} className="text-sm text-slate-500 hover:text-slate-900">cm to inches</Link></li>
-            <li><Link href={canonicalizeConverterHref("/length/meters-to-feet")} className="text-sm text-slate-500 hover:text-slate-900">meters to feet</Link></li>
-            <li><Link href={canonicalizeConverterHref("/length/km-to-miles")} className="text-sm text-slate-500 hover:text-slate-900">km to miles</Link></li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-sm font-medium text-slate-900 mb-2">Weight</h3>
-          <ul className="space-y-1">
-            <li><Link href={canonicalizeConverterHref("/weight/kg-to-lbs")} className="text-sm text-slate-500 hover:text-slate-900">kg to lbs</Link></li>
-            <li><Link href={canonicalizeConverterHref("/weight/grams-to-ounces")} className="text-sm text-slate-500 hover:text-slate-900">g to oz</Link></li>
-            <li><Link href={canonicalizeConverterHref("/weight/lbs-to-kg")} className="text-sm text-slate-500 hover:text-slate-900">lbs to kg</Link></li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-sm font-medium text-slate-900 mb-2">Temperature</h3>
-          <ul className="space-y-1">
-            <li><Link href={canonicalizeConverterHref("/temperature/celsius-to-fahrenheit")} className="text-sm text-slate-500 hover:text-slate-900">°C to °F</Link></li>
-            <li><Link href={canonicalizeConverterHref("/temperature/fahrenheit-to-celsius")} className="text-sm text-slate-500 hover:text-slate-900">°F to °C</Link></li>
-            <li><Link href={canonicalizeConverterHref("/temperature/celsius-to-kelvin")} className="text-sm text-slate-500 hover:text-slate-900">°C to K</Link></li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-sm font-medium text-slate-900 mb-2">Volume</h3>
-          <ul className="space-y-1">
-            <li><Link href={canonicalizeConverterHref("/volume/liters-to-gallons")} className="text-sm text-slate-500 hover:text-slate-900">liters to gallons</Link></li>
-            <li><Link href={canonicalizeConverterHref("/volume/gallons-to-liters")} className="text-sm text-slate-500 hover:text-slate-900">gallons to liters</Link></li>
-            <li><Link href={canonicalizeConverterHref("/volume/milliliters-to-cups")} className="text-sm text-slate-500 hover:text-slate-900">mL to cups</Link></li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-sm font-medium text-slate-900 mb-2">Speed</h3>
-          <ul className="space-y-1">
-            <li><Link href={canonicalizeConverterHref("/speed/mph-to-kmh")} className="text-sm text-slate-500 hover:text-slate-900">mph to km/h</Link></li>
-            <li><Link href={canonicalizeConverterHref("/speed/kmh-to-mph")} className="text-sm text-slate-500 hover:text-slate-900">km/h to mph</Link></li>
-            <li><Link href={canonicalizeConverterHref("/speed/knots-to-mph")} className="text-sm text-slate-500 hover:text-slate-900">knots to mph</Link></li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-sm font-medium text-slate-900 mb-2">Data</h3>
-          <ul className="space-y-1">
-            <li><Link href={canonicalizeConverterHref("/data/megabytes-to-gigabytes")} className="text-sm text-slate-500 hover:text-slate-900">MB to GB</Link></li>
-            <li><Link href={canonicalizeConverterHref("/data/gigabytes-to-megabytes")} className="text-sm text-slate-500 hover:text-slate-900">GB to MB</Link></li>
-            <li><Link href={canonicalizeConverterHref("/data/gigabytes-to-terabytes")} className="text-sm text-slate-500 hover:text-slate-900">GB to TB</Link></li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-sm font-medium text-slate-900 mb-2">Calculators</h3>
-          <ul className="space-y-1">
-            <li><Link href="/bmi-calculator" className="text-sm text-slate-500 hover:text-slate-900">BMI Calculator</Link></li>
-            <li><Link href="/percentage-calculator" className="text-sm text-slate-500 hover:text-slate-900">Percentage</Link></li>
-            <li><Link href="/age-calculator" className="text-sm text-slate-500 hover:text-slate-900">Age Calculator</Link></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
+
 
 // Navigation Sidebar with all categories
 export function CategoryNavigation({ activeCategory }: { activeCategory?: string }) {
@@ -274,76 +227,29 @@ export function CrawlableLinkHub({
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <div>
-          <h3 className="text-sm font-semibold text-slate-900 mb-2">Key Pages</h3>
+          <h3 className="text-sm font-semibold text-slate-900 mb-2">Popular Categories</h3>
           <ul className="space-y-1.5">
-            {STATIC_PAGE_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="text-sm text-slate-600 hover:text-slate-900">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-sm font-semibold text-slate-900 mb-2">Popular Calculators</h3>
-          <ul className="space-y-1.5">
-            {topCalculatorLinks.map((calculator) => (
-              <li key={calculator.slug}>
-                <Link href={`/${calculator.slug}`} className="text-sm text-slate-600 hover:text-slate-900">
-                  {calculator.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-sm font-semibold text-slate-900 mb-2">Categories</h3>
-          <ul className="space-y-1.5">
-            {categories.map((category) => (
+            {categories.slice(0, 10).map((category) => (
               <li key={category.slug}>
-                <Link href={`/${category.slug}`} className="text-sm text-slate-600 hover:text-slate-900">
+                <Link href={"/"} className="text-sm text-slate-600 hover:text-slate-900">
                   {category.name}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
-      </div>
-
-      <div className="mt-6 border-t border-slate-100 pt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {categories.map((category) => {
-          const categoryConverters = (canonicalConvertersByCategory.get(category.slug) ?? []).slice(0, limitPerCategory);
-
-          if (categoryConverters.length === 0) {
-            return null;
-          }
-
-          return (
-            <div key={category.slug}>
-              <h3 className="text-sm font-semibold text-slate-900 mb-2">{category.name} Converters</h3>
-              <ul className="space-y-1.5">
-                {categoryConverters.map((converter) => (
-                  <li key={converter.id}>
-                    <Link
-                      href={`/${converter.category}/${converter.metadata.slug}`}
-                      className="text-sm text-slate-600 hover:text-slate-900"
-                    >
-                      {converter.title}
-                    </Link>
-                  </li>
-                ))}
-                <li>
-                  <Link href={`/${category.slug}`} className="text-sm font-medium text-cyan-700 hover:text-cyan-800">
-                    View all {category.name.toLowerCase()} tools
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          );
-        })}
+        <div>
+          <h3 className="text-sm font-semibold text-slate-900 mb-2">Calculators</h3>
+          <ul className="space-y-1.5">
+            {topCalculatorLinks.map((calculator) => (
+              <li key={calculator.slug}>
+                <Link href={"/"} className="text-sm text-slate-600 hover:text-slate-900">
+                  {calculator.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

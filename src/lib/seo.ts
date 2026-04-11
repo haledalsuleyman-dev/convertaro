@@ -51,7 +51,6 @@ interface PageMetadataInput {
   title: string;
   description: string;
   path: string;
-  keywords?: string[];
   robots?: NonNullable<Metadata["robots"]>;
   type?: "website" | "article";
 }
@@ -134,20 +133,24 @@ function compactFormula(formula: string): string {
 export function buildConverterMetaTitle(fromUnit: string, toUnit: string): string {
   const fromLabel = formatUnitLabel(fromUnit);
   const toLabel = formatUnitLabel(toUnit);
+  // Intent-first, benefit-clear candidates ordered from most to least specific.
+  // We pick the longest one that still fits in a 60-char title tag (with site name).
   const candidates = [
-    `${fromLabel} to ${toLabel} - Free Online Converter`,
-    `${fromLabel} to ${toLabel} - Free Converter`,
+    `${fromLabel} to ${toLabel} Converter – Instant & Accurate`,
+    `${fromLabel} to ${toLabel} Converter – Free Online Tool`,
+    `${fromLabel} to ${toLabel} – Free Converter`,
     `${fromLabel} to ${toLabel} Converter`,
   ];
 
-  return candidates.find((candidate) => withSiteName(candidate).length <= 60) ?? candidates[candidates.length - 1];
+  return candidates.find((c) => withSiteName(c).length <= 60) ?? candidates[candidates.length - 1];
 }
 
 export function buildConverterMetaDescription(fromUnit: string, toUnit: string, formula: string): string {
   const fromLabel = formatUnitLabel(fromUnit);
   const toLabel = formatUnitLabel(toUnit);
+  // Action-first. Formula inline. Trust signal. Soft CTA. Stays under 155 chars.
   return cleanMetaDescription(
-    `Convert ${fromLabel} to ${toLabel} instantly. Formula: ${compactFormula(formula)}. Free, accurate, no sign-up needed. Try Convertaro now for fast results.`,
+    `Instantly convert ${fromLabel} to ${toLabel} using the formula: ${compactFormula(formula)}. Free, no sign-up, accurate to 6 decimal places. Results update as you type.`,
     155
   );
 }
@@ -210,7 +213,6 @@ export function buildPageMetadata({
   title,
   description,
   path,
-  keywords,
   robots = INDEXABLE_ROBOTS,
   type = "website",
 }: PageMetadataInput): Metadata {
@@ -222,7 +224,6 @@ export function buildPageMetadata({
     title: cleanTitle,
     description: cleanDescription,
     robots,
-    keywords,
     alternates: buildAlternates(path),
     openGraph: buildOpenGraph({
       title: socialTitle,

@@ -14,17 +14,10 @@ export const dynamic = "force-static";
 const converters = canonicalConverters as Converter[];
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Popular Conversion Tools",
+  title: "Most Popular Unit Converters – Top Free Tools",
   description:
-    "Browse popular conversion tools by category, including common unit conversions for length, weight, temperature, volume, speed, and data.",
+    "Quickly access the most-used unit conversion tools on Convertaro — organized by category. Covers length, weight, temperature, speed, volume, data, and more. No sign-up needed.",
   path: "/popular-conversion-tools",
-  keywords: [
-    "popular conversion tools",
-    "common unit conversions",
-    "most used converters",
-    "popular unit converter",
-    "conversion tools hub",
-  ],
 });
 
 export default function PopularConversionToolsPage() {

@@ -10,10 +10,10 @@ import {
 import { getPriorityConverterContent } from "@/lib/priority-pages";
 
 const CALCULATOR_ENDINGS: Partial<Record<CalculatorDefinition["category"], string>> = {
-  finance: "Useful for planning and comparison.",
-  health: "Designed for informational use.",
-  math: "Useful for quick checks and repeat calculations.",
-  time: "Useful for forms, planning, and date checks.",
+  finance: "Free, no sign-up. Results update instantly as you type.",
+  health: "Informational use only. Free tool, no sign-up required.",
+  math: "Instant results. Includes the formula so you can verify your work.",
+  time: "Free, instant, and works directly in your browser without any downloads.",
 };
 
 function buildConverterTitle(converter: Converter): string {
@@ -35,21 +35,10 @@ function buildCalculatorDescription(calculator: CalculatorDefinition): string {
 }
 
 export function buildConverterPageMetadata(converter: Converter, category: Category, canonicalPath: string): Metadata {
-  const longTailKeywords = getConverterLongTailKeywords(converter.fromUnit, converter.toUnit, category.slug);
-
   return buildPageMetadata({
     title: buildConverterTitle(converter),
     description: buildConverterDescription(converter, category),
     path: canonicalPath,
-    keywords: [
-      ...converter.metadata.keywords,
-      `${converter.fromUnit} to ${converter.toUnit}`,
-      `convert ${converter.fromUnit} to ${converter.toUnit}`,
-      `${converter.fromUnit} to ${converter.toUnit} converter`,
-      `${converter.fromUnit} to ${converter.toUnit} formula`,
-      `${category.name.toLowerCase()} converter`,
-      ...longTailKeywords.slice(0, 8),
-    ].filter(Boolean),
   });
 }
 
@@ -58,6 +47,5 @@ export function buildCalculatorPageMetadata(calculator: CalculatorDefinition): M
     title: buildCalculatorTitle(calculator),
     description: buildCalculatorDescription(calculator),
     path: `/${calculator.slug}`,
-    keywords: calculator.keywords,
   });
 }

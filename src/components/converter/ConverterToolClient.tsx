@@ -1,15 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Input } from "@/components/ui/Input";
 import { ArrowRightLeft, Zap } from "lucide-react";
 import { convertValue, formatValue } from "@/lib/converter";
 import { formatUnitLabel } from "@/lib/seo";
+import { useRecentConversions } from "@/hooks/useRecentConversions";
 
 interface ConverterToolClientProps {
   category: string;
   fromUnit: string;
   toUnit: string;
+  title: string;
+  slug: string;
   formula: string;
   inverseFormula: string;
 }
@@ -18,11 +21,14 @@ export function ConverterToolClient({
   category,
   fromUnit: initialFromUnit,
   toUnit: initialToUnit,
+  title,
+  slug,
   formula,
   inverseFormula,
 }: ConverterToolClientProps) {
   const [inputValue, setInputValue] = useState<string>("1");
   const [isReversed, setIsReversed] = useState(false);
+  const { addRecent } = useRecentConversions();
 
   const fromUnit = isReversed ? initialToUnit : initialFromUnit;
   const toUnit = isReversed ? initialFromUnit : initialToUnit;
@@ -37,6 +43,23 @@ export function ConverterToolClient({
     }
     return "";
   }, [category, fromUnit, inputValue, toUnit]);
+
+  // Track recent conversions
+  useEffect(() => {
+    // Only track if an actual valid number exists
+    const val = parseFloat(inputValue);
+    if (!isNaN(val)) {
+      const delay = setTimeout(() => {
+        addRecent({
+          slug,
+          title,
+          category,
+          lastValue: inputValue,
+        });
+      }, 500); // 500ms debounce to avoid spamming localStorage while typing
+      return () => clearTimeout(delay);
+    }
+  }, [inputValue, isReversed, slug, title, category, addRecent]);
 
   const handleReverse = () => {
     setIsReversed(!isReversed);
