@@ -77,14 +77,18 @@ const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>
 
 const QUICK_LINKS = [
   { href: "/length/cm-to-inches", label: "cm → inches" },
+  { href: "/length/inches-to-cm", label: "inches → cm" },
   { href: "/weight/kg-to-lbs", label: "kg → lbs" },
   { href: "/speed/mph-to-kmh", label: "mph → km/h" },
   { href: "/temperature/celsius-to-fahrenheit", label: "°C → °F" },
   { href: "/length/km-to-miles", label: "km → miles" },
+  { href: "/length/miles-to-km", label: "miles → km" },
   { href: "/data/megabytes-to-gigabytes", label: "MB → GB" },
   { href: "/volume/liters-to-gallons", label: "L → gallons" },
   { href: "/weight/lbs-to-kg", label: "lbs → kg" },
   { href: "/length/feet-to-inches", label: "ft → in" },
+  { href: "/length/m-to-feet", label: "m → ft" },
+  { href: "/length/feet-to-m", label: "ft → m" },
   { href: "/volume/gallons-to-liters", label: "gallons → L" },
   { href: "/data/gigabytes-to-megabytes", label: "GB → MB" },
   { href: "/temperature/fahrenheit-to-celsius", label: "°F → °C" },
@@ -154,6 +158,8 @@ export default function Home() {
     "kmh-to-mph",
     "liters-to-gallons",
     "megabytes-to-gigabytes",
+    "inches-to-cm",
+    "miles-to-km"
   ]
     .map((id) => getCanonicalConverterById(id))
     .filter(Boolean) as Converter[];

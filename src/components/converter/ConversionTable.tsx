@@ -8,6 +8,7 @@ import { ConversionTableToggle } from "@/components/converter/ConversionTableTog
 
 interface ConversionTableProps {
   converter: Converter;
+  defaultVisibleRows?: number;
 }
 
 const DEFAULT_VISIBLE_ROWS = 10;
@@ -29,11 +30,11 @@ function buildTableId(converter: Converter): string {
   return `${converter.category}-${converter.metadata.slug}`;
 }
 
-export function ConversionTable({ converter }: ConversionTableProps) {
+export function ConversionTable({ converter, defaultVisibleRows = DEFAULT_VISIBLE_ROWS }: ConversionTableProps) {
   const isCmToInches = converter.fromUnit === "cm" && converter.toUnit === "inches";
   const fromLabel = formatUnitLabel(converter.fromUnit);
   const toLabel = formatUnitLabel(converter.toUnit);
-  const hasMoreRows = converter.examples.length > DEFAULT_VISIBLE_ROWS;
+  const hasMoreRows = converter.examples.length > defaultVisibleRows;
   const tableId = buildTableId(converter);
 
   return (
@@ -43,7 +44,7 @@ export function ConversionTable({ converter }: ConversionTableProps) {
           <table className="min-w-full border-separate border-spacing-0 text-left">
             <caption className="border-b border-slate-200 bg-slate-50/80 px-4 py-3 text-left text-sm text-slate-500 sm:px-6">
               Quick reference values for common {fromLabel} to {toLabel} conversions.
-              {hasMoreRows ? ` Showing ${DEFAULT_VISIBLE_ROWS} of ${converter.examples.length} values.` : ""}
+              {hasMoreRows ? ` Showing ${defaultVisibleRows} of ${converter.examples.length} values.` : ""}
             </caption>
             <thead>
               <tr className="bg-slate-900 text-white">
@@ -57,7 +58,7 @@ export function ConversionTable({ converter }: ConversionTableProps) {
             <tbody>
               {converter.examples.map((example, index) => {
                 const valuePageHref = getStaticValuePageHref(converter.category, converter.metadata.slug, example.input);
-                const isExtraRow = index >= DEFAULT_VISIBLE_ROWS;
+                const isExtraRow = index >= defaultVisibleRows;
 
                 return (
                   <tr

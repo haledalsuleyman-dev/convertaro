@@ -17,7 +17,8 @@ const CALCULATOR_ENDINGS: Partial<Record<CalculatorDefinition["category"], strin
 };
 
 function buildConverterTitle(converter: Converter): string {
-  return buildConverterMetaTitle(converter.fromUnit, converter.toUnit);
+  const priority = getPriorityConverterContent(converter);
+  return priority?.metaTitle ?? buildConverterMetaTitle(converter.fromUnit, converter.toUnit);
 }
 
 function buildConverterDescription(converter: Converter, _category: Category): string {

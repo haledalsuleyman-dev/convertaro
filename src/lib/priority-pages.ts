@@ -2,6 +2,8 @@ import { Converter } from "@/types/converter";
 import { convertValue } from "@/lib/converter";
 
 type PriorityConverterContent = {
+  metaTitle?: string;
+  heading?: string;
   description?: string;
   metaDescription?: string;
   summary?: string;
@@ -75,6 +77,8 @@ export const TOP_CATEGORY_CONTENT: Record<string, TopCategoryContent> = {
 
 const PRIORITY_CONVERTER_CONTENT: Record<string, PriorityConverterContent> = {
   [createConverterKey("length", "cm", "inches")]: {
+    metaTitle: "cm to inches Converter (Centimeters to Inches)",
+    heading: "cm to inches Converter",
     description:
       "Convert centimeters to inches with the exact 2.54 cm per inch relationship, common height examples, and a quick sizing chart.",
     metaDescription:
@@ -115,6 +119,8 @@ const PRIORITY_CONVERTER_CONTENT: Record<string, PriorityConverterContent> = {
     ],
   },
   [createConverterKey("length", "inches", "cm")]: {
+    metaTitle: "inches to cm Converter (Inches to Centimeters)",
+    heading: "inches to cm Converter",
     description:
       "Convert inches to centimeters with the exact 1 inch = 2.54 centimeters formula, common height values, and a fast reference table.",
     metaDescription:
@@ -156,46 +162,56 @@ const PRIORITY_CONVERTER_CONTENT: Record<string, PriorityConverterContent> = {
     ],
   },
   [createConverterKey("weight", "kg", "lbs")]: {
+    metaTitle: "kg to lbs Converter (Kilograms to Pounds)",
+    heading: "kg to lbs Converter",
     description:
-      "Convert kilograms to pounds with the exact 1 kg = 2.2046226218 lb factor, common body-weight examples, and a quick chart.",
+      "kg to lbs converter with the exact 1 kg = 2.20462 lbs formula, worked examples, and a quick conversion chart.",
     metaDescription:
-      "Convert kg to lbs instantly — formula: lb = kg × 2.20462. Covers body weight, luggage limits, and fitness tracking. Free real-time calculator.",
+      "kg to lbs converter with the exact 1 kg = 2.20462 lbs formula, worked examples, FAQ, and a chart of common kilogram values.",
     summary:
-      "Convert kilograms to pounds with the exact 1 kg = 2.20462 pound factor. The most searched weight conversion worldwide — used every day for body weight goals, international baggage limits, and fitness tracking across metric and US systems.",
+      "Convert kilograms to pounds using the exact factor 1 kg = 2.20462 lbs. This page gives the calculator first, then the formula, worked examples, and a chart for common values.",
     intent:
-      "People land here when their gym tracker shows kilograms but they think in pounds, when an airline sets a luggage limit in kg and they need it in lbs, or when a US protein label lists grams and they need to cross-reference a UK product shown in ounces.",
+      "Most searches here are for body weight, luggage allowances, shipping labels, and package weights that need to move from kilograms into pounds.",
     formula: "lb = kg x 2.2046226218",
     inverseFormula: "kg = lb x 0.45359237",
+    inputs: [1, 2, 5, 10, 15, 20, 23, 25, 30, 40, 45, 50, 60, 70, 75, 80, 90, 100, 110, 120, 150, 200],
     relatedConverters: ["lbs-to-kg", "kg-to-grams", "pounds-to-ounces", "grams-to-ounces"],
     faqs: [
       {
-        question: "How many pounds is 70 kg?",
-        answer: "70 kg equals 154.32 pounds. Multiply 70 × 2.20462 = 154.32 lbs. This is a common male body weight in Europe and a frequent reference point for fitness and medical forms.",
+        question: "How many lbs in 1 kg?",
+        answer: "There are 2.20462 lbs in 1 kg. Multiply any kilogram value by 2.20462 to convert it to pounds.",
+        keywords: ["how many lbs in 1 kg", "1 kg in pounds"],
+      },
+      {
+        question: "What is 70 kg in pounds?",
+        answer: "70 kg equals 154.32 pounds. Multiply 70 by 2.20462 to get 154.32358, which rounds to 154.32 lbs.",
         keywords: ["70 kg in pounds", "70 kg to lbs"],
       },
       {
-        question: "How many lbs is 100 kg?",
-        answer: "100 kg equals 220.46 pounds. A simple approximation is to multiply kg by 2.2, so 100 × 2.2 = 220 lbs — close but the exact factor is 2.20462.",
+        question: "What is 100 kg in pounds?",
+        answer: "100 kg equals 220.46 pounds. Multiply 100 by 2.20462 to get 220.46226, which rounds to 220.46 lbs.",
         keywords: ["100 kg in lbs", "100 kg to pounds"],
       },
       {
-        question: "Is the kg to lbs conversion the same for body weight and luggage?",
-        answer: "Yes — the conversion factor is always 1 kg = 2.20462 lbs regardless of what you are weighing. Whether it is body weight, luggage, or food, the math stays the same.",
-        keywords: ["kg to lbs body weight", "kg to lbs luggage limit"],
+        question: "What is 50 kg in pounds?",
+        answer: "50 kg equals 110.23 pounds. Multiply 50 by 2.20462 to get 110.23113, which rounds to 110.23 lbs.",
+        keywords: ["50 kg in pounds", "50 kg to lbs"],
       },
       {
-        question: "What is a quick way to estimate kg to lbs in my head?",
-        answer: "Multiply the kilograms by 2.2 for a fast estimate. For example: 80 kg × 2.2 = 176 lbs (exact is 176.37 lbs). This works well for everyday use where decimal precision is not critical.",
-        keywords: ["quick kg to lbs estimate", "approximate kg to lbs"],
+        question: "Is kg to lbs the same for body weight and luggage?",
+        answer: "Yes. The conversion factor stays the same for body weight, luggage, parcels, and any other mass measurement: 1 kg = 2.20462 lbs.",
+        keywords: ["kg to lbs body weight", "kg to lbs luggage"],
       },
       {
-        question: "How do I convert kg to lbs for a barbell weight?",
-        answer: "Barbell plate weights are often listed in both kg and lbs. To convert: multiply the kg value by 2.20462. A 20 kg plate is 44.09 lbs, a 10 kg plate is 22.05 lbs. Many gyms show both units on each plate.",
-        keywords: ["barbell weight kg to lbs", "weight plates kg to pounds"],
+        question: "Can I use 2.2 to estimate kg to lbs?",
+        answer: "Yes, for a quick estimate. Multiplying by 2.2 is close, but the exact factor is 2.20462. For example, 100 kg is about 220 lbs by estimate and 220.46 lbs exactly.",
+        keywords: ["kg to lbs estimate", "kg to lbs 2.2"],
       },
     ],
   },
   [createConverterKey("weight", "lbs", "kg")]: {
+    metaTitle: "lbs to kg Converter (Pounds to Kilograms)",
+    heading: "lbs to kg Converter",
     description:
       "Convert pounds to kilograms with the exact 1 lb = 0.45359237 kg factor, body-weight examples, and a quick reference table.",
     metaDescription:
@@ -236,7 +252,85 @@ const PRIORITY_CONVERTER_CONTENT: Record<string, PriorityConverterContent> = {
       },
     ],
   },
+  [createConverterKey("weight", "g", "oz")]: {
+    metaTitle: "grams to ounces Converter (Grams to Ounces)",
+    heading: "grams to ounces Converter",
+    description:
+      "Convert grams to ounces with the exact 1 gram = 0.0352739619 ounces factor, cooking examples, and a quick chart.",
+    metaDescription:
+      "Convert grams to ounces instantly using the exact factor 1 gram = 0.0352739619 ounces. Includes common food, recipe, and package values.",
+    summary:
+      "Convert grams to ounces instantly using the exact 1 gram = 0.0352739619 ounce factor. Useful for recipe prep, nutrition labels, package weights, and retail measurements.",
+    intent:
+      "Most searches here are for cooking ingredients, food labels, supplement serving sizes, and small package weights that need to move from metric grams to ounces.",
+    formula: "oz = g x 0.0352739619",
+    inverseFormula: "g = oz x 28.349523125",
+    inputs: [1, 5, 10, 25, 50, 100, 250, 500, 1000],
+    relatedConverters: ["oz-to-g", "g-to-lbs", "kg-to-oz", "pounds-to-ounces"],
+    faqs: [
+      {
+        question: "How many ounces in 100 grams?",
+        answer: "100 grams equals 3.53 ounces. Multiply 100 by 0.0352739619 to get 3.52739619 oz, which rounds to 3.53 oz.",
+        keywords: ["100 grams in ounces", "100 g to oz"],
+      },
+      {
+        question: "What is 250 grams in ounces?",
+        answer: "250 grams equals 8.82 ounces. Multiply 250 by 0.0352739619 to get 8.818490475 oz, which rounds to 8.82 oz.",
+        keywords: ["250 grams in ounces", "250 g to oz"],
+      },
+      {
+        question: "What is 500 grams in ounces?",
+        answer: "500 grams equals 17.64 ounces. Multiply 500 by 0.0352739619 to get 17.63698095 oz, which rounds to 17.64 oz.",
+        keywords: ["500 grams in ounces", "500 g to oz"],
+      },
+      {
+        question: "Is grams to ounces useful for recipes?",
+        answer: "Yes. Many recipes, food packages, and nutrition labels show grams in metric regions and ounces in US measurements, so converting between them helps with ingredient prep and label comparison.",
+        keywords: ["grams to ounces recipe", "grams to ounces cooking"],
+      },
+    ],
+  },
+  [createConverterKey("weight", "oz", "g")]: {
+    metaTitle: "ounces to grams Converter (Ounces to Grams)",
+    heading: "ounces to grams Converter",
+    description:
+      "Convert ounces to grams with the exact 1 ounce = 28.349523125 grams factor, cooking examples, and a quick chart.",
+    metaDescription:
+      "Convert ounces to grams instantly using the exact factor 1 ounce = 28.349523125 grams. Includes recipe, food label, and package values.",
+    summary:
+      "Convert ounces to grams instantly using the exact 1 ounce = 28.349523125 gram factor. Useful for recipes, nutrition labels, retail weights, and package measurements.",
+    intent:
+      "Most searches here are for recipes, food packages, supplements, and parcel weights that start in ounces and need a metric gram value.",
+    formula: "g = oz x 28.349523125",
+    inverseFormula: "oz = g x 0.0352739619",
+    inputs: [1, 2, 4, 8, 12, 16, 32, 64],
+    relatedConverters: ["g-to-oz", "oz-to-lbs", "lbs-to-g", "kg-to-g"],
+    faqs: [
+      {
+        question: "How many grams in 1 ounce?",
+        answer: "There are 28.349523125 grams in 1 ounce. For most recipe and label use, this is rounded to 28.35 grams.",
+        keywords: ["how many grams in 1 ounce", "1 oz in grams"],
+      },
+      {
+        question: "What is 8 ounces in grams?",
+        answer: "8 ounces equals 226.8 grams. Multiply 8 by 28.349523125 to get 226.796185 grams, which rounds to 226.8 g.",
+        keywords: ["8 ounces in grams", "8 oz to grams"],
+      },
+      {
+        question: "What is 16 ounces in grams?",
+        answer: "16 ounces equals 453.59 grams. Multiply 16 by 28.349523125 to get 453.59237 grams, which is exactly 1 pound in metric form.",
+        keywords: ["16 ounces in grams", "16 oz to grams"],
+      },
+      {
+        question: "Why convert ounces to grams in cooking?",
+        answer: "Metric recipes often use grams for better precision, while many US labels and ingredient lists use ounces. Converting keeps recipe measurements consistent.",
+        keywords: ["ounces to grams cooking", "ounces to grams recipe"],
+      },
+    ],
+  },
   [createConverterKey("length", "km", "miles")]: {
+    metaTitle: "km to miles Converter (Kilometers to Miles)",
+    heading: "km to miles Converter",
     description:
       "Convert kilometers to miles with the exact 1 km = 0.6213711922 mi factor, travel examples, and a race-distance reference chart.",
     metaDescription:
@@ -278,6 +372,8 @@ const PRIORITY_CONVERTER_CONTENT: Record<string, PriorityConverterContent> = {
     ],
   },
   [createConverterKey("length", "miles", "km")]: {
+    metaTitle: "miles to km Converter (Miles to Kilometers)",
+    heading: "miles to km Converter",
     description:
       "Convert miles to kilometers with the exact 1 mile = 1.609344 km factor, travel examples, and a quick distance chart.",
     metaDescription:
@@ -314,6 +410,8 @@ const PRIORITY_CONVERTER_CONTENT: Record<string, PriorityConverterContent> = {
     ],
   },
   [createConverterKey("temperature", "C", "F")]: {
+    metaTitle: "c to f Converter (Celsius to Fahrenheit)",
+    heading: "c to f Converter",
     description:
       "Convert Celsius to Fahrenheit with the exact reverse formula, weather and cooking examples, and a fast temperature chart.",
     metaDescription:
@@ -352,6 +450,8 @@ const PRIORITY_CONVERTER_CONTENT: Record<string, PriorityConverterContent> = {
     ],
   },
   [createConverterKey("temperature", "F", "C")]: {
+    metaTitle: "f to c Converter (Fahrenheit to Celsius)",
+    heading: "f to c Converter",
     description:
       "Convert Fahrenheit to Celsius with the exact reverse formula, weather and cooking examples, and a quick temperature chart.",
     metaDescription:
@@ -463,6 +563,8 @@ const PRIORITY_CONVERTER_CONTENT: Record<string, PriorityConverterContent> = {
     ],
   },
   [createConverterKey("speed", "mph", "kmh")]: {
+    metaTitle: "mph to km/h Converter (Miles per Hour to Kilometers per Hour)",
+    heading: "mph to km/h Converter",
     description:
       "Convert miles per hour to kilometers per hour with the exact 1 mph = 1.609344 km/h factor and common driving-speed examples.",
     metaDescription:
@@ -504,6 +606,8 @@ const PRIORITY_CONVERTER_CONTENT: Record<string, PriorityConverterContent> = {
     ],
   },
   [createConverterKey("speed", "kmh", "mph")]: {
+    metaTitle: "km/h to mph Converter (Kilometers per Hour to Miles per Hour)",
+    heading: "km/h to mph Converter",
     description:
       "Convert kilometers per hour to miles per hour with the exact 1 km/h = 0.6213711922 mph factor and common driving examples.",
     metaDescription:
