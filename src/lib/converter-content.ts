@@ -37,10 +37,7 @@ type ExampleContent = {
   description: string;
 };
 
-const SPECIAL_CONVERTER_SUMMARIES: Record<string, string> = {
-  "cups-to-grams": "Convert US cups to grams for water with the formula, practical examples, and a quick kitchen reference table.",
-  "grams-to-cups": "Convert grams to US cups for water with the formula, practical examples, and a quick kitchen reference table.",
-};
+
 
 const SPECIAL_CONVERTER_NOTES: Record<string, string> = {
   "cups-to-grams": "This page uses US cups and a water-equivalent assumption. Ingredient weights vary, so flour, sugar, butter, and other ingredients will not match the same gram value.",
@@ -458,6 +455,15 @@ export function getRelatedConverterRecommendations(
   return recommendations.slice(0, 6);
 }
 
+const SPECIAL_CONVERTER_SUMMARIES: Record<string, string> = {
+  "cups-to-grams": "Convert cups to grams for baking and cooking instantly. Calculate exact ingredient weight for water, milk, and similar liquids with our professional converter.",
+  "grams-to-cups": "Convert grams to cups for precise recipe measurement. Great for baking, cooking, and international ingredient conversion with formula and table support.",
+  "cm-to-inches": "Convert centimeters to inches (cm to in) with high precision. Essential for height, clothing, and item measurements across metric and imperial systems.",
+  "inches-to-cm": "Convert inches to centimeters (in to cm) quickly and accurately. Built for construction, height, and display size conversions.",
+  "kg-to-lbs": "Convert kilograms to pounds (kg to lbs) for body weight, shipping, and fitness tracking. Uses the exact factor 2.20462 for professional results.",
+  "lbs-to-kg": "Convert pounds to kilograms (lbs to kg) instantly. Ideal for health forms, luggage weight, and international shipping labels.",
+};
+
 export function buildConverterFaq(
   converter: Converter,
   category: Category,
@@ -468,9 +474,8 @@ export function buildConverterFaq(
   const useCases = CATEGORY_USE_CASES[category.slug] ?? [];
   const reverseHint = reverseConverter
     ? `For the reverse direction, use the ${reverseConverter.title} page.`
-    : `Use the swap direction for the reverse conversion from ${to} to ${from}.`;
+    : `Use the swap direction to convert ${to} back to ${from}.`;
 
-  // Use hand-written priority FAQs when available — much higher quality than the template.
   const priorityContent = getPriorityConverterContent(converter);
   if (priorityContent?.faqs && priorityContent.faqs.length > 0) {
     const priorityFaqs: FAQItem[] = priorityContent.faqs.map((faq) => ({
@@ -478,75 +483,40 @@ export function buildConverterFaq(
       answer: faq.answer,
       keywords: faq.keywords,
     }));
-    // Always append a reverse converter link as a final FAQ for crawlability.
     priorityFaqs.push({
-      question: `How do I convert ${to} back to ${from}?`,
+      question: `How do I convert ${to} back into ${from}?`,
       answer: reverseHint,
       keywords: [`${converter.toUnit} to ${converter.fromUnit}`],
     });
     return priorityFaqs;
   }
 
-  if (SPECIAL_CONVERTER_NOTES[converter.id]) {
-    return [
-      {
-        question: `Is ${from} to ${to} exact for every ingredient?`,
-        answer: `No. This page uses a water-equivalent assumption. Different ingredients have different densities, so the same cup value can weigh more or less in grams.`,
-        keywords: [`${converter.fromUnit} to ${converter.toUnit} ingredient difference`],
-      },
-      {
-        question: `When is this ${from} to ${to} conversion useful?`,
-        answer: `It is useful for water, water-like liquids, and rough kitchen estimates when you need a quick volume-to-weight comparison.`,
-        keywords: [`${converter.fromUnit} to ${converter.toUnit} cooking`],
-      },
-      {
-        question: `What formula should I use for ${converter.fromUnit} to ${converter.toUnit}?`,
-        answer: `Use ${converter.formula}. For the reverse direction, use ${converter.inverseFormula}.`,
-        keywords: [`${converter.fromUnit} to ${converter.toUnit} formula`],
-      },
-      {
-        question: `Why do recipe charts show different values?`,
-        answer: `Recipe charts often use ingredient-specific densities. A cup of flour, sugar, and water will each convert to different gram values.`,
-        keywords: [`${converter.fromUnit} to ${converter.toUnit} recipe chart`],
-      },
-      {
-        question: `How do I convert back from ${to} to ${from}?`,
-        answer: `${reverseHint}`,
-        keywords: [`${converter.toUnit} to ${converter.fromUnit}`],
-      },
-    ];
-  }
-
   const longTails = getConverterLongTailKeywords(converter.fromUnit, converter.toUnit, category.slug);
 
   return [
     {
-      question: `${longTails[0].charAt(0).toUpperCase()}${longTails[0].slice(1)}?`,
-      answer: `Enter the ${from} value and apply the formula (${converter.formula}). The calculator returns the matching ${to} value instantly.`,
-      keywords: [`convert ${converter.fromUnit} to ${converter.toUnit}`],
+      question: `How many ${to} are in one ${from}?`,
+      answer: `One ${from} is equivalent to ${converter.formula.split(" x ")[1] ?? "a specific amount"} ${to}. To get the total, multiply your ${from} value by the conversion factor or use our instant calculator above.`,
+      keywords: [`${converter.fromUnit} to ${converter.toUnit} ratio`],
     },
     {
-      question: `${longTails[1].charAt(0).toUpperCase()}${longTails[1].slice(1)}?`,
-      answer: `Since each ${from} equals a specific amount of ${to}, multiply or divide by the conversion factor to find exactly how many ${to} are in your ${from} value.`,
-      keywords: [`${converter.fromUnit} vs ${converter.toUnit}`],
+      question: `What is the easiest way to convert ${from} to ${to}?`,
+      answer: `The fastest way is using an online ${from} to ${to} converter like Convertaro. For manual calculations, you can use the formula: ${converter.formula}. Simply multiply your input by the factor to get the matching ${to} value.`,
+      keywords: [longTails[0]],
     },
     {
-      question: `What is the ${longTails[2]}?`,
-      answer: `Use ${converter.formula}. If you need to go back from ${to} to ${from}, use ${converter.inverseFormula}.`,
-      keywords: [`${converter.fromUnit} to ${converter.toUnit} formula`],
+      question: `Is the ${from} to ${to} conversion accurate for all uses?`,
+      answer: `Yes, our converter uses high-precision math for technical, scientific, and everyday applications. However, always check if your specific task (like aviation or high-precision engineering) requires more than standard decimal rounding.`,
+      keywords: [`${converter.fromUnit} to ${converter.toUnit} accuracy`],
     },
     {
-      question: `What mistakes cause wrong ${category.name.toLowerCase()} conversions?`,
-      answer: `The most common problems are using the wrong starting unit, rounding too early, or mixing values from different standards. Convert once with the correct formula, then round at the end.`,
-      keywords: [`${category.slug} conversion mistakes`],
+      question: `Common mistakes when converting ${from} to ${to}?`,
+      answer: `The most frequent error is rounding too early. We recommend performing the full calculation (${converter.formula}) first, and only rounding the final result to the needed level of precision for your ${category.name.toLowerCase()} work.`,
+      keywords: [`${category.slug} conversion errors`],
     },
     {
-      question: useCases[0]
-        ? `Where is this conversion commonly used?`
-        : `How do I convert ${converter.toUnit} back to ${converter.fromUnit}?`,
-      answer: useCases[0]
-        ? `${converter.title} is commonly used in ${toSentenceList(useCases.slice(0, 3))}. ${reverseHint}`
-        : `${reverseHint}`,
+      question: `How do I convert back from ${to} to ${from}?`,
+      answer: `${reverseHint} The reverse calculation uses the inverse formula: ${converter.inverseFormula}.`,
       keywords: [`${converter.toUnit} to ${converter.fromUnit}`],
     },
   ];

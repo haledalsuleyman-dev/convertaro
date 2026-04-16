@@ -292,11 +292,14 @@ const CATEGORY_HUB_CONFIG: Record<string, CategoryHubConfig> = {
       "Start with the file-size conversions used most often for downloads, storage, and hosting plans.",
       "Browse grouped links for practical storage comparisons instead of an undifferentiated list.",
     ],
+    featuredReasons: {
+      "megabytes-to-gigabytes": "Essential for measuring file sizes against cloud storage and device capacity.",
+      "gigabytes-to-megabytes": "Useful when larger storage quotas need to be broken down into individual file sizes.",
+      "gigabytes-to-terabytes": "Common for high-capacity external drives and professional server storage planning.",
+    },
     featuredDescription: "These data converters answer the storage questions users search most often.",
     supportTitle: "Why use this data hub",
     supportDescription: "Data intent is usually practical and comparison-based, so the hub keeps the most requested storage thresholds near the top.",
-    calculatorDescription:
-      "Percentage links are relevant here for progress tracking, storage usage, and quota calculations.",
     sections: [
       {
         title: "Storage Basics",
