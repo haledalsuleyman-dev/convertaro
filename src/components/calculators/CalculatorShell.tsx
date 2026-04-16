@@ -94,7 +94,7 @@ export function CalculatorShell({ calculator, children }: CalculatorShellProps) 
         </header>
 
         <div className="mt-8 flex justify-center">
-          <AdSlot type="display" id="calculator-top-ad" />
+          <AdSlot type="leaderboard" id="calculator-top-ad" />
         </div>
 
         <section className="mt-9 rounded-3xl bg-white border border-border shadow-card p-6 sm:p-8 lg:p-10">
