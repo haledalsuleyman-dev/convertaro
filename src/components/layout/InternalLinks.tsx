@@ -216,10 +216,14 @@ export function CategoryNavigation({ activeCategory }: { activeCategory?: string
 
 export function CrawlableLinkHub({
   title = "Explore More Tools",
+  limitPerCategory,
 }: {
   title?: string;
+  limitPerCategory?: number;
 }) {
-  const topCalculatorLinks = calculators.slice(0, 5);
+  const categoriesToDisplay = limitPerCategory ? categories.slice(0, limitPerCategory * 4) : categories.slice(0, 12);
+  const topCalculatorLinks = limitPerCategory ? calculators.slice(0, limitPerCategory * 2) : calculators.slice(0, 5);
+  const topConversionTasks = limitPerCategory ? POPULAR_TOOLS.slice(0, limitPerCategory * 3) : POPULAR_TOOLS.slice(0, 8);
 
   return (
     <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 md:p-8">
@@ -229,7 +233,7 @@ export function CrawlableLinkHub({
         <div>
           <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Popular Categories</h3>
           <ul className="space-y-3">
-            {categories.slice(0, 12).map((category) => (
+            {categoriesToDisplay.map((category) => (
               <li key={category.slug}>
                 <Link 
                   href={`/${category.slug}`} 
@@ -259,7 +263,7 @@ export function CrawlableLinkHub({
         <div>
           <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Top Conversion Tasks</h3>
           <ul className="space-y-3">
-            {POPULAR_TOOLS.slice(0, 8).map((tool) => (
+            {topConversionTasks.map((tool) => (
               <li key={tool.href}>
                 <Link 
                   href={tool.href} 
