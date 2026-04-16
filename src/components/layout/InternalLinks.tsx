@@ -15,6 +15,8 @@ const POPULAR_TOOLS = [
   { href: "/data/gigabytes-to-megabytes", label: "GB to MB", category: "Data" },
   { href: "/volume/liters-to-gallons", label: "liters to gallons", category: "Volume" },
   { href: "/volume/gallons-to-liters", label: "gallons to liters", category: "Volume" },
+  { href: "/power/kw-to-hp", label: "kW to hp", category: "Power" },
+  { href: "/weight/mg-to-g", label: "mg to g", category: "Weight" },
 ].map((tool) => ({ ...tool, href: canonicalizeConverterHref(tool.href) }));
 
 const STATIC_PAGE_LINKS = [
@@ -214,37 +216,56 @@ export function CategoryNavigation({ activeCategory }: { activeCategory?: string
 
 export function CrawlableLinkHub({
   title = "Explore More Tools",
-  limitPerCategory = 4,
 }: {
   title?: string;
-  limitPerCategory?: number;
 }) {
   const topCalculatorLinks = calculators.slice(0, 5);
 
   return (
-    <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6">
-      <h2 className="text-lg font-semibold text-slate-900 mb-4">{title}</h2>
+    <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 md:p-8">
+      <h2 className="text-xl font-bold text-slate-900 mb-6">{title}</h2>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         <div>
-          <h3 className="text-sm font-semibold text-slate-900 mb-2">Popular Categories</h3>
-          <ul className="space-y-1.5">
-            {categories.slice(0, 10).map((category) => (
+          <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Popular Categories</h3>
+          <ul className="space-y-3">
+            {categories.slice(0, 12).map((category) => (
               <li key={category.slug}>
-                <Link href={"/"} className="text-sm text-slate-600 hover:text-slate-900">
-                  {category.name}
+                <Link 
+                  href={`/${category.slug}`} 
+                  className="text-base text-slate-600 hover:text-slate-900 hover:underline transition-all underline-offset-4 decoration-slate-300"
+                >
+                  {category.name} Converters
                 </Link>
               </li>
             ))}
           </ul>
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-slate-900 mb-2">Calculators</h3>
-          <ul className="space-y-1.5">
+          <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Premium Calculators</h3>
+          <ul className="space-y-3">
             {topCalculatorLinks.map((calculator) => (
               <li key={calculator.slug}>
-                <Link href={"/"} className="text-sm text-slate-600 hover:text-slate-900">
+                <Link 
+                  href={`/${calculator.slug}`} 
+                  className="text-base text-slate-600 hover:text-slate-900 hover:underline transition-all underline-offset-4 decoration-slate-300"
+                >
                   {calculator.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Top Conversion Tasks</h3>
+          <ul className="space-y-3">
+            {POPULAR_TOOLS.slice(0, 8).map((tool) => (
+              <li key={tool.href}>
+                <Link 
+                  href={tool.href} 
+                  className="text-base text-slate-600 hover:text-slate-900 hover:underline transition-all underline-offset-4 decoration-slate-300"
+                >
+                  Convert {tool.label}
                 </Link>
               </li>
             ))}

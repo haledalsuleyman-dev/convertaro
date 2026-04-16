@@ -33,54 +33,58 @@ export const calculators: CalculatorDefinition[] = [
   {
     slug: "bmi-calculator",
     category: "health",
-    title: "BMI Calculator",
+    title: "BMI Calculator - Body Mass Index & Weight Status",
     navLabel: "BMI",
-    description: "Calculate your body mass index instantly using height and weight, with clear weight-status guidance.",
-    keywords: ["bmi calculator", "body mass index", "healthy bmi", "weight status calculator"],
+    description: "Calculate your Body Mass Index (BMI) instantly. Understand your weight status with our accurate indicator for adults based on WHO standards.",
+    keywords: ["bmi calculator", "body mass index", "calculate bmi online", "weight status", "healthy bmi range", "body fat indicator"],
     whatItDoes:
-      "This calculator computes Body Mass Index (BMI) from your height and weight, then classifies the result into standard ranges like underweight, healthy, overweight, and obesity.",
+      "This calculator computes Body Mass Index (BMI) using your height and weight. It provides a numerical score and classifies it into standard health categories: Underweight, Healthy Weight, Overweight, and Obesity. BMI is a widely used screening tool to identify possible weight problems for adults.",
     howToUse: [
-      "Enter your height in centimeters.",
-      "Enter your weight in kilograms.",
-      "Review your BMI value and category.",
-      "Use the result as a screening signal, not a diagnosis.",
+      "Enter your current height in centimeters (cm).",
+      "Enter your total weight in kilograms (kg).",
+      "Observe your calculated BMI score and the corresponding color-coded category.",
+      "Review the health guidance provided for your specific BMI range.",
     ],
     examples: [
       {
-        title: "Fitness check-ins",
-        description: "Track broad weight trends over time with a simple, repeatable metric.",
+        title: "Weight monitoring",
+        description: "Regularly check your BMI to see how lifestyle changes affect your weight status over months.",
       },
       {
-        title: "Health coaching",
-        description: "Use BMI as a baseline indicator before deeper body-composition assessment.",
+        title: "Body composition baseline",
+        description: "Use BMI as a first step before more detailed body fat or muscle mass analysis.",
       },
       {
-        title: "Program planning",
-        description: "Set realistic weight-management goals with standardized ranges.",
+        title: "Clinical screening",
+        description: "Provide your BMI as a primary indicator for health consultations or fitness program registration.",
       },
     ],
     commonMistakes: [
-      "Treating BMI alone as a full measure of health.",
-      "Using incorrect units for height or weight.",
-      "Ignoring context like age, muscle mass, and clinical history.",
+      "Using BMI as a diagnostic tool rather than a screening indicator.",
+      "Assuming BMI is accurate for highly muscular athletes (who may be 'overweight' by BMI but carry low body fat).",
+      "Applying adult BMI ranges to children and adolescents (who require growth charts).",
     ],
     whyItMatters:
-      "BMI provides a fast, standardized signal for population-level and personal screening. It is useful for triage and trend tracking when combined with broader health context.",
+      "Knowing your BMI helps you understand where you stand in relation to globally recognized health benchmarks. While not comprehensive, it is a critical first metric for recognizing potential weight-related health risks.",
     faq: [
       {
-        question: "Is BMI accurate for everyone?",
+        question: "Is BMI a perfect measure of health?",
         answer:
-          "BMI is a useful screening metric, but it does not directly measure body fat, muscle distribution, or metabolic health. Use it alongside other health indicators.",
+          "No. BMI is a population-level screening tool. It doesn't measure body fat directly and doesn't account for muscle mass, bone density, or fat distribution.",
       },
       {
-        question: "What is a healthy BMI range?",
+        question: "What are the standard BMI categories?",
         answer:
-          "For most adults, a BMI between 18.5 and 24.9 is generally considered healthy. Clinical interpretation can vary by individual context.",
+          "According to WHO: Underweight (<18.5), Healthy (18.5-24.9), Overweight (25-29.9), and Obesity (30 or greater).",
       },
       {
-        question: "Can I use this BMI calculator for children?",
+        question: "Why should athletes be careful with BMI?",
         answer:
-          "Children and teens require age- and sex-specific BMI percentiles. This calculator is intended for adults.",
+          "Athletes with high muscle mass may have a BMI in the 'overweight' range because muscle weighs more than fat, even if they have a very healthy body composition.",
+      },
+      {
+        question: "Does BMI change with age?",
+        answer: "While the calculation remains the same, the interpretation may shift slightly for older adults where a higher BMI might actually be protective against some health issues.",
       },
     ],
     relatedTools: [
@@ -149,52 +153,56 @@ export const calculators: CalculatorDefinition[] = [
   {
     slug: "percentage-calculator",
     category: "math",
-    title: "Percentage Calculator",
+    title: "Percentage Calculator - Fast Percent & Change Estimator",
     navLabel: "Percentage",
-    description: "Calculate percentages, percentage change, and reverse percentage values instantly.",
-    keywords: ["percentage calculator", "percent change", "what percent", "increase decrease percentage"],
+    description: "Calculate percentage increase, decrease, or simple percentage values. Ideal for finance, sales, discounts, and data analysis.",
+    keywords: ["percentage calculator", "calculate percent", "percentage increase calculator", "percentage decrease estimator", "what percent is X of Y", "discount calculator"],
     whatItDoes:
-      "This tool handles common percentage calculations: percent of a value, value as a percent of another, and percentage increase or decrease.",
+      "This multi-purpose math tool solves various percentage problems instantly. Whether you need to find the percentage of a number, calculate the percentage change between two values, or determine the base value, this calculator handles all common use cases for finance, school, and business.",
     howToUse: [
-      "Choose calculation mode.",
-      "Enter the values required for that mode.",
-      "Read the percentage result immediately.",
-      "Use the output in pricing, analytics, or budgeting decisions.",
+      "Choose the specific percentage problem you want to solve from the tabs.",
+      "Input your primary and secondary numbers into the provided fields.",
+      "The result updates instantly as you type.",
+      "Use the 'percentage change' mode specifically for comparing old vs new values.",
     ],
     examples: [
       {
-        title: "Discount pricing",
-        description: "Find sale prices and discount amounts quickly.",
+        title: "Calculating Sale Discounts",
+        description: "Quickly determine the 20% savings on a $150 item to find your final price.",
       },
       {
-        title: "Growth analysis",
-        description: "Measure month-over-month or year-over-year change in metrics.",
+        title: "Business Growth Tracking",
+        description: "Calculate the percentage increase in sales from one month to the next.",
       },
       {
-        title: "Budget allocation",
-        description: "Compute proportional splits for spending categories.",
+        title: "Tip & Tax Estimation",
+        description: "Estimate a 15% tip or sales tax for your restaurant bill or shopping cart.",
       },
     ],
     commonMistakes: [
-      "Using the wrong base value in percentage change calculations.",
-      "Confusing percentage points with percent change.",
-      "Rounding too early in multi-step calculations.",
+      "Mixing up the 'Original' and 'New' values in percent change calculations.",
+      "Forgetting that 100% represents the whole (1.0 in decimal form).",
+      "Adding percentages together directly (e.g., two 10% increases is not a 20% increase, it is 21%).",
     ],
     whyItMatters:
-      "Percentages are a universal language for comparing values. Accurate percentage calculations improve financial, operational, and analytical decisions.",
+      "Percentages are fundamental to understanding financial charts, shopping discounts, and statistical data. Master your numbers to make better economic and academic decisions.",
     faq: [
       {
-        question: "How do I find X percent of Y?",
-        answer: "Multiply Y by X/100. This calculator does it instantly in the Percent of mode.",
+        question: "How do I calculate a percentage increase?",
+        answer: "Subtract the original value from the new value, divide by the original value, then multiply by 100.",
       },
       {
-        question: "How is percentage change calculated?",
-        answer: "Subtract old value from new value, divide by old value, then multiply by 100.",
+        question: "What does X percent of Y mean?",
+        answer: "It means (X / 100) multiplied by Y. For example, 10% of 200 is 20.",
       },
       {
-        question: "What is the difference between percent and percentage points?",
+        question: "What is the difference between a percentage and a fraction?",
         answer:
-          "Percentage points describe absolute differences between percentages; percent change describes relative change.",
+          "A percentage is simply a fraction where the denominator is always 100. '50%' is the same as '50/100' or '1/2'.",
+      },
+      {
+        question: "Can percentages be greater than 100?",
+        answer: "Yes. For example, a 200% increase means a value has tripled in size.",
       },
     ],
     relatedTools: [
@@ -206,52 +214,56 @@ export const calculators: CalculatorDefinition[] = [
   {
     slug: "loan-calculator",
     category: "finance",
-    title: "Loan Calculator",
+    title: "Loan Calculator - Estimate Payments & Interest",
     navLabel: "Loan",
-    description: "Estimate monthly payment, total repayment, and total interest for personal or auto loans.",
-    keywords: ["loan calculator", "monthly payment calculator", "loan interest", "amortization estimate"],
+    description: "Accurately estimate your monthly loan payments, total repayment amount, and total interest for personal, auto, or student loans.",
+    keywords: ["loan calculator", "monthly payment calculator", "loan interest calculator", "amortization estimate", "personal loan payment", "auto loan calculator"],
     whatItDoes:
-      "This calculator estimates monthly loan payment from principal, annual rate, and term in months, then shows total paid and total interest.",
+      "This calculator performs complex financial math to estimate your monthly loan payment based on the principal amount, annual interest rate (APR), and repayment term. It provides a breakdown of how much you will pay in total over the life of the loan and identifies the portion going toward interest versus principal repayment.",
     howToUse: [
-      "Enter loan amount (principal).",
-      "Enter annual interest rate.",
-      "Enter term in months.",
-      "Review monthly payment, total repayment, and interest.",
+      "Enter the total loan amount (principal) you wish to borrow.",
+      "Input the annual interest rate (APR) provided by your lender.",
+      "Select the loan term in months to determine the repayment duration.",
+      "Analyze the monthly payment, total interest, and total repayment breakdown below.",
     ],
     examples: [
       {
         title: "Auto financing",
-        description: "Compare offers from lenders before committing to a vehicle loan.",
+        description: "Calculate potential monthly installments for a $30,000 new car loan at 5.5% interest over 60 months.",
       },
       {
-        title: "Personal loans",
-        description: "Estimate affordability for debt consolidation or major expenses.",
+        title: "Debt consolidation",
+        description: "Compare the cost of a $10,000 personal loan versus high-interest credit card debt over a 36-month term.",
       },
       {
-        title: "Rate negotiation",
-        description: "See how a lower APR impacts total interest over the term.",
+        title: "Rate comparison",
+        description: "Visualize how a 1% difference in interest rate can save thousands of dollars over a long-term loan.",
       },
     ],
     commonMistakes: [
-      "Confusing APR percentage with decimal form.",
-      "Ignoring fees and insurance outside base payment.",
-      "Comparing loans by monthly payment only, not total cost.",
+      "Assuming the APR is the only cost (ignoring origination fees).",
+      "Selecting a term that is too long (increasing total interest paid significantly).",
+      "Focusing only on the monthly payment instead of the total cost of the loan.",
     ],
     whyItMatters:
-      "Loan terms strongly affect total borrowing cost. A transparent payment estimate helps with budgeting and lender comparison.",
+      "Understanding the true cost of borrowing is critical for financial health. This tool empowers you to shop for loans with confidence and avoid predatory lending terms by knowing your numbers first.",
     faq: [
       {
-        question: "What inputs are needed for a loan payment estimate?",
-        answer: "You need principal amount, annual interest rate, and repayment term in months.",
+        question: "What is APR and why does it matter?",
+        answer: "APR stands for Annual Percentage Rate. It represents the total cost of borrowing annually, including interest and some fees, providing a more accurate comparison than a simple interest rate.",
       },
       {
-        question: "Does this include taxes and fees?",
-        answer: "No. The base loan calculator focuses on principal and interest only.",
+        question: "Does this include taxes and documentation fees?",
+        answer: "No. This calculator focuses on the mathematical principal and interest. Always account for local taxes and lender-specific fees for a final budget.",
       },
       {
-        question: "Why does a small rate change matter so much?",
+        question: "How can I lower my total interest paid?",
         answer:
-          "Interest compounds over time. Even modest APR changes can significantly affect total repayment.",
+          "You can lower interest by securing a lower rate, making a larger down payment, or choosing a shorter repayment term.",
+      },
+      {
+        question: "Can I pay off my loan early?",
+        answer: "Most modern personal loans allow early repayment without penalty, but you should always check your specific loan agreement for 'prepayment penalty' clauses.",
       },
     ],
     relatedTools: [
@@ -263,54 +275,58 @@ export const calculators: CalculatorDefinition[] = [
   {
     slug: "mortgage-calculator",
     category: "finance",
-    title: "Mortgage Calculator",
+    title: "Mortgage Calculator - Real Estate Payment Estimator",
     navLabel: "Mortgage",
-    description: "Estimate monthly mortgage payment including principal, interest, and optional tax/insurance costs.",
-    keywords: ["mortgage calculator", "home loan calculator", "monthly mortgage payment", "house affordability"],
+    description: "Calculate your monthly mortgage payments with taxes and insurance. Estimate home affordability, interest costs, and amortization schedules.",
+    keywords: ["mortgage calculator", "home loan calculator", "monthly mortgage payment", "house affordability", "mortgage interest estimator", "real estate calculator"],
     whatItDoes:
-      "This calculator estimates mortgage payments from home price, down payment, interest rate, and term, with optional monthly tax and insurance costs.",
+      "This advanced real estate tool estimates your PITI (Principal, Interest, Taxes, and Insurance) monthly payment. By inputting the home price, down payment, and mortgage terms, it provides a comprehensive view of what you can expect to pay each month to own your home.",
     howToUse: [
-      "Enter home price and down payment.",
-      "Enter annual interest rate and loan term in years.",
-      "Optionally add monthly property tax and insurance.",
-      "Review monthly payment and total interest.",
+      "Enter the purchase price of the home.",
+      "Select your down payment amount (either as a percentage or dollar value).",
+      "Choose the loan term (commonly 15 or 30 years) and the annual interest rate.",
+      "Optionally input estimated monthly property taxes and homeowners insurance for a full PITI estimate.",
     ],
     examples: [
       {
-        title: "Home shopping",
-        description: "Compare monthly payment scenarios across different price points.",
+        title: "Buying a first home",
+        description: "Calculate the monthly cost for a $400,000 house with 20% down at current market rates.",
       },
       {
         title: "Down-payment planning",
-        description: "Estimate how increasing down payment changes monthly burden.",
+        description: "Compare how a 5% vs 20% down payment affects your monthly budget and long-term interest cost.",
       },
       {
-        title: "Refinance analysis",
-        description: "Evaluate whether a new rate can lower payment or lifetime interest.",
+        title: "Mortgage Refinancing",
+        description: "Determine if lowering your interest rate by 1% justifies the closing costs of the refinance.",
       },
     ],
     commonMistakes: [
-      "Forgetting to include taxes and insurance in monthly housing cost.",
-      "Comparing only interest rate without considering term length.",
-      "Using gross income assumptions without full budget stress testing.",
+      "Underestimating property taxes and HOA fees which can add hundreds to your monthly payment.",
+      "Not accounting for Private Mortgage Insurance (PMI) if your down payment is less than 20%.",
+      "Overextending based on 'gross' income rather than 'net' take-home pay.",
     ],
     whyItMatters:
-      "Mortgage payments are often the largest recurring household expense. Clear projections reduce risk and improve long-term financial planning.",
+      "A home is likely the largest purchase you will ever make. Accurate projections help you avoid being 'house-poor' and ensure your investment aligns with your overall financial goals.",
     faq: [
       {
-        question: "What is included in mortgage payment here?",
+        question: "What is PITI?",
         answer:
-          "The calculator shows principal and interest by default, with optional monthly property tax and insurance added to total monthly cost.",
+          "PITI stands for Principal, Interest, Taxes, and Insurance. These four components make up the typical monthly housing payment for a mortgaged property.",
       },
       {
-        question: "How does down payment affect mortgage cost?",
+        question: "How much down payment do I really need?",
         answer:
-          "A higher down payment reduces loan principal, usually lowering monthly payment and total interest.",
+          "While 20% is the gold standard to avoid PMI, many programs allow as little as 3% or 3.5% (FHA). However, a lower down payment increases your monthly cost.",
       },
       {
-        question: "Can this replace lender disclosures?",
+        question: "What is Private Mortgage Insurance (PMI)?",
         answer:
-          "No. Use this for planning, then confirm final terms, fees, and escrow details with your lender.",
+          "PMI is an insurance premium you pay if your down payment is under 20%. It protects the lender, not you, but enables you to buy a home with less money down.",
+      },
+      {
+        question: "Should I choose a 15-year or 30-year term?",
+        answer: "A 30-year term offers more flexibility with lower monthly payments, while a 15-year term saves significant interest over time but requires higher monthly installments.",
       },
     ],
     relatedTools: [

@@ -87,6 +87,14 @@ export default function RootLayout({
   return (
     <html lang="en" dir="ltr">
       <head>
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-REPLACE_WITH_YOUR_ADSENSE_ID"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
+
         {/* Google Analytics */}
         {GA_ID && (
           <>

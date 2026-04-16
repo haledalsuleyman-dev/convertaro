@@ -10,6 +10,8 @@ import { getCalculatorTrustMetadata } from "@/lib/trust";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { getCalculatorContextSentence, getCalculatorStrategicLinks } from "@/lib/internal-linking";
 
+import { AdSlot } from "@/components/ads/AdSlot";
+
 interface CalculatorShellProps {
   calculator: CalculatorDefinition;
   children: ReactNode;
@@ -91,9 +93,17 @@ export function CalculatorShell({ calculator, children }: CalculatorShellProps) 
           <p className="mt-4 text-base sm:text-lg text-text-secondary max-w-3xl mx-auto">{calculator.description}</p>
         </header>
 
+        <div className="mt-8 flex justify-center">
+          <AdSlot type="display" id="calculator-top-ad" />
+        </div>
+
         <section className="mt-9 rounded-3xl bg-white border border-border shadow-card p-6 sm:p-8 lg:p-10">
           {children}
         </section>
+
+        <div className="mt-8">
+          <AdSlot type="in-content" id="calculator-middle-ad" />
+        </div>
 
         <section className="mt-8 rounded-2xl bg-white border border-border shadow-card p-6 sm:p-8">
           <h2 className="text-xl font-black text-text-primary">What it does</h2>

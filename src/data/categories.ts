@@ -71,4 +71,11 @@ export const categories: Category[] = [
     description: "Convert between pressure units like Pascals, Bar, and PSI.",
     icon: "Wind",
   },
+  {
+    id: "power",
+    name: "Power",
+    slug: "power",
+    description: "Convert between power units like Watts, Horsepower, and Kilowatts for electrical and mechanical calculations.",
+    icon: "Zap",
+  },
 ];

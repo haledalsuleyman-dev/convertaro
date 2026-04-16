@@ -101,6 +101,13 @@ const factors: Record<string, Record<string, number>> = {
     atm: 101325,
     torr: 133.322,
   },
+  power: {
+    W: 1,
+    kW: 1000,
+    hp: 745.7,
+    mW: 0.001,
+    MW: 1000000,
+  },
 };
 
 const convertGeneric = (value: number, from: string, to: string, category: string): number => {
