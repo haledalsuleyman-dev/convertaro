@@ -335,6 +335,118 @@ export const calculators: CalculatorDefinition[] = [
       { href: "/data/gigabytes-to-megabytes", label: "GB to MB converter" },
     ],
   },
+  {
+    slug: "vat-calculator",
+    category: "finance",
+    title: "VAT Calculator - Add or Remove Value Added Tax",
+    navLabel: "VAT",
+    description: "Calculate VAT (Value Added Tax) for any amount and rate. Easily add VAT to a net price or remove it from a gross price for accurate accounting.",
+    keywords: ["vat calculator", "calculate vat", "add vat", "remove vat", "sales tax calculator", "vat tax estimator", "exclusive vat", "inclusive vat"],
+    whatItDoes:
+      "This accounting tool calculates Value Added Tax (VAT) in both directions. You can enter a net amount to see the tax and gross total, or enter a gross amount to find the original net price before tax was applied. It supports any tax rate percentage, making it applicable for UK, EU, and international tax systems.",
+    howToUse: [
+      "Enter the base amount you want to calculate for.",
+      "Input the VAT percentage rate (e.g., 20% for UK, 15% for Saudi Arabia).",
+      "Choose whether you are 'Adding' VAT (from net) or 'Removing' VAT (from gross).",
+      "The breakdown of tax and final amount appears instantly.",
+    ],
+    examples: [
+      {
+        title: "B2B Invoicing",
+        description: "Calculate the total amount to charge a client for a $500 service after adding 20% VAT.",
+      },
+      {
+        title: "Expense Reporting",
+        description: "Determine the tax-exclusive cost of a $120 dinner receipt when the tax is already included.",
+      },
+      {
+        title: "Price Strategy",
+        description: "Adjust your retail prices to maintain margins after a government change in tax rates.",
+      },
+    ],
+    commonMistakes: [
+      "Assuming 'Removing 20% VAT' means multiplying by 0.80 (the correct way is dividing by 1.20).",
+      "Forgeting that VAT rates vary by product category in many countries.",
+      "Mixing local sales tax with national VAT systems.",
+    ],
+    whyItMatters:
+      "Accurate VAT calculation is mandatory for law compliance and healthy business accounting. This tool removes the mathematical guesswork from your daily financial transactions.",
+    faq: [
+      {
+        question: "How do I remove VAT from a total?",
+        answer: "To remove VAT, divide the total (gross) amount by (1 + tax rate). For example, at 20% VAT, divide by 1.20.",
+      },
+      {
+        question: "What is the difference between Net and Gross?",
+        answer: "Net is the price before tax. Gross is the final price including tax.",
+      },
+      {
+        question: "Does VAT apply to exports?",
+        answer: "In most countries, exports are zero-rated for VAT, but you should always consult a tax professional for your specific jurisdiction.",
+      },
+    ],
+    relatedTools: [
+      { href: "/percentage-calculator", label: "Percentage Calculator" },
+      { href: "/margin-calculator", label: "Margin Calculator" },
+      { href: "/finance-calculators", label: "More Finance Tools" },
+    ],
+  },
+  {
+    slug: "margin-calculator",
+    category: "finance",
+    title: "Margin Calculator - Calculate Profit & Markup",
+    navLabel: "Margin",
+    description: "Calculate profit margins, markups, and final selling prices. Ideal for shop owners and e-commerce sellers to ensure profitable pricing.",
+    keywords: ["margin calculator", "profit margin", "markup calculator", "gross profit", "calculate profit", "selling price calculator", "ecommerce profit margin"],
+    whatItDoes:
+      "This e-commerce tool helps businesses determine the profitability of their products. By entering the cost to acquire an item and your desired margin or markup, it calculates exactly what you should charge the customer and how much profit you will make per sale.",
+    howToUse: [
+      "Enter the cost of the item (what you paid).",
+      "Enter your desired selling price to see the margin, OR enter a target margin percentage.",
+      "Observe the Gross Profit (dollars) and Margin vs Markup results.",
+      "Adjust the numbers to find the 'sweet spot' for your pricing strategy.",
+    ],
+    examples: [
+      {
+        title: "Product Launch",
+        description: "Ensure a $15 product cost results in a 40% margin when sold to customers.",
+      },
+      {
+        title: "Reviewing Inventory",
+        description: "Calculate the markup percentage of items you've already priced to ensure they meet targets.",
+      },
+      {
+        title: "Discount Planning",
+        description: "Decide how deep a discount you can offer without losing money on the cost price.",
+      },
+    ],
+    commonMistakes: [
+      "Confusing Margin with Markup (Margin is profit/revenue, Markup is profit/cost).",
+      "Ignoring shipping and advertising costs when calculating 'true' cost.",
+      "Aiming for too low a margin that doesn't cover business overheads.",
+    ],
+    whyItMatters:
+      "Pricing products incorrectly is the #1 reason small businesses fail. Using a margin calculator ensures every sale you make is actually contributing to your bottom line.",
+    faq: [
+      {
+        question: "What is a good profit margin?",
+        answer: "It depends on the industry. Retail often aim for 50%, while electronics might be lower (10-20%) and software very high (80%+).",
+      },
+      {
+        question: "Margin vs Markup: What's the difference?",
+        answer: "Markup is the ratio of profit to cost. Margin is the ratio of profit to the selling price.",
+      },
+      {
+        question: "How do I calculate margin manually?",
+        answer: "Margin = ((Revenue - Cost) / Revenue) * 100.",
+      },
+    ],
+    relatedTools: [
+      { href: "/vat-calculator", label: "VAT Calculator" },
+      { href: "/percentage-calculator", label: "Percentage Calculator" },
+      { href: "/popular-conversion-tools", label: "Popular Tools" },
+    ],
+  },
 ];
 
 export const calculatorsBySlug = new Map(calculators.map((calculator) => [calculator.slug, calculator]));
