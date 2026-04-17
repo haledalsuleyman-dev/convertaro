@@ -128,15 +128,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   });
 
-  STATIC_VALUE_PAGE_PARAMS.forEach((entry) => {
-    routes.push({
-      url: `${BASE_URL}/${entry.category}/${entry.converter}/${entry.value}`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    });
-  });
-
   return routes;
 }
 
@@ -179,10 +170,6 @@ export function getAllPageUrls(): string[] {
     urls.push(`${BASE_URL}/guides/${guide.slug}`);
   });
 
-  STATIC_VALUE_PAGE_PARAMS.forEach((entry) => {
-    urls.push(`${BASE_URL}/${entry.category}/${entry.converter}/${entry.value}`);
-  });
-
   return urls;
 }
 
@@ -218,7 +205,7 @@ export function getSiteStats() {
     staticPages: 7 + guides.length,
     categoryPages: categories.length,
     calculatorPages: calculators.length + calculatorCategories.length,
-    converterPages: converters.length + STATIC_VALUE_PAGE_PARAMS.length,
+    converterPages: converters.length,
     highPriorityPages: getHighPriorityUrls().length,
   };
 }

@@ -36,6 +36,30 @@ function chooseCanonicalSlug(group: ConverterRoute[]): string {
   return best.metadata.slug;
 }
 
+const protectedRootRoutes = new Set([
+  "about",
+  "contact",
+  "privacy",
+  "terms",
+  "calculators",
+  "popular-conversion-tools",
+  "all-converters",
+  "search",
+  "guides",
+  "api",
+  "age-calculator",
+  "bmi-calculator",
+  "loan-calculator",
+  "margin-calculator",
+  "mortgage-calculator",
+  "percentage-calculator",
+  "vat-calculator",
+  "favicon.ico",
+  "sitemap.xml",
+  "robots.txt",
+  "category", // potential conflicts
+]);
+
 const groupedConverters = new Map<string, ConverterRoute[]>();
 
 for (const converter of converters) {
@@ -47,14 +71,32 @@ for (const converter of converters) {
 
 const aliasRedirects = Array.from(groupedConverters.values()).flatMap((group) => {
   const canonicalSlug = chooseCanonicalSlug(group);
+  const canonicalCategory = group[0].category;
+  const canonicalPath = `/${canonicalCategory}/${canonicalSlug}`;
 
-  return group
-    .filter((converter) => converter.metadata.slug !== canonicalSlug)
-    .map((converter) => ({
-      source: `/${converter.category}/${converter.metadata.slug}`,
-      destination: `/${converter.category}/${canonicalSlug}`,
-      permanent: true,
-    }));
+  return group.flatMap((converter) => {
+    const redirects = [];
+    
+    // Categorized variant redirect
+    if (converter.metadata.slug !== canonicalSlug) {
+      redirects.push({
+        source: `/${converter.category}/${converter.metadata.slug}/:path*`,
+        destination: `${canonicalPath}/:path*`,
+        permanent: true,
+      });
+    }
+
+    // Root-level short slug redirect (e.g., /cm-to-inches -> /length/centimeters-to-inches)
+    if (!protectedRootRoutes.has(converter.metadata.slug)) {
+      redirects.push({
+        source: `/${converter.metadata.slug}/:path*`,
+        destination: `${canonicalPath}/:path*`,
+        permanent: true,
+      });
+    }
+
+    return redirects;
+  });
 });
 
 const nextConfig: NextConfig = {
@@ -80,7 +122,14 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    return aliasRedirects;
+    // Filter out duplicates and self-redirects
+    const seen = new Set<string>();
+    return aliasRedirects.filter((r) => {
+      if (r.source === r.destination) return false;
+      if (seen.has(r.source)) return false;
+      seen.add(r.source);
+      return true;
+    });
   },
 };
 

@@ -11,9 +11,12 @@ import {
   buildTwitter,
   canonicalFromPath,
   cleanMetaDescription,
+  converterCanonical,
   generateBreadcrumbSchemaFromPaths,
   generateFAQSchema,
+  NOINDEX_ROBOTS,
 } from "@/lib/seo";
+import { resolveConverterRoute } from "@/lib/converter-routing";
 import type { Converter } from "@/types/converter";
 
 const converters = convertersData as Converter[];
@@ -211,23 +214,25 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category, converter: converterSlug, value: valueSlug } = await params;
-  const converter = getConverter(category, converterSlug);
+  const { canonicalConverter } = resolveConverterRoute(category, converterSlug);
   const value = parseValueFromSlug(valueSlug);
 
-  if (!converter || value === null) {
+  if (!canonicalConverter || value === null) {
     return {};
   }
 
-  const result = calculateValue(value, converter);
+  const result = calculateValue(value, canonicalConverter);
   const path = buildValuePagePath(category, converterSlug, value);
-  const title = buildPageTitle(value, converterSlug, result, converter);
+  const canonicalConverterSlug = canonicalConverter.metadata.slug;
+  const title = buildPageTitle(value, converterSlug, result, canonicalConverter);
   const description = buildPageDescription(value, converterSlug, result);
 
   return {
     title,
     description,
+    robots: NOINDEX_ROBOTS,
     alternates: {
-      canonical: canonicalFromPath(path),
+      canonical: converterCanonical(category, canonicalConverterSlug),
     },
     openGraph: buildOpenGraph({
       title,
@@ -240,17 +245,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ConverterValuePage({ params }: PageProps) {
   const { category: categorySlug, converter: converterSlug, value: valueSlug } = await params;
-  const category = categories.find((item) => item.slug === categorySlug);
-  const converter = getConverter(categorySlug, converterSlug);
+  const { canonicalConverter: converter, isAlias } = resolveConverterRoute(categorySlug, converterSlug);
   const value = parseValueFromSlug(valueSlug);
+  const category = categories.find((item) => item.slug === categorySlug);
 
   if (!category || !converter || value === null) {
     notFound();
   }
 
-  const expectedValueSlug = `${formatSlugValue(value)}-${converterSlug}`;
-  if (valueSlug !== expectedValueSlug) {
-    permanentRedirect(`/${categorySlug}/${converterSlug}/${expectedValueSlug}`);
+  const canonicalConverterSlug = converter.metadata.slug;
+  const expectedValueSlug = `${formatSlugValue(value)}-${canonicalConverterSlug}`;
+  
+  // Strict redirect to canonical converter slug AND normalized value slug
+  if (isAlias || valueSlug !== `${formatSlugValue(value)}-${converterSlug}`) {
+    permanentRedirect(`/${categorySlug}/${canonicalConverterSlug}/${expectedValueSlug}`);
   }
 
   const result = calculateValue(value, converter);
@@ -268,8 +276,8 @@ export default async function ConverterValuePage({ params }: PageProps) {
   const breadcrumbSchema = generateBreadcrumbSchemaFromPaths([
     { name: "Home", path: "/" },
     { name: category.name, path: `/${categorySlug}` },
-    { name: converterSlug.replace(/-/g, " "), path: `/${categorySlug}/${converterSlug}` },
-    { name: `${formatSlugValue(value)} ${fromText} to ${toText}`, path: pagePath },
+    { name: converter.title, path: `/${categorySlug}/${canonicalConverterSlug}` },
+    { name: `${formatSlugValue(value)} ${fromText} to ${toText}`, path: `/${categorySlug}/${canonicalConverterSlug}/${formatSlugValue(value)}-${canonicalConverterSlug}` },
   ]);
   const faqSchema = generateFAQSchema(faqItems);
 
@@ -285,7 +293,7 @@ export default async function ConverterValuePage({ params }: PageProps) {
             items={[
               { label: "Home", href: "/" },
               { label: category.name, href: `/${categorySlug}` },
-              { label: converterSlug.replace(/-/g, " "), href: `/${categorySlug}/${converterSlug}` },
+              { label: converter.title, href: `/${categorySlug}/${canonicalConverterSlug}` },
               { label: `${formatSlugValue(value)} ${fromText} to ${toText}` },
             ]}
           />
@@ -389,8 +397,8 @@ export default async function ConverterValuePage({ params }: PageProps) {
                   <dd className="font-medium text-slate-900">{converter.title}</dd>
                 </div>
                 <div className="flex items-start justify-between gap-4">
-                  <dt className="text-slate-500">Canonical</dt>
-                  <dd className="break-all text-right font-medium text-slate-900">{canonicalFromPath(pagePath)}</dd>
+                  <dt className="text-slate-500">Canonical Parent</dt>
+                  <dd className="break-all text-right font-medium text-slate-900">{converterCanonical(categorySlug, canonicalConverterSlug)}</dd>
                 </div>
               </dl>
             </div>
@@ -401,7 +409,7 @@ export default async function ConverterValuePage({ params }: PageProps) {
                 Need a different number? Open the main converter and test any value instantly.
               </p>
               <Link
-                href={`/${categorySlug}/${converterSlug}`}
+                href={`/${categorySlug}/${canonicalConverterSlug}`}
                 className="mt-4 inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
               >
                 Open {converter.title}

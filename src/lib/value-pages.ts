@@ -80,20 +80,20 @@ const GB_TO_TB_VALUES = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024];
 
 export const STATIC_VALUE_PAGE_PARAMS: StaticValuePageParam[] = [
   // Length
-  ...dedupeAndSort(CM_TO_INCHES_VALUES).map((value) => ({ category: "length", converter: "cm-to-inches", value: `${formatStaticValue(value)}-cm-to-inches` })),
-  ...dedupeAndSort(INCHES_TO_CM_VALUES).map((value) => ({ category: "length", converter: "inches-to-cm", value: `${formatStaticValue(value)}-inches-to-cm` })),
-  ...dedupeAndSort(CM_TO_FEET_VALUES).map((value) => ({ category: "length", converter: "cm-to-feet", value: `${formatStaticValue(value)}-cm-to-feet` })),
+  ...dedupeAndSort(CM_TO_INCHES_VALUES).map((value) => ({ category: "length", converter: "centimeters-to-inches", value: `${formatStaticValue(value)}-centimeters-to-inches` })),
+  ...dedupeAndSort(INCHES_TO_CM_VALUES).map((value) => ({ category: "length", converter: "inches-to-centimeters", value: `${formatStaticValue(value)}-inches-to-centimeters` })),
+  ...dedupeAndSort(CM_TO_FEET_VALUES).map((value) => ({ category: "length", converter: "centimeters-to-feet", value: `${formatStaticValue(value)}-centimeters-to-feet` })),
   ...dedupeAndSort(METERS_TO_FEET_VALUES).map((value) => ({ category: "length", converter: "meters-to-feet", value: `${formatStaticValue(value)}-meters-to-feet` })),
   ...dedupeAndSort(FEET_TO_METERS_VALUES).map((value) => ({ category: "length", converter: "feet-to-meters", value: `${formatStaticValue(value)}-feet-to-meters` })),
-  ...dedupeAndSort(FEET_TO_CM_VALUES).map((value) => ({ category: "length", converter: "feet-to-cm", value: `${formatStaticValue(value)}-feet-to-cm` })),
-  ...dedupeAndSort(MILES_TO_KM_VALUES, EXTRA_MILES_TO_KM).map((value) => ({ category: "length", converter: "miles-to-km", value: `${formatStaticValue(value)}-miles-to-km` })),
-  ...dedupeAndSort(KM_TO_MILES_VALUES).map((value) => ({ category: "length", converter: "km-to-miles", value: `${formatStaticValue(value)}-km-to-miles` })),
-  ...dedupeAndSort(INCHES_TO_MM_VALUES).map((value) => ({ category: "length", converter: "inches-to-mm", value: `${formatStaticValue(value)}-inches-to-mm` })),
-  ...dedupeAndSort(MM_TO_INCHES_VALUES).map((value) => ({ category: "length", converter: "mm-to-inches", value: `${formatStaticValue(value)}-mm-to-inches` })),
+  ...dedupeAndSort(FEET_TO_CM_VALUES).map((value) => ({ category: "length", converter: "feet-to-centimeters", value: `${formatStaticValue(value)}-feet-to-centimeters` })),
+  ...dedupeAndSort(MILES_TO_KM_VALUES, EXTRA_MILES_TO_KM).map((value) => ({ category: "length", converter: "miles-to-kilometers", value: `${formatStaticValue(value)}-miles-to-kilometers` })),
+  ...dedupeAndSort(KM_TO_MILES_VALUES).map((value) => ({ category: "length", converter: "kilometers-to-miles", value: `${formatStaticValue(value)}-kilometers-to-miles` })),
+  ...dedupeAndSort(INCHES_TO_MM_VALUES).map((value) => ({ category: "length", converter: "inches-to-millimeters", value: `${formatStaticValue(value)}-inches-to-millimeters` })),
+  ...dedupeAndSort(MM_TO_INCHES_VALUES).map((value) => ({ category: "length", converter: "millimeters-to-inches", value: `${formatStaticValue(value)}-millimeters-to-inches` })),
 
   // Weight
-  ...dedupeAndSort(LBS_TO_KG_VALUES).map((value) => ({ category: "weight", converter: "lbs-to-kg", value: `${formatStaticValue(value)}-lbs-to-kg` })),
-  ...dedupeAndSort(KG_TO_LBS_VALUES).map((value) => ({ category: "weight", converter: "kg-to-lbs", value: `${formatStaticValue(value)}-kg-to-lbs` })),
+  ...dedupeAndSort(LBS_TO_KG_VALUES).map((value) => ({ category: "weight", converter: "pounds-to-kilograms", value: `${formatStaticValue(value)}-pounds-to-kilograms` })),
+  ...dedupeAndSort(KG_TO_LBS_VALUES).map((value) => ({ category: "weight", converter: "kilograms-to-pounds", value: `${formatStaticValue(value)}-kilograms-to-pounds` })),
   ...dedupeAndSort(GRAMS_TO_OUNCES_VALUES).map((value) => ({ category: "weight", converter: "grams-to-ounces", value: `${formatStaticValue(value)}-grams-to-ounces` })),
   ...dedupeAndSort(OUNCES_TO_GRAMS_VALUES).map((value) => ({ category: "weight", converter: "ounces-to-grams", value: `${formatStaticValue(value)}-ounces-to-grams` })),
   ...dedupeAndSort(MG_TO_G_VALUES).map((value) => ({ category: "weight", converter: "mg-to-g", value: `${formatStaticValue(value)}-mg-to-g` })),
@@ -105,8 +105,8 @@ export const STATIC_VALUE_PAGE_PARAMS: StaticValuePageParam[] = [
   // Volume
   ...dedupeAndSort(LITERS_TO_GALLONS_VALUES).map((value) => ({ category: "volume", converter: "liters-to-gallons", value: `${formatStaticValue(value)}-liters-to-gallons` })),
   ...dedupeAndSort(GALLONS_TO_LITERS_VALUES).map((value) => ({ category: "volume", converter: "gallons-to-liters", value: `${formatStaticValue(value)}-gallons-to-liters` })),
-  ...dedupeAndSort(CUPS_TO_ML_VALUES).map((value) => ({ category: "volume", converter: "cups-to-ml", value: `${formatStaticValue(value)}-cups-to-ml` })),
-  ...dedupeAndSort(ML_TO_CUPS_VALUES).map((value) => ({ category: "volume", converter: "ml-to-cups", value: `${formatStaticValue(value)}-ml-to-cups` })),
+  ...dedupeAndSort(CUPS_TO_ML_VALUES).map((value) => ({ category: "volume", converter: "cups-to-milliliters", value: `${formatStaticValue(value)}-cups-to-milliliters` })),
+  ...dedupeAndSort(ML_TO_CUPS_VALUES).map((value) => ({ category: "volume", converter: "milliliters-to-cups", value: `${formatStaticValue(value)}-milliliters-to-cups` })),
 
   // Data
   ...dedupeAndSort(MB_TO_GB_VALUES).map((value) => ({ category: "data", converter: "megabytes-to-gigabytes", value: `${formatStaticValue(value)}-megabytes-to-gigabytes` })),
