@@ -65,6 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/terms", changeFrequency: "yearly" as const, priority: 0.4 },
     { path: "/calculators", changeFrequency: "weekly" as const, priority: 0.85 },
     { path: "/popular-conversion-tools", changeFrequency: "weekly" as const, priority: 0.85 },
+    { path: "/all-converters", changeFrequency: "weekly" as const, priority: 0.9 },
     { path: "/guides", changeFrequency: "weekly" as const, priority: 0.8 },
   ];
 

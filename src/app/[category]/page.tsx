@@ -139,7 +139,7 @@ export default async function CategoryPage({ params }: PageProps) {
     description: category.description,
     url: `https://convertaro.com/${slug}`,
     numberOfItems: categoryConverters.length,
-    hasPart: categoryConverters.slice(0, 10).map((c) => ({
+    hasPart: categoryConverters.map((c) => ({
       "@type": "WebPage",
       name: c.title,
       url: `https://convertaro.com/${slug}/${c.metadata.slug}`,

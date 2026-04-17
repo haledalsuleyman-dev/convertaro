@@ -250,8 +250,11 @@ export default function Home() {
           <div className="mb-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="font-display text-2xl md:text-3xl font-semibold text-slate-900">Most Used Conversions</h2>
             <div className="flex flex-wrap items-center gap-4">
-              <Link href="/popular-conversion-tools" className="text-sm font-semibold text-sky-700 hover:text-sky-900 flex items-center gap-1">
-                View all popular conversions <ArrowRight className="h-4 w-4" />
+              <Link href="/popular-conversion-tools" className="text-sm font-semibold text-slate-700 hover:text-slate-900 flex items-center gap-1">
+                Popular Hub <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/all-converters" className="text-sm font-semibold text-sky-700 hover:text-sky-900 flex items-center gap-1">
+                View all 500+ tools <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>

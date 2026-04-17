@@ -70,7 +70,12 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link href="/popular-conversion-tools" className="text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors">
-                  Popular Conversion Tools Hub
+                  Popular Tools Hub
+                </Link>
+              </li>
+              <li>
+                <Link href="/all-converters" className="text-sm font-semibold text-sky-700 hover:text-sky-900 transition-colors">
+                  Full Converter Index
                 </Link>
               </li>
               <li>

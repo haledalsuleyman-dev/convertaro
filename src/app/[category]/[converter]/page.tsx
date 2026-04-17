@@ -25,7 +25,7 @@ import {
   getIntroContent,
   getReverseConverter,
 } from "@/lib/converter-content";
-import { PopularToolsSidebar, RelatedCalculators, CategoryNavigation } from "@/components/layout/InternalLinks";
+import { PopularToolsSidebar, RelatedCalculators, CategoryNavigation, CrawlableLinkHub } from "@/components/layout/InternalLinks";
 import { RecentConversions } from "@/components/layout/RecentConversions";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { canonicalConverters, dedupeCanonicalConverters, getCanonicalConverterById, resolveConverterRoute } from "@/lib/converter-routing";
@@ -1342,6 +1342,9 @@ export default async function ConverterPage({ params }: PageProps) {
           </aside>
         </div>
       </div>
+      <section className="container-pro py-12 border-t border-slate-100">
+        <CrawlableLinkHub limitPerCategory={3} />
+      </section>
     </div>
   );
 }
