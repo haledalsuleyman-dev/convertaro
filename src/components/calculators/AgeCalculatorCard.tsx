@@ -1,7 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { calculateAgeBreakdown } from "@/lib/calculators";
+import { 
+  CalculatorContainer, 
+  CalculatorForm, 
+  CalculatorResultPanel, 
+  CalculatorInputGroup,
+  CalculatorResultRow 
+} from "./CalculatorUI";
+import { Input } from "@/components/ui/Input";
+import { Cake, CalendarDays } from "lucide-react";
 
 function todayISODate(): string {
   return new Date().toISOString().split("T")[0];
@@ -10,45 +19,71 @@ function todayISODate(): string {
 export function AgeCalculatorCard() {
   const [birthDate, setBirthDate] = useState("1995-01-01");
   const [referenceDate, setReferenceDate] = useState(todayISODate());
+  const [result, setResult] = useState<{ years: number; months: number; days: number } | null>(null);
 
-  const result = useMemo(() => {
-    if (!birthDate || !referenceDate) return { years: 0, months: 0, days: 0 };
-    return calculateAgeBreakdown(new Date(birthDate), new Date(referenceDate));
-  }, [birthDate, referenceDate]);
+  const handleCalculate = () => {
+    if (!birthDate || !referenceDate) {
+      setResult(null);
+      return;
+    }
+    const age = calculateAgeBreakdown(new Date(birthDate), new Date(referenceDate));
+    setResult(age);
+  };
+
+  const handleReset = () => {
+    setBirthDate("1995-01-01");
+    setReferenceDate(todayISODate());
+    setResult(null);
+  };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-      <div className="space-y-4">
-        <label className="block">
-          <span className="text-sm font-semibold text-text-secondary">Date of birth</span>
-          <input
+    <CalculatorContainer>
+      <CalculatorForm onCalculate={handleCalculate} onReset={handleReset} title="Chronological Details">
+        <CalculatorInputGroup 
+          label="Date of Birth" 
+          helperText="Your official birth date"
+          icon={<Cake className="h-4 w-4" />}
+        >
+          <Input
             type="date"
             value={birthDate}
-            onChange={(event) => setBirthDate(event.target.value)}
-            className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            onChange={(e) => setBirthDate(e.target.value)}
           />
-        </label>
+        </CalculatorInputGroup>
 
-        <label className="block">
-          <span className="text-sm font-semibold text-text-secondary">Reference date</span>
-          <input
+        <CalculatorInputGroup 
+          label="Reference Date" 
+          helperText="Calculate age up to this specific date"
+          icon={<CalendarDays className="h-4 w-4" />}
+        >
+          <Input
             type="date"
             value={referenceDate}
-            onChange={(event) => setReferenceDate(event.target.value)}
-            className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            onChange={(e) => setReferenceDate(e.target.value)}
           />
-        </label>
-      </div>
+        </CalculatorInputGroup>
+      </CalculatorForm>
 
-      <div className="rounded-2xl border border-primary/20 bg-primary/6 p-5 flex items-center">
-        <div>
-          <p className="text-xs uppercase tracking-widest font-semibold text-primary">Exact age</p>
-          <p className="mt-2 text-3xl font-black text-text-primary">
-            {result.years}y {result.months}m {result.days}d
-          </p>
-          <p className="mt-2 text-sm text-text-secondary">Calculated from selected dates using calendar-accurate difference.</p>
-        </div>
-      </div>
-    </div>
+      <CalculatorResultPanel 
+        result={result ? result.years : "—"} 
+        label="Years Old"
+        title="Age Analysis"
+        hint={result ? "Precisely calculated age breakdown" : "Select dates and calculate"}
+      >
+        {result && (
+          <div className="space-y-4">
+            <CalculatorResultRow label="Full Years" value={`${result.years} years`} />
+            <CalculatorResultRow label="Months" value={`${result.months} months`} />
+            <CalculatorResultRow label="Extra Days" value={`${result.days} days`} />
+            <div className="pt-2 border-t border-slate-100 mt-2">
+              <CalculatorResultRow label="Summary" value={`${result.years}y, ${result.months}m, ${result.days}d`} isBold />
+            </div>
+            <div className="mt-4 p-3 bg-slate-50 rounded-lg text-xs text-slate-500 italic text-center border border-slate-100">
+              The age is calculated by finding the total number of full years, months, and days between the two dates.
+            </div>
+          </div>
+        )}
+      </CalculatorResultPanel>
+    </CalculatorContainer>
   );
 }

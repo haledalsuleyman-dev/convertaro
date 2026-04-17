@@ -137,9 +137,9 @@ export function buildConverterMetaTitle(fromUnit: string, toUnit: string): strin
   
   // High-CTR candidates with emotional hooks and social proof
   const candidates = [
-    `Free ${fromLabel} to ${toLabel} Converter (${currentYear}) – Fast & Accurate`,
-    `${fromLabel} to ${toLabel} Converter – Instant, Free & Simple`,
-    `Accurate ${fromLabel} to ${toLabel} – Free Online Tool`,
+    `Best ${fromLabel} to ${toLabel} Converter – Fast & Accurate (${currentYear})`,
+    `${fromLabel} to ${toLabel} Converter – Instant, Free & Professional`,
+    `Accurate ${fromLabel} to ${toLabel} Calculator – Free Online Tool`,
     `${fromLabel} to ${toLabel} Converter`,
   ];
 

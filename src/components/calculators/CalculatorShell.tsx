@@ -85,12 +85,14 @@ export function CalculatorShell({ calculator, children }: CalculatorShellProps) 
                 { label: "Home", href: "/" },
                 { label: "Calculators", href: "/calculators" },
                 ...(category ? [{ label: category.shortLabel, href: `/calculators/${category.slug}` }] : []),
-                { label: calculator.title },
+                { label: calculator.navLabel || calculator.title },
               ]}
             />
           </div>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-text-primary">{calculator.title}</h1>
-          <p className="mt-4 text-base sm:text-lg text-text-secondary max-w-3xl mx-auto">{calculator.description}</p>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-text-primary leading-tight">{calculator.title}</h1>
+          <p className="mt-5 text-base sm:text-lg text-text-secondary max-w-3xl mx-auto leading-relaxed">
+            {calculator.whatItDoes}
+          </p>
         </header>
 
         <div className="mt-8 flex justify-center">
@@ -105,110 +107,127 @@ export function CalculatorShell({ calculator, children }: CalculatorShellProps) 
           <AdSlot type="in-content" id="calculator-middle-ad" />
         </div>
 
-        <section className="mt-8 rounded-2xl bg-white border border-border shadow-card p-6 sm:p-8">
-          <h2 className="text-xl font-black text-text-primary">What it does</h2>
-          <p className="mt-3 text-sm leading-relaxed text-text-secondary">{calculator.whatItDoes}</p>
-          {contextSentence ? (
-            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-              {contextSentence.replace(/\.$/, "")}{" "}
-              {strategicLinks.slice(0, 2).map((tool, index, items) => (
-                <span key={tool.href}>
-                  <Link href={canonicalizeConverterHref(tool.href)} className="font-semibold text-primary hover:underline">
-                    {tool.label}
-                  </Link>
-                  {index < items.length - 2 ? ", " : index === items.length - 2 ? " and " : "."}
-                </span>
-              ))}
-            </p>
-          ) : null}
-        </section>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12">
+          <div className="lg:col-span-8 space-y-12">
+            <section id="how-it-works">
+              <h2 className="text-2xl font-black text-text-primary">How this calculator works</h2>
+              <div className="mt-4 prose prose-slate prose-sm max-w-none text-text-secondary">
+                <p>{calculator.description}</p>
+                <ol className="mt-6 space-y-3">
+                  {calculator.howToUse.map((step, index) => (
+                    <li key={step} className="flex gap-4">
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                        {index + 1}
+                      </span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </section>
 
-        <section className="mt-6 rounded-2xl bg-white border border-border shadow-card p-6 sm:p-8">
-          <h2 className="text-xl font-black text-text-primary">How to use it</h2>
-          <ol className="mt-4 space-y-2">
-            {calculator.howToUse.map((step, index) => (
-              <li key={step} className="text-sm text-text-secondary leading-relaxed">
-                <span className="font-bold text-text-primary mr-2">{index + 1}.</span>
-                {step}
-              </li>
-            ))}
-          </ol>
-        </section>
+            <section id="formula">
+              <h2 className="text-2xl font-black text-text-primary">Calculation formula</h2>
+              <div className="mt-4 rounded-2xl bg-slate-900 p-6 sm:p-8 text-center shadow-lg">
+                <p className="text-xl sm:text-2xl font-mono font-bold text-white tracking-tight">
+                  {calculator.formula.expression}
+                </p>
+              </div>
+              <p className="mt-4 text-sm leading-relaxed text-text-secondary">
+                {calculator.formula.description}
+              </p>
+            </section>
 
-        <section className="mt-6 rounded-2xl bg-white border border-border shadow-card p-6 sm:p-8">
-          <h2 className="text-xl font-black text-text-primary">Real-world examples</h2>
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {calculator.examples.map((example) => (
-              <article key={example.title} className="rounded-xl border border-border bg-background/60 p-4">
-                <h3 className="text-sm font-bold text-text-primary">{example.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-secondary">{example.description}</p>
-              </article>
-            ))}
+            <section id="examples">
+              <h2 className="text-2xl font-black text-text-primary">Practical calculation examples</h2>
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {calculator.examples.map((example) => (
+                  <article key={example.title} className="rounded-2xl border border-border bg-white p-6 shadow-sm">
+                    <h3 className="text-base font-bold text-text-primary">{example.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-text-secondary">{example.description}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section id="when-to-use">
+              <h2 className="text-2xl font-black text-text-primary">When should you use this?</h2>
+              <div className="mt-4 p-6 rounded-2xl bg-primary/5 border border-primary/10">
+                <p className="text-sm leading-relaxed text-text-secondary italic">
+                  "{calculator.whenToUse}"
+                </p>
+              </div>
+              {contextSentence ? (
+                <p className="mt-6 text-sm leading-relaxed text-text-secondary">
+                  <strong>Need more info?</strong> {contextSentence.replace(/\.$/, "")}{" "}
+                  {strategicLinks.slice(0, 3).map((tool, index, items) => (
+                    <span key={tool.href}>
+                      <Link href={canonicalizeConverterHref(tool.href)} className="font-bold text-primary hover:underline">
+                        {tool.label}
+                      </Link>
+                      {index < items.length - 2 ? ", " : index === items.length - 2 ? " or " : "."}
+                    </span>
+                  ))}
+                </p>
+              ) : null}
+            </section>
+
+            <section id="faqs">
+              <h2 className="text-2xl font-black text-text-primary text-center lg:text-left">Frequently asked questions</h2>
+              <div className="mt-8 space-y-4">
+                {calculator.faq.map((item) => (
+                  <article key={item.question} className="rounded-2xl border border-border bg-white p-6 shadow-sm hover:border-primary/20 transition-colors">
+                    <h3 className="text-base font-bold text-text-primary">{item.question}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-text-secondary">{item.answer}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
           </div>
-        </section>
 
-        <section className="mt-6 rounded-2xl bg-white border border-border shadow-card p-6 sm:p-8">
-          <h2 className="text-xl font-black text-text-primary">Common mistakes</h2>
-          <ul className="mt-4 space-y-2">
-            {calculator.commonMistakes.map((mistake) => (
-              <li key={mistake} className="text-sm text-text-secondary leading-relaxed">
-                - {mistake}
-              </li>
-            ))}
-          </ul>
-        </section>
+          <aside className="lg:col-span-4 space-y-8">
+            <div className="sticky top-8 space-y-8">
+              <TrustMetadataBlock metadata={trustMetadata} title="Editorial Review" />
+              
+              <section className="rounded-2xl border border-border bg-white p-6 shadow-sm">
+                <h2 className="text-lg font-black text-text-primary">Related tools</h2>
+                <div className="mt-4 space-y-2">
+                  <Link
+                    href="/calculators"
+                    className="block w-full py-2 text-sm font-semibold text-text-secondary hover:text-primary transition-colors"
+                  >
+                    → Browse all calculators
+                  </Link>
+                  {category && (
+                    <Link
+                      href={`/calculators/${category.slug}`}
+                      className="block w-full py-2 text-sm font-semibold text-text-secondary hover:text-primary transition-colors"
+                    >
+                      → {category.shortLabel} tools
+                    </Link>
+                  )}
+                  {strategicLinks.map((tool) => (
+                    <Link
+                      key={tool.href}
+                      href={canonicalizeConverterHref(tool.href)}
+                      className="block w-full py-2 text-sm font-semibold text-text-secondary hover:text-primary transition-colors"
+                    >
+                      → {tool.label}
+                    </Link>
+                  ))}
+                </div>
+              </section>
 
-        <section className="mt-6 rounded-2xl bg-white border border-border shadow-card p-6 sm:p-8">
-          <h2 className="text-xl font-black text-text-primary">Why it matters</h2>
-          <p className="mt-3 text-sm leading-relaxed text-text-secondary">{calculator.whyItMatters}</p>
-        </section>
-
-        <div className="mt-6">
-          <TrustMetadataBlock metadata={trustMetadata} title="Trust and editorial review" />
+              <div className="p-1 rounded-2xl bg-slate-50 border border-slate-100">
+                <AdSlot type="rectangle" id="calculator-sidebar-ad" />
+              </div>
+            </div>
+          </aside>
         </div>
 
-        <section className="mt-6 rounded-2xl bg-white border border-border shadow-card p-6 sm:p-8">
-          <h2 className="text-xl font-black text-text-primary">FAQs</h2>
-          <div className="mt-4 space-y-3">
-            {calculator.faq.map((item) => (
-              <article key={item.question} className="rounded-xl border border-border bg-background/60 p-4">
-                <h3 className="text-sm font-bold text-text-primary">{item.question}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-secondary">{item.answer}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-6 rounded-2xl bg-white border border-border shadow-card p-6 sm:p-8">
-          <h2 className="text-xl font-black text-text-primary">Related tools</h2>
-          <div className="mt-4 flex flex-wrap gap-2.5">
-            <Link
-              href="/calculators"
-              className="inline-flex items-center rounded-full border border-primary/25 bg-primary/7 px-4 py-2 text-sm font-semibold text-primary hover:bg-white transition-colors"
-            >
-              All calculators
-            </Link>
-            {category ? (
-              <Link
-                href={`/calculators/${category.slug}`}
-                className="inline-flex items-center rounded-full border border-primary/25 bg-primary/7 px-4 py-2 text-sm font-semibold text-primary hover:bg-white transition-colors"
-              >
-                {category.shortLabel} calculators
-              </Link>
-            ) : null}
-            {strategicLinks.map((tool) => (
-              <Link
-                key={tool.href}
-                href={canonicalizeConverterHref(tool.href)}
-                className="inline-flex items-center rounded-full border border-border bg-background/70 px-4 py-2 text-sm font-semibold text-text-primary hover:border-primary/35 hover:text-primary hover:bg-white transition-colors"
-              >
-                {tool.label}
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <CrawlableLinkHub title="More Tools You Can Use" limitPerCategory={2} />
+        <div className="mt-16 pt-16 border-t border-border">
+          <CrawlableLinkHub title="Explore More Powerful Tools" limitPerCategory={3} />
+        </div>
       </div>
     </div>
   );

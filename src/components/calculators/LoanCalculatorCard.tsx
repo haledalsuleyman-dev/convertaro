@@ -1,12 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { calculateLoanPayment } from "@/lib/calculators";
+import { 
+  CalculatorContainer, 
+  CalculatorForm, 
+  CalculatorResultPanel, 
+  CalculatorInputGroup,
+  CalculatorResultRow 
+} from "./CalculatorUI";
+import { Input } from "@/components/ui/Input";
+import { Banknote, Percent, Calendar } from "lucide-react";
 
 const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
-  maximumFractionDigits: 2,
+  maximumFractionDigits: 0,
 });
 
 function formatCurrency(value: number): string {
@@ -17,8 +26,16 @@ export function LoanCalculatorCard() {
   const [principal, setPrincipal] = useState("25000");
   const [annualRate, setAnnualRate] = useState("7.5");
   const [months, setMonths] = useState("60");
+  const [result, setResult] = useState<{ 
+    monthly: number; 
+    totalPaid: number; 
+    totalInterest: number;
+    principalValue: number;
+    rateValue: number;
+    termValue: number;
+  } | null>(null);
 
-  const { monthly, totalPaid, totalInterest } = useMemo(() => {
+  const handleCalculate = () => {
     const p = Number(principal);
     const r = Number(annualRate);
     const m = Number(months);
@@ -26,63 +43,87 @@ export function LoanCalculatorCard() {
     const monthlyPayment = calculateLoanPayment(p, r, m);
     const total = monthlyPayment * (m > 0 ? m : 0);
 
-    return {
+    setResult({
       monthly: monthlyPayment,
       totalPaid: total,
       totalInterest: total - (p > 0 ? p : 0),
-    };
-  }, [principal, annualRate, months]);
+      principalValue: p,
+      rateValue: r,
+      termValue: m
+    });
+  };
+
+  const handleReset = () => {
+    setPrincipal("25000");
+    setAnnualRate("7.5");
+    setMonths("60");
+    setResult(null);
+  };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-      <div className="space-y-4">
-        <label className="block">
-          <span className="text-sm font-semibold text-text-secondary">Loan amount</span>
-          <input
+    <CalculatorContainer>
+      <CalculatorForm onCalculate={handleCalculate} onReset={handleReset} title="Loan Details">
+        <CalculatorInputGroup 
+          label="Loan Amount ($)" 
+          helperText="Total amount you wish to borrow"
+          icon={<Banknote className="h-4 w-4" />}
+        >
+          <Input
             type="number"
             min="0"
             value={principal}
-            onChange={(event) => setPrincipal(event.target.value)}
-            className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            onChange={(e) => setPrincipal(e.target.value)}
+            placeholder="e.g. 25000"
           />
-        </label>
-        <label className="block">
-          <span className="text-sm font-semibold text-text-secondary">Annual interest rate (%)</span>
-          <input
+        </CalculatorInputGroup>
+
+        <CalculatorInputGroup 
+          label="Annual Interest Rate (%)" 
+          helperText="The yearly interest rate for this loan"
+          icon={<Percent className="h-4 w-4" />}
+        >
+          <Input
             type="number"
             min="0"
             step="0.01"
             value={annualRate}
-            onChange={(event) => setAnnualRate(event.target.value)}
-            className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            onChange={(e) => setAnnualRate(e.target.value)}
+            placeholder="e.g. 7.5"
           />
-        </label>
-        <label className="block">
-          <span className="text-sm font-semibold text-text-secondary">Term (months)</span>
-          <input
+        </CalculatorInputGroup>
+
+        <CalculatorInputGroup 
+          label="Loan Term (Months)" 
+          helperText="Duration of the loan in months"
+          icon={<Calendar className="h-4 w-4" />}
+        >
+          <Input
             type="number"
             min="1"
             value={months}
-            onChange={(event) => setMonths(event.target.value)}
-            className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            onChange={(e) => setMonths(e.target.value)}
+            placeholder="e.g. 60"
           />
-        </label>
-      </div>
+        </CalculatorInputGroup>
+      </CalculatorForm>
 
-      <div className="rounded-2xl border border-primary/20 bg-primary/6 p-5">
-        <p className="text-xs uppercase tracking-widest font-semibold text-primary">Estimated payment</p>
-        <p className="mt-2 text-4xl font-black text-text-primary">{formatCurrency(monthly || 0)}</p>
-        <dl className="mt-4 space-y-2 text-sm">
-          <div className="flex justify-between gap-3">
-            <dt className="text-text-secondary">Total paid</dt>
-            <dd className="font-semibold text-text-primary">{formatCurrency(totalPaid || 0)}</dd>
+      <CalculatorResultPanel 
+        result={result ? formatCurrency(result.monthly) : "$—"} 
+        label="Monthly Payment"
+        title="Loan Estimate"
+        hint={result ? "Based on your provided terms" : "Adjust values and calculate"}
+      >
+        {result && (
+          <div className="space-y-4">
+            <CalculatorResultRow label="Total Principal" value={formatCurrency(result.principalValue)} />
+            <CalculatorResultRow label="Total Interest" value={formatCurrency(result.totalInterest)} />
+            <CalculatorResultRow label="Total Amount Paid" value={formatCurrency(result.totalPaid)} isBold />
+            <div className="mt-4 p-3 bg-blue-50/50 rounded-lg border border-blue-100 italic text-[11px] text-blue-700 text-center leading-relaxed">
+              This estimate excludes taxes, insurance, or additional fees that your lender might apply.
+            </div>
           </div>
-          <div className="flex justify-between gap-3">
-            <dt className="text-text-secondary">Total interest</dt>
-            <dd className="font-semibold text-text-primary">{formatCurrency(totalInterest || 0)}</dd>
-          </div>
-        </dl>
-      </div>
-    </div>
+        )}
+      </CalculatorResultPanel>
+    </CalculatorContainer>
   );
 }

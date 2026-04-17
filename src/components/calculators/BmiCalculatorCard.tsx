@@ -1,52 +1,87 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { calculateBMI, getBMICategory } from "@/lib/calculators";
+import { 
+  CalculatorContainer, 
+  CalculatorForm, 
+  CalculatorResultPanel, 
+  CalculatorInputGroup,
+  CalculatorResultRow 
+} from "./CalculatorUI";
+import { Input } from "@/components/ui/Input";
+import { Ruler, Weight } from "lucide-react";
 
 export function BmiCalculatorCard() {
   const [heightCm, setHeightCm] = useState("170");
   const [weightKg, setWeightKg] = useState("70");
+  const [result, setResult] = useState<{ bmi: number; category: string } | null>(null);
 
-  const bmi = useMemo(() => {
-    const height = Number(heightCm);
-    const weight = Number(weightKg);
-    return calculateBMI(weight, height);
-  }, [heightCm, weightKg]);
+  const handleCalculate = () => {
+    const h = Number(heightCm);
+    const w = Number(weightKg);
+    const bmiValue = calculateBMI(w, h);
+    setResult({
+      bmi: bmiValue,
+      category: getBMICategory(bmiValue)
+    });
+  };
 
-  const bmiDisplay = bmi > 0 ? bmi.toFixed(1) : "-";
-  const category = getBMICategory(bmi);
+  const handleReset = () => {
+    setHeightCm("170");
+    setWeightKg("70");
+    setResult(null);
+  };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-      <div className="space-y-4">
-        <label className="block">
-          <span className="text-sm font-semibold text-text-secondary">Height (cm)</span>
-          <input
+    <CalculatorContainer>
+      <CalculatorForm onCalculate={handleCalculate} onReset={handleReset} title="Body Mass Index Settings">
+        <CalculatorInputGroup 
+          label="Height (cm)" 
+          helperText="Standard adult height in centimeters"
+          icon={<Ruler className="h-4 w-4" />}
+        >
+          <Input
             type="number"
             min="1"
             value={heightCm}
-            onChange={(event) => setHeightCm(event.target.value)}
-            className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            onChange={(e) => setHeightCm(e.target.value)}
+            placeholder="e.g. 170"
           />
-        </label>
+        </CalculatorInputGroup>
 
-        <label className="block">
-          <span className="text-sm font-semibold text-text-secondary">Weight (kg)</span>
-          <input
+        <CalculatorInputGroup 
+          label="Weight (kg)" 
+          helperText="Current weight in kilograms"
+          icon={<Weight className="h-4 w-4" />}
+        >
+          <Input
             type="number"
             min="1"
             value={weightKg}
-            onChange={(event) => setWeightKg(event.target.value)}
-            className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            onChange={(e) => setWeightKg(e.target.value)}
+            placeholder="e.g. 70"
           />
-        </label>
-      </div>
+        </CalculatorInputGroup>
+      </CalculatorForm>
 
-      <div className="rounded-2xl border border-primary/20 bg-primary/6 p-5 flex flex-col justify-center">
-        <p className="text-xs uppercase tracking-widest font-semibold text-primary">Result</p>
-        <p className="mt-2 text-4xl font-black text-text-primary">{bmiDisplay}</p>
-        <p className="mt-2 text-sm text-text-secondary">Category: <span className="font-semibold text-text-primary">{category}</span></p>
-      </div>
-    </div>
+      <CalculatorResultPanel 
+        result={result ? result.bmi.toFixed(1) : "—"} 
+        label="Your BMI Score"
+        title="BMI Result"
+        hint={result ? `Status: ${result.category}` : "Enter details and calculate"}
+      >
+        {result && (
+          <div className="space-y-4">
+            <CalculatorResultRow label="BMI Category" value={result.category} isBold />
+            <CalculatorResultRow label="Weight" value={`${weightKg} kg`} />
+            <CalculatorResultRow label="Height" value={`${heightCm} cm`} />
+            <div className="mt-4 p-3 bg-slate-50 rounded-lg text-xs text-slate-500 leading-relaxed italic text-center border border-slate-100">
+              The BMI is a convenient rule of thumb used to broadly categorize a person as underweight, normal weight, overweight, or obese.
+            </div>
+          </div>
+        )}
+      </CalculatorResultPanel>
+    </CalculatorContainer>
   );
 }

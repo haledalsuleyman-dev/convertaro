@@ -1,12 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { calculateLoanPayment } from "@/lib/calculators";
+import { 
+  CalculatorContainer, 
+  CalculatorForm, 
+  CalculatorResultPanel, 
+  CalculatorInputGroup,
+  CalculatorResultRow 
+} from "./CalculatorUI";
+import { Input } from "@/components/ui/Input";
+import { Home, Wallet, Percent, Calendar, ShieldCheck, Landmark } from "lucide-react";
 
 const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
-  maximumFractionDigits: 2,
+  maximumFractionDigits: 0,
 });
 
 function formatCurrency(value: number): string {
@@ -21,79 +30,121 @@ export function MortgageCalculatorCard() {
   const [monthlyTax, setMonthlyTax] = useState("350");
   const [monthlyInsurance, setMonthlyInsurance] = useState("120");
 
-  const summary = useMemo(() => {
+  const [result, setResult] = useState<{
+    principal: number;
+    monthlyPI: number;
+    monthlyTotal: number;
+    totalInterest: number;
+    tax: number;
+    insurance: number;
+  } | null>(null);
+
+  const handleCalculate = () => {
     const price = Number(homePrice);
     const down = Number(downPayment);
     const rate = Number(annualRate);
     const termYears = Number(years);
-    const tax = Number(monthlyTax);
-    const insurance = Number(monthlyInsurance);
+    const taxValue = Number(monthlyTax);
+    const insuranceValue = Number(monthlyInsurance);
 
     const principal = Math.max(price - down, 0);
-    const months = Math.max(termYears * 12, 0);
-    const monthlyPI = calculateLoanPayment(principal, rate, months);
-    const monthlyTotal = monthlyPI + (tax > 0 ? tax : 0) + (insurance > 0 ? insurance : 0);
-    const totalInterest = monthlyPI * (months > 0 ? months : 0) - principal;
+    const monthsNum = Math.max(termYears * 12, 0);
+    const monthlyPI = calculateLoanPayment(principal, rate, monthsNum);
+    const monthlyTotal = monthlyPI + (taxValue > 0 ? taxValue : 0) + (insuranceValue > 0 ? insuranceValue : 0);
+    const totalInterestValue = monthlyPI * (monthsNum > 0 ? monthsNum : 0) - principal;
 
-    return {
+    setResult({
       principal,
       monthlyPI,
       monthlyTotal,
-      totalInterest,
-    };
-  }, [homePrice, downPayment, annualRate, years, monthlyTax, monthlyInsurance]);
+      totalInterest: totalInterestValue,
+      tax: taxValue,
+      insurance: insuranceValue
+    });
+  };
+
+  const handleReset = () => {
+    setHomePrice("450000");
+    setDownPayment("90000");
+    setAnnualRate("6.75");
+    setYears("30");
+    setMonthlyTax("350");
+    setMonthlyInsurance("120");
+    setResult(null);
+  };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-      <div className="space-y-4">
-        <label className="block">
-          <span className="text-sm font-semibold text-text-secondary">Home price</span>
-          <input type="number" value={homePrice} onChange={(e) => setHomePrice(e.target.value)} className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-        </label>
-        <label className="block">
-          <span className="text-sm font-semibold text-text-secondary">Down payment</span>
-          <input type="number" value={downPayment} onChange={(e) => setDownPayment(e.target.value)} className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-        </label>
-        <div className="grid grid-cols-2 gap-3">
-          <label className="block">
-            <span className="text-sm font-semibold text-text-secondary">Rate (%)</span>
-            <input type="number" step="0.01" value={annualRate} onChange={(e) => setAnnualRate(e.target.value)} className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-          </label>
-          <label className="block">
-            <span className="text-sm font-semibold text-text-secondary">Term (years)</span>
-            <input type="number" value={years} onChange={(e) => setYears(e.target.value)} className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-          </label>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <label className="block">
-            <span className="text-sm font-semibold text-text-secondary">Tax / month</span>
-            <input type="number" value={monthlyTax} onChange={(e) => setMonthlyTax(e.target.value)} className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-          </label>
-          <label className="block">
-            <span className="text-sm font-semibold text-text-secondary">Insurance / month</span>
-            <input type="number" value={monthlyInsurance} onChange={(e) => setMonthlyInsurance(e.target.value)} className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-          </label>
-        </div>
-      </div>
+    <CalculatorContainer>
+      <CalculatorForm onCalculate={handleCalculate} onReset={handleReset} title="Property Details">
+        <CalculatorInputGroup 
+          label="Home Price ($)" 
+          helperText="The total purchase price of the home"
+          icon={<Home className="h-4 w-4" />}
+        >
+          <Input type="number" value={homePrice} onChange={(e) => setHomePrice(e.target.value)} placeholder="e.g. 450000" />
+        </CalculatorInputGroup>
 
-      <div className="rounded-2xl border border-primary/20 bg-primary/6 p-5">
-        <p className="text-xs uppercase tracking-widest font-semibold text-primary">Estimated monthly cost</p>
-        <p className="mt-2 text-4xl font-black text-text-primary">{formatCurrency(summary.monthlyTotal || 0)}</p>
-        <dl className="mt-4 space-y-2 text-sm">
-          <div className="flex justify-between gap-3">
-            <dt className="text-text-secondary">Loan principal</dt>
-            <dd className="font-semibold text-text-primary">{formatCurrency(summary.principal || 0)}</dd>
+        <CalculatorInputGroup 
+          label="Down Payment ($)" 
+          helperText="Amount paid upfront toward the purchase"
+          icon={<Wallet className="h-4 w-4" />}
+        >
+          <Input type="number" value={downPayment} onChange={(e) => setDownPayment(e.target.value)} placeholder="e.g. 90000" />
+        </CalculatorInputGroup>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <CalculatorInputGroup 
+            label="Interest Rate (%)" 
+            icon={<Percent className="h-4 w-4" />}
+          >
+            <Input type="number" step="0.01" value={annualRate} onChange={(e) => setAnnualRate(e.target.value)} placeholder="e.g. 6.75" />
+          </CalculatorInputGroup>
+          <CalculatorInputGroup 
+            label="Loan Term (Years)" 
+            icon={<Calendar className="h-4 w-4" />}
+          >
+            <Input type="number" value={years} onChange={(e) => setYears(e.target.value)} placeholder="e.g. 30" />
+          </CalculatorInputGroup>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <CalculatorInputGroup 
+            label="Property Tax ($/mo)" 
+            icon={<Landmark className="h-4 w-4" />}
+          >
+            <Input type="number" value={monthlyTax} onChange={(e) => setMonthlyTax(e.target.value)} placeholder="e.g. 350" />
+          </CalculatorInputGroup>
+          <CalculatorInputGroup 
+            label="Insurance ($/mo)" 
+            icon={<ShieldCheck className="h-4 w-4" />}
+          >
+            <Input type="number" value={monthlyInsurance} onChange={(e) => setMonthlyInsurance(e.target.value)} placeholder="e.g. 120" />
+          </CalculatorInputGroup>
+        </div>
+      </CalculatorForm>
+
+      <CalculatorResultPanel 
+        result={result ? formatCurrency(result.monthlyTotal) : "$—"} 
+        label="Monthly Payment"
+        title="Mortgage Summary"
+        hint={result ? "Estimated full monthly PITI cost" : "Enter figures and calculate"}
+      >
+        {result && (
+          <div className="space-y-4">
+            <CalculatorResultRow label="Loan Principal" value={formatCurrency(result.principal)} />
+            <CalculatorResultRow label="Principal & Interest" value={formatCurrency(result.monthlyPI)} />
+            <CalculatorResultRow label="Property Taxes" value={formatCurrency(result.tax)} />
+            <CalculatorResultRow label="Home Insurance" value={formatCurrency(result.insurance)} />
+            <CalculatorResultRow label="Total Interest Paid" value={formatCurrency(result.totalInterest)} />
+            <div className="pt-2 border-t border-slate-100 mt-2">
+              <CalculatorResultRow label="Estimated Total" value={formatCurrency(result.monthlyTotal)} isBold />
+            </div>
+            <div className="mt-4 p-3 bg-indigo-50/50 rounded-xl border border-indigo-100 text-[11px] text-indigo-700 text-center leading-relaxed">
+              PITI stands for Principal, Interest, Taxes, and Insurance — the four components of a monthly mortgage payment.
+            </div>
           </div>
-          <div className="flex justify-between gap-3">
-            <dt className="text-text-secondary">P&amp;I payment</dt>
-            <dd className="font-semibold text-text-primary">{formatCurrency(summary.monthlyPI || 0)}</dd>
-          </div>
-          <div className="flex justify-between gap-3">
-            <dt className="text-text-secondary">Estimated total interest</dt>
-            <dd className="font-semibold text-text-primary">{formatCurrency(summary.totalInterest || 0)}</dd>
-          </div>
-        </dl>
-      </div>
-    </div>
+        )}
+      </CalculatorResultPanel>
+    </CalculatorContainer>
   );
 }

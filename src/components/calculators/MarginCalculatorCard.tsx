@@ -1,100 +1,109 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { TrendingUp, DollarSign, PieChart, ShieldCheck } from "lucide-react";
+import { useState } from "react";
+import { 
+  CalculatorContainer, 
+  CalculatorForm, 
+  CalculatorResultPanel, 
+  CalculatorInputGroup,
+  CalculatorResultRow 
+} from "./CalculatorUI";
+import { Input } from "@/components/ui/Input";
+import { Banknote, Percent, TrendingUp, Info } from "lucide-react";
 
 export function MarginCalculatorCard() {
   const [cost, setCost] = useState("100");
   const [margin, setMargin] = useState("25");
+  const [result, setResult] = useState<{
+    revenue: string;
+    profit: string;
+    markup: string;
+    costValue: string;
+    marginValue: string;
+  } | null>(null);
 
-  const results = useMemo(() => {
+  const handleCalculate = () => {
     const c = Number(cost);
     const m = Number(margin);
 
-    if (!Number.isFinite(c) || !Number.isFinite(m) || m >= 100) return null;
+    if (!Number.isFinite(c) || !Number.isFinite(m) || m >= 100) {
+      setResult(null);
+      return;
+    }
 
-    // Selling Price = Cost / (1 - Margin/100)
     const revenue = c / (1 - m / 100);
     const profit = revenue - c;
     const markup = (profit / c) * 100;
 
-    return {
+    setResult({
       revenue: revenue.toFixed(2),
       profit: profit.toFixed(2),
       markup: markup.toFixed(2),
-    };
-  }, [cost, margin]);
+      costValue: cost,
+      marginValue: margin
+    });
+  };
+
+  const handleReset = () => {
+    setCost("100");
+    setMargin("25");
+    setResult(null);
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="bg-emerald-50/30 border border-emerald-100 rounded-2xl p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-bold text-emerald-900 mb-2 flex items-center gap-2">
-              <DollarSign className="h-4 w-4" /> Cost Price
-            </label>
-            <input
-              type="number"
-              value={cost}
-              onChange={(e) => setCost(e.target.value)}
-              className="h-12 w-full rounded-xl border border-emerald-200 bg-white px-4 text-base font-bold text-emerald-900 focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all"
-              placeholder="0.00"
-            />
-            <p className="mt-1.5 text-[10px] text-emerald-600 font-medium">What you pay to acquire the item</p>
-          </div>
+    <CalculatorContainer>
+      <CalculatorForm onCalculate={handleCalculate} onReset={handleReset} title="Acquisition & Profit Target">
+        <CalculatorInputGroup 
+          label="Cost Price ($)" 
+          helperText="The price you paid to acquire the item"
+          icon={<Banknote className="h-4 w-4" />}
+        >
+          <Input
+            type="number"
+            value={cost}
+            onChange={(e) => setCost(e.target.value)}
+            placeholder="0.00"
+          />
+        </CalculatorInputGroup>
 
-          <div>
-            <label className="block text-sm font-bold text-emerald-900 mb-2 flex items-center gap-2">
-              <PieChart className="h-4 w-4" /> Profit Margin (%)
-            </label>
-            <input
-              type="number"
-              value={margin}
-              onChange={(e) => setMargin(e.target.value)}
-              className="h-12 w-full rounded-xl border border-emerald-200 bg-white px-4 text-base font-bold text-emerald-900 focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all"
-              placeholder="0"
-            />
-            <p className="mt-1.5 text-[10px] text-emerald-600 font-medium">Your desired percentage of profit from sale</p>
-          </div>
-        </div>
+        <CalculatorInputGroup 
+          label="Target Margin (%)" 
+          helperText="The percentage of profit you want from the final sale"
+          icon={<Percent className="h-4 w-4" />}
+        >
+          <Input
+            type="number"
+            value={margin}
+            onChange={(e) => setMargin(e.target.value)}
+            placeholder="0"
+          />
+        </CalculatorInputGroup>
+      </CalculatorForm>
 
-        <div className="bg-slate-900 rounded-2xl p-6 text-white shadow-xl shadow-slate-200 flex flex-col justify-center">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs uppercase tracking-widest font-black text-slate-400">Target Selling Price</span>
-            <TrendingUp className="h-4 w-4 text-emerald-400" />
-          </div>
-          
-          <div className="mb-6">
-            <p className="text-5xl font-black tracking-tight text-white">
-              <span className="text-slate-500 text-2xl mr-1">$</span>
-              {results?.revenue}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-800">
-            <div>
-              <p className="text-[10px] uppercase font-bold text-slate-500 mb-1">Total Profit</p>
-              <p className="text-lg font-black text-emerald-400">+${results?.profit}</p>
+      <CalculatorResultPanel 
+        result={result ? `$${result.revenue}` : "$—"} 
+        label="Target Selling Price"
+        title="Revenue Analysis"
+        hint={result ? "Calculators target price for profitability" : "Enter figures and calculate"}
+      >
+        {result && (
+          <div className="space-y-4">
+            <CalculatorResultRow label="Cost Price" value={`$${result.costValue}`} />
+            <CalculatorResultRow label="Target Margin" value={`${result.marginValue}%`} />
+            <CalculatorResultRow label="Gross Profit" value={`$${result.profit}`} />
+            <CalculatorResultRow label="Required Markup" value={`${result.markup}%`} />
+            <div className="pt-2 border-t border-slate-100 mt-2">
+              <CalculatorResultRow label="Selling Price" value={`$${result.revenue}`} isBold />
             </div>
-            <div>
-              <p className="text-[10px] uppercase font-bold text-slate-500 mb-1">Markup Ratio</p>
-              <p className="text-lg font-black text-white">{results?.markup}%</p>
+            <div className="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100 flex gap-3">
+              <Info className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+              <p className="text-[11px] text-emerald-800 leading-relaxed italic">
+                Business intelligence: A target margin of {result.marginValue}% requires a markup of {result.markup}% over your cost.
+              </p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="rounded-2xl bg-white border border-slate-200 p-5 flex items-center gap-4">
-        <div className="h-12 w-12 rounded-full bg-slate-50 flex items-center justify-center shrink-0">
-          <ShieldCheck className="h-6 w-6 text-slate-400" />
-        </div>
-        <div>
-          <p className="text-sm font-bold text-slate-900">Professional Tip for Sellers</p>
-          <p className="text-xs text-slate-500 leading-relaxed">
-            Many businesses confuse <strong>margin</strong> with <strong>markup</strong>. A 25% margin means you need a 33.3% markup on your cost. Use this tool to ensure you don't underprice your inventory.
-          </p>
-        </div>
-      </div>
-    </div>
+        )}
+      </CalculatorResultPanel>
+    </CalculatorContainer>
   );
 }

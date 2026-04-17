@@ -1,0 +1,63 @@
+import type { Metadata } from "next";
+import { categories } from "@/data/categories";
+import { Converter } from "@/types/converter";
+import { SearchTool } from "@/components/ui/SearchTool";
+import {
+  INDEXABLE_ROBOTS,
+  HOMEPAGE_LONGTAIL_KEYWORDS,
+  buildAlternates,
+  buildOpenGraph,
+  buildTwitter,
+  buildWebPageSchema,
+} from "@/lib/seo";
+import Link from "next/link";
+import { CrawlableLinkHub } from "@/components/layout/InternalLinks";
+import { AdSlot } from "@/components/ads/AdSlot";
+import {
+  canonicalConverterCountByCategory,
+  canonicalizeConverterHref,
+  getCanonicalConverterById,
+} from "@/lib/converter-routing";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Calculator,
+  Database,
+  Droplets,
+  Gauge,
+  Ruler,
+  Square,
+  Thermometer,
+  Weight,
+  Wind,
+  Clock,
+  Zap,
+  Smartphone,
+  CheckCircle2,
+  Lock,
+  Globe,
+  Star,
+  TrendingUp,
+  LayoutGrid,
+  Shield,
+  CircleDot,
+} from "lucide-react";
+
+export const dynamic = "force-static";
+
+export const metadata: Metadata = {
+  title: "Free Unit Converter Online - Fast, Accurate & Professional | Convertaro",
+  description:
+    "Convert any unit instantly — length, weight, temperature, speed, volume, data, and more. 500+ free online converters and calculators with verified formulas and no sign-up needed.",
+  robots: INDEXABLE_ROBOTS,
+  alternates: buildAlternates("/"),
+  openGraph: buildOpenGraph({
+    title: "Free Unit Converter Online - Fast, Accurate & Professional | Convertaro",
+    description: "500+ free online converters and calculators for length, weight, temperature, speed & more. Instant results, verified formulas, no sign-up.",
+    path: "/",
+  }),
+  twitter: buildTwitter(
+    "Free Unit Converter Online - Fast, Accurate & Professional | Convertaro",
+    "500+ free online converters and calculators for length, weight, temperature, speed & more. Instant results, verified formulas, no sign-up."
+  ),
+};

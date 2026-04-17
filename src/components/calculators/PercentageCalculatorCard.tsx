@@ -1,6 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { 
+  CalculatorContainer, 
+  CalculatorForm, 
+  CalculatorResultPanel, 
+  CalculatorInputGroup,
+  CalculatorResultRow 
+} from "./CalculatorUI";
+import { Input } from "@/components/ui/Input";
+import { Hash, Percent, Layers } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type Mode = "percentOf" | "whatPercent" | "change";
 
@@ -8,84 +18,116 @@ export function PercentageCalculatorCard() {
   const [mode, setMode] = useState<Mode>("percentOf");
   const [a, setA] = useState("25");
   const [b, setB] = useState("200");
+  const [result, setResult] = useState<string | null>(null);
 
-  const result = useMemo(() => {
-    const first = Number(a);
-    const second = Number(b);
+  const calculateResult = (mA: string, mB: string, mMode: Mode) => {
+    const first = Number(mA);
+    const second = Number(mB);
 
-    if (!Number.isFinite(first) || !Number.isFinite(second)) return "-";
+    if (!Number.isFinite(first) || !Number.isFinite(second)) return "—";
 
-    if (mode === "percentOf") {
+    if (mMode === "percentOf") {
       return `${((first / 100) * second).toFixed(2)}`;
     }
 
-    if (mode === "whatPercent") {
-      if (second === 0) return "-";
+    if (mMode === "whatPercent") {
+      if (second === 0) return "—";
       return `${((first / second) * 100).toFixed(2)}%`;
     }
 
-    if (second === 0) return "-";
-    return `${(((first - second) / second) * 100).toFixed(2)}%`;
-  }, [mode, a, b]);
+    if (second === 0) return "—";
+    const val = (((first - second) / second) * 100).toFixed(2);
+    return `${val}%`;
+  };
+
+  const handleCalculate = () => {
+    setResult(calculateResult(a, b, mode));
+  };
+
+  const handleReset = () => {
+    setA("25");
+    setB("200");
+    setResult(null);
+  };
 
   const labels = {
-    percentOf: ["Percent (%)", "Base value"],
-    whatPercent: ["Part value", "Whole value"],
-    change: ["New value", "Old value"],
+    percentOf: { label1: "Percentage (%)", label2: "Total Amount", icon1: <Percent className="h-4 w-4" />, icon2: <Hash className="h-4 w-4" /> },
+    whatPercent: { label1: "Part Value", label2: "Whole Value", icon1: <Layers className="h-4 w-4" />, icon2: <Hash className="h-4 w-4" /> },
+    change: { label1: "New Value", label2: "Original Value", icon1: <Hash className="h-4 w-4" />, icon2: <Hash className="h-4 w-4" /> },
   } as const;
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
+    <div className="space-y-8">
+      <div className="flex flex-wrap items-center gap-2 bg-slate-100 p-1.5 rounded-2xl w-fit border border-slate-200 shadow-inner">
         {[
-          { value: "percentOf", label: "X% of Y" },
-          { value: "whatPercent", label: "X is what % of Y" },
-          { value: "change", label: "% change" },
+          { value: "percentOf", label: "Percentage Of" },
+          { value: "whatPercent", label: "Percentage Ratio" },
+          { value: "change", label: "Percent Change" },
         ].map((item) => (
           <button
             key={item.value}
             type="button"
-            onClick={() => setMode(item.value as Mode)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-              mode === item.value
-                ? "bg-primary text-white"
-                : "border border-border bg-white text-text-secondary hover:text-primary"
-            }`}
+            onClick={() => {
+              setMode(item.value as Mode);
+              setResult(null);
+            }}
+            className={cn(
+               "rounded-xl px-5 py-2.5 text-sm font-bold transition-all duration-200",
+               mode === item.value 
+                ? "bg-white text-primary shadow-sm" 
+                : "text-slate-500 hover:text-slate-800"
+            )}
           >
             {item.label}
           </button>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="space-y-4">
-          <label className="block">
-            <span className="text-sm font-semibold text-text-secondary">{labels[mode][0]}</span>
-            <input
+      <CalculatorContainer>
+        <CalculatorForm onCalculate={handleCalculate} onReset={handleReset} title="Calculation Specs">
+          <CalculatorInputGroup 
+            label={labels[mode].label1}
+            icon={labels[mode].icon1}
+          >
+            <Input
               type="number"
               value={a}
-              onChange={(event) => setA(event.target.value)}
-              className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+              onChange={(e) => setA(e.target.value)}
+              placeholder="e.g. 25"
             />
-          </label>
+          </CalculatorInputGroup>
 
-          <label className="block">
-            <span className="text-sm font-semibold text-text-secondary">{labels[mode][1]}</span>
-            <input
+          <CalculatorInputGroup 
+            label={labels[mode].label2}
+            icon={labels[mode].icon2}
+          >
+            <Input
               type="number"
               value={b}
-              onChange={(event) => setB(event.target.value)}
-              className="mt-1 h-11 w-full rounded-xl border border-border px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+              onChange={(e) => setB(e.target.value)}
+              placeholder="e.g. 200"
             />
-          </label>
-        </div>
+          </CalculatorInputGroup>
+        </CalculatorForm>
 
-        <div className="rounded-2xl border border-primary/20 bg-primary/6 p-5 flex flex-col justify-center">
-          <p className="text-xs uppercase tracking-widest font-semibold text-primary">Result</p>
-          <p className="mt-2 text-4xl font-black text-text-primary">{result}</p>
-          <p className="mt-2 text-sm text-text-secondary">Fast percentage math for pricing, analytics, and reporting.</p>
-        </div>
-      </div>
+        <CalculatorResultPanel 
+          result={result || "—"} 
+          label="Percentage Result"
+          title="Result Breakdown"
+          hint={result ? "Calculated with precision" : "Enter values and hit calculate"}
+        >
+          {result && (
+            <div className="space-y-4">
+              <CalculatorResultRow label="Operation" value={mode === "percentOf" ? "X% of Y" : mode === "whatPercent" ? "X / Y as %" : "% Difference"} />
+              <CalculatorResultRow label="First Input" value={a} />
+              <CalculatorResultRow label="Second Input" value={b} />
+              <div className="pt-2 border-t border-slate-100 mt-2">
+                <CalculatorResultRow label="Final Result" value={result} isBold />
+              </div>
+            </div>
+          )}
+        </CalculatorResultPanel>
+      </CalculatorContainer>
     </div>
   );
 }
