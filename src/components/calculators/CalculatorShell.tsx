@@ -219,7 +219,7 @@ export function CalculatorShell({ calculator, children }: CalculatorShellProps) 
               </section>
 
               <div className="p-1 rounded-2xl bg-slate-50 border border-slate-100">
-                <AdSlot type="rectangle" id="calculator-sidebar-ad" />
+                <AdSlot type="sidebar" id="calculator-sidebar-ad" />
               </div>
             </div>
           </aside>
